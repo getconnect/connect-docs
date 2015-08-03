@@ -1,0 +1,20 @@
+{
+  "name": "connect-docs",
+  "version": "0.0.0",
+  "authors": [
+    "Stefan Sedich <stefan.sedich@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "highlightjs": "~8.6.0"
+  }
+}

@@ -1,0 +1,68 @@
+# acronyms
+SDK
+SDKs
+API
+APIs
+UTC
+JSON
+HTTP
+PHP
+IANA
+SaaS
+XML
+CDN
+CSS
+JS
+PNG
+HTML
+AES
+PKCS
+
+# language specific terms
+phar
+Gradle
+NPM
+pom
+IOException
+NuGet
+enum
+enums
+StartingAt
+EndingAt
+AccessKeyId
+NSArray
+NSDictionary
+Browserify
+yAxis
+startAtZero
+groupByValues
+isQueryUpdate
+isResultSetSupported
+
+# technical terms
+denormalized
+denormalization
+idempotence
+async
+schema
+schemas
+tp
+Unprocessable
+
+# general terms
+Connect's
+gauge
+pre
+viz's
+
+# query language
+eq
+neq
+gte
+lt
+lte
+
+# html tags
+td
+th
+tr

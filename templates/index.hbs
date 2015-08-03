@@ -1,0 +1,21 @@
+{{> _header}}
+
+<div class="container">
+  <div class="choose-environment">
+    <h3>What environment are you using?</h3>
+
+    <ul class="platforms">
+      {{#each languages}}
+        <li>
+          <a href="{{env}}.html">
+            <img class="inject-me" src="images/platforms/{{env}}.svg">
+              <text>{{title}}</text>
+            </img>
+          </a>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+ </div>
+
+{{> _footer}}

@@ -1,0 +1,25 @@
+/* Code Samples */
+.code-samples {
+  position: relative;
+
+  ul.nav {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    
+    li a {
+      color: @text-color;
+    }
+    
+    ul li.active a {
+      color: @brand-primary;
+    }
+  }
+  
+  pre {
+    background: @code-sample-background;
+    border: @code-sample-border;
+    margin: 20px 0;
+    padding: 30px;
+  }
+}
