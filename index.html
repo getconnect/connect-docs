@@ -1,1 +1,173 @@
-ECHO is on.
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connect Docs :: </title>
+    <script src="//use.typekit.net/jyl8gjp.js?t=1438654489102"></script>
+    <script>try{Typekit.load();}catch(e){}</script>
+    <link rel="stylesheet" href="styles/all.min.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body data-spy="scroll" data-target="#nav-wrapper">
+    <header>
+      <nav class="header-nav navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand hidden-xs navbar-brand active" href="/">
+              <div class="docs-logo-small"></div>
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a class="return" href="https://app.getconnect.io"><i class="ion-arrow-return-left"></i> Return to portal</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="white-background-panel">
+<div class="container">
+  <div class="choose-environment">
+    <h3>What environment are you using?</h3>
+
+    <ul class="platforms">
+        <li>
+          <a href="browser.html">
+            <img class="inject-me" src="images/platforms/browser.svg">
+              <text>Browser</text>
+            </img>
+          </a>
+        </li>
+        <li>
+          <a href="nodejs.html">
+            <img class="inject-me" src="images/platforms/nodejs.svg">
+              <text>Node.JS</text>
+            </img>
+          </a>
+        </li>
+        <li>
+          <a href="ios.html">
+            <img class="inject-me" src="images/platforms/ios.svg">
+              <text>iOS</text>
+            </img>
+          </a>
+        </li>
+        <li>
+          <a href="curl.html">
+            <img class="inject-me" src="images/platforms/curl.svg">
+              <text>Curl</text>
+            </img>
+          </a>
+        </li>
+        <li>
+          <a href="ruby.html">
+            <img class="inject-me" src="images/platforms/ruby.svg">
+              <text>Ruby</text>
+            </img>
+          </a>
+        </li>
+        <li>
+          <a href="php.html">
+            <img class="inject-me" src="images/platforms/php.svg">
+              <text>PHP</text>
+            </img>
+          </a>
+        </li>
+        <li>
+          <a href="java.html">
+            <img class="inject-me" src="images/platforms/java.svg">
+              <text>Java</text>
+            </img>
+          </a>
+        </li>
+        <li>
+          <a href="android.html">
+            <img class="inject-me" src="images/platforms/android.svg">
+              <text>Android</text>
+            </img>
+          </a>
+        </li>
+        <li>
+          <a href="net.html">
+            <img class="inject-me" src="images/platforms/net.svg">
+              <text>.NET</text>
+            </img>
+          </a>
+        </li>
+    </ul>
+  </div>
+ </div>
+
+    </div>
+    
+    <footer>
+      <nav class="footer-nav navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand hidden-xs navbar-brand active" href="http://getconnect.io">
+              <div class="brand-logo-small"></div>
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://app.getconnect.io/#/projects">Projects</a></li>
+            <li><a href="https://app.getconnect.io/#/settings">Settings</a></li>
+            <li><a href="https://gitter.im/getconnect">Community</a></li>
+            <li><a href="http://docs.getconnect.io/">Docs</a></li>
+            <li>
+              <a href="https://github.com/getconnect">
+                <span class="ion ion-social-github"></span>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/getconnect_io">
+                <span class="ion ion-social-twitter"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+    
+    <div class="status">
+		    <a href="http://status.getconnect.io" target="_blank">
+		      <span class="color-dot"></span>
+		      <span class="color-description"></span>
+		    </a>
+		</div>
+    
+    <script src="https://statuspage-production.s3.amazonaws.com/se-v1.js"></script>
+    <script src="scripts/highlight.pack.min.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/svg-injector.min.js"></script>
+    <script src="scripts/docs.min.js"></script>
+
+  	<script>
+      var svgs = document.querySelectorAll('img.inject-me');
+      SVGInjector(svgs);
+  		
+      var sp = new StatusPage({ pageId: '3ynj22l3r4d8'});
+  		sp.getStatus({
+  		  success: function(data) {
+  		    $('.color-description').text(data.status.description);
+  		    $('.color-dot').addClass(data.status.indicator);
+  		  }
+  		});
+      
+      $(function() {
+  			$('pre code').each(function(i, block) {
+  		  	hljs.highlightBlock(block);
+  		  });  
+  		});
+  	</script>
+  </body>
+</html>

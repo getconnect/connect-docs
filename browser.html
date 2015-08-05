@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connect Docs :: Browser</title>
+    <script src="//use.typekit.net/jyl8gjp.js?t=1438654489102"></script>
+    <script>try{Typekit.load();}catch(e){}</script>
+    <link rel="stylesheet" href="styles/all.min.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body data-spy="scroll" data-target="#nav-wrapper">
+    <header>
+      <nav class="header-nav navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand hidden-xs navbar-brand active" href="/">
+              <div class="docs-logo-small"></div>
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a class="return" href="https://app.getconnect.io"><i class="ion-arrow-return-left"></i> Return to portal</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="white-background-panel">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <nav data-spy="affix" id="nav-wrapper" data-offset-top="60">
+        <ul class="nav switcher">
+          <li class="dropdown active">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Browser<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                  <a href="browser.html">Browser</a>
+                </li>
+                <li>
+                  <a href="nodejs.html">Node.JS</a>
+                </li>
+                <li>
+                  <a href="ios.html">iOS</a>
+                </li>
+                <li>
+                  <a href="curl.html">Curl</a>
+                </li>
+                <li>
+                  <a href="ruby.html">Ruby</a>
+                </li>
+                <li>
+                  <a href="php.html">PHP</a>
+                </li>
+                <li>
+                  <a href="java.html">Java</a>
+                </li>
+                <li>
+                  <a href="android.html">Android</a>
+                </li>
+                <li>
+                  <a href="net.html">.NET</a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+        
+        <ul class="nav left-nav bs-docs-sidenav">
+              <li>
+                <a href="#what-is-connect-">What is Connect?</a>
+                
+              </li>    
+              <li>
+                <a href="#modeling-your-events">Modeling your events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#what-is-an-event-">What is an event?</a>
+                      </li>    
+                      <li>
+                        <a href="#structuring-your-events">Structuring your events</a>
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#projects-and-keys">Projects and keys</a>
+                
+              </li>    
+              <li>
+                <a href="#now-some-real-javascript-stuff">Now some real JavaScript stuff</a>
+                
+              </li>    
+          </ul>
+        </nav>
+    </div>
+    <div class="col-sm-9">
+      <h1 id="what-is-connect-">What is Connect?</h1>
+<p>Connect is a SaaS analytics service providing real-time, scalable querying and visualization of your event data.</p>
+<p>Use simple APIs and SDKs to easily push semi-structured events from your app without the need to configure
+schemas or index your data.  Write elegant queries to analyze your data and easily create visualizations for
+both internal users and external customers.</p>
+<p>The following guide will describe how to best model your events, push them to the service and query them in real-time.</p>
+<h1 id="modeling-your-events">Modeling your events</h1>
+<p>When using Connect to analyze and visualize your data, it is important to understand how best to model your events.
+The way you structure your events will directly affect your ability to answer questions with your data.  It is therefore
+important to consider up-front the kind of questions you anticipate answering.</p>
+<h2 id="what-is-an-event-">What is an event?</h2>
+<p>An event is an action that occurs at a specific point in <strong>time</strong>. To answer &quot;why did this event occur?&quot;, our event needs
+to contain rich details about what the &quot;world&quot; looked like at that point in time.</p>
+<p>Put simply, events = action + time + state.</p>
+<p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
+analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample1" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample1"><pre><code class="lang-json">{
+    &quot;type&quot;: &quot;cycling&quot;,
+    &quot;timestamp&quot;: &quot;2015-06-23T16:31:56.587Z&quot;,
+    &quot;duration&quot;: 67,
+    &quot;distance&quot;: 21255,
+    &quot;caloriesBurned&quot;: 455,
+    &quot;maxHeartRate&quot;: 182,
+    &quot;user&quot;: {
+        &quot;id&quot;: &quot;638396&quot;,
+        &quot;firstName&quot;: &quot;Bruce&quot;,
+        &quot;lastName&quot;: &quot;Jones&quot;,
+        &quot;age&quot;: 35
+    }
+}
+</code></pre></div></div></div>
+<h3 id="action">Action</h3>
+<p>What happened? In the above example, the action is <em>an activity was completed</em>.  We group all events of the same action into
+a single collection.  In this case, we could call our collection <code>activityCompleted</code>, or alternatively, just <code>activity</code>.</p>
+<h3 id="time">Time</h3>
+<p>When did it happen? In the above example, we specified the start time of the activity as the value of the <strong>timestamp</strong> property.
+The top-level <strong>timestamp</strong> property is a special property in Connect.  This is because <em>time</em> is an essential property of event
+data - it&apos;s not optional.</p>
+<p>When an event is pushed to Connect, the current time is assigned to the timestamp property if no value was provided by you.</p>
+<h3 id="state">State</h3>
+<p>What do we know about this action?  What do we know about the entities associated with this action?  What do we know about the &quot;world&quot;
+at this moment in time?  Every property in our event, besides the timestamp and the name of the collection, serves to answer the those
+questions.  This is the most important aspect of our event it&apos;s where all the answers live.</p>
+<p>The richer the data you provide in your event, the more questions you can answer for your users, therefore it&apos;s important to enrich
+your events with as much information as possible.  In stark contast to the relational model where you would store this related
+information in separate tables and join at query time, in the event model this data is denormalized into each event, so as to know
+the state of the &quot;world&quot; at the point in time of the event.</p>
+<h2 id="structuring-your-events">Structuring your events</h2>
+<p>Events have the following core properties:</p>
+<ul>
+<li>Denormalized</li>
+<li>Immutable</li>
+<li>Rich/nested</li>
+<li>Schemaless</li>
+</ul>
+<p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
+<h3 id="events-are-denormalized">Events are denormalized</h3>
+<p>Consider our example event again, notice the age property of the user:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-json">{
+    &quot;type&quot;: &quot;cycling&quot;,
+    ...
+    &quot;user&quot;: {
+        &quot;id&quot;: &quot;638396&quot;,
+        &quot;firstName&quot;: &quot;Bruce&quot;,
+        &quot;lastName&quot;: &quot;Jones&quot;,
+        &quot;age&quot;: 35
+    }
+}
+</code></pre></div></div></div>
+<p>The user&apos;s age is going to be duplicated in every activity he/she completes throughout the year. This may seem inefficient; however,
+remember that Connect is about <strong>analyzing</strong>.  This denormalization is a real win for analysis; the key is that event data stores state
+over time, rather than merely current state.  This helps us answer questions about <em>why</em> something happened, because we know what the
+&quot;world&quot; looked like at that point of time.</p>
+<p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
+We could simply execute the following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample3"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+  .select({ averageDistance: { avg: &apos;distance&apos; } })
+  .groupBy(&apos;user.age&apos;);
+
+var chart = connect.chart(query, &apos;#chart&apos;, {
+    title: &apos;Average distance per activity by age&apos;,
+    chart: { type: &apos;bar&apos; }
+});
+</code></pre></div></div></div>
+
+<p>It&apos;s this persistence of state over time that makes event data perfect for analysis.</p>
+<h3 id="events-are-immutable">Events are immutable</h3>
+<p>Events occur at a single point in time and record rich information about the event and state of the &quot;world&quot; at the point in time of that
+event.  By their very nature, events cannot change, as they always record state at the point in time of the event.</p>
+<p>For example, in our example event above, while Bruce Jones may now be many years older, at the time he completed his bike ride, he was
+35 years of age.  By ensuring this event remains immutable, we can correctly analyze bike riding over time by 35-year-olds.</p>
+<p>Consider events as recording history - as much as we&apos;d occassionally like to, we can&apos;t change history!</p>
+<h3 id="events-are-rich-and-nested">Events are rich and nested</h3>
+<p>Events are rich in that they specify very detailed state.  They specify details about the event itself, the entities involved and the state of
+the &quot;world&quot; at that point in time. </p>
+<p>Consider our example activity event - the top level <strong>type</strong> property describes something about the activity itself (a run, a bike ride, a kayak
+etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
+activity, complete with their name and age.</p>
+<p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-json">{
+    &quot;type&quot;: &quot;cycling&quot;,
+    ...
+    &quot;user&quot;: {
+        &quot;id&quot;: &quot;638396&quot;,
+        &quot;firstName&quot;: &quot;Bruce&quot;,
+        ...
+    },
+    &quot;bike&quot;: {
+        &quot;id&quot;: &quot;231806&quot;,
+        &quot;brand&quot;: &quot;Specialized&quot;,
+        &quot;model&quot;: &quot;S-Works Venge&quot;
+    }
+    &quot;weather&quot;: {
+        &quot;condition&quot;: &quot;Raining&quot;,
+        &quot;temperature&quot;: 21,
+        &quot;humidity&quot;: 99,
+        &quot;wind&quot;: 17
+    }
+}
+</code></pre></div></div></div>
+<p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
+to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
+that was built by &quot;Specialized&quot;:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+  .select({ averageDistance: { avg: &apos;distance&apos; } })
+  .groupBy(&apos;bike.model&apos;);
+  .filter({
+    &apos;bike.brand&apos;: &apos;Specialized&apos;
+  });
+</code></pre></div></div></div>
+
+<p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
+allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
+following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+  .select({ averageDistance: { avg: &apos;distance&apos; } })
+  .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
+</code></pre></div></div></div>
+
+<p>As you can see, the richer and more denormalized the event, the more interesting answers can be derived when later querying.</p>
+<h3 id="events-are-schemaless">Events are schemaless</h3>
+<p>Events in Connect should be considered semi-structured - that is, they have an inherent structure, but it is not defined.  This means you can, and should,
+push as much detailed information about an event and the state of the &quot;world&quot; as possible.  Moreover, this allows you to improve your schema over time and
+add extra information about new events as that information becomes available.</p>
+<h3 id="grouping-events-into-collections">Grouping events into collections</h3>
+<p>It is important when modeling your events to consider how you intend to group those events into collections.  This is a careful balance between events being
+broad enough to answer queries for your users, while specific enough to be manageable.</p>
+<p>In our activity example, the activity contains different properties based on what the type of activity.  Our cycling activity contains properties associated
+with the bike that was used, while a kayaking activity may contain properties associated with a kayak that is used.</p>
+<p>Because a kayaking event may have different properties to a running event, it might seem logical to put each of them in distinct collections.  However, if we
+had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</code> collections, we would lose the opportunity to query details that are common to all activities.</p>
+<p>As a general rule, consider the common action among your events and decide if the specific variants of that action warrant grouping those events together. </p>
+<h1 id="projects-and-keys">Projects and keys</h1>
+<p>Connect allows you to manage multiple projects under a single account so that you can easily segregate
+your collections into logical projects.</p>
+<p>You could use this to separate analytics for entire projects, or to implement separation between different
+environments (e.g. My Project (Prod) and My Project (Dev)).</p>
+<p>To start pushing and querying your event data, you will need both a project ID and an API key.  This information
+is available to you <a href="http://app.getconnect.io/#/projects">via the portal</a> inside each project under the &quot;Keys&quot; tab:</p>
+<p><img src="images/screens/projects-keys.png" alt="Screenshot of project keys in Connect portal"></p>
+<p>By default, you can choose from four different types of keys, each with their own specific use:</p>
+<ul>
+<li><p><code>Push/Query Key</code> - you can use this key to both push events and execute queries.<br>You should only use this key in situations where it is not possible to isolate merely pushing or querying.</p>
+</li>
+<li><p><code>Push Key</code> - you can only use this key to push events.<br>You should use this key in your apps where you are tracking event data, but do not require querying.</p>
+</li>
+<li><p><code>Query Key</code> - you can only use this key to execute queries.<br>You should use this key in your reporting interfaces where you do not wish to track events.</p>
+</li>
+<li><p><code>Master Project Key</code> - you can use this key to execute all types of operations on a project, including
+pushing, querying and deleteing collections.<br><strong>Keep this key safe</strong> - it is intended for very limited use and definitely should not be included in your main apps.</p>
+</li>
+</ul>
+<p>You must use your project ID and desired key to begin using Connect:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample10" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample10"><pre><code class="lang-js">var Connect = require(&apos;connect-js&apos;);
+
+var connect = new Connect({
+    projectId: &apos;YOUR_PROJECT_ID&apos;,
+    apiKey: &apos;YOUR_API_KEY&apos;
+});
+</code></pre></div></div></div>
+
+
+
+
+
+
+
+
+<h1 id="now-some-real-javascript-stuff">Now some real JavaScript stuff</h1>
+<p>Here it is!</p>
+
+    </div>
+  </div>  
+</div>
+
+    </div>
+    
+    <footer>
+      <nav class="footer-nav navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand hidden-xs navbar-brand active" href="http://getconnect.io">
+              <div class="brand-logo-small"></div>
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://app.getconnect.io/#/projects">Projects</a></li>
+            <li><a href="https://app.getconnect.io/#/settings">Settings</a></li>
+            <li><a href="https://gitter.im/getconnect">Community</a></li>
+            <li><a href="http://docs.getconnect.io/">Docs</a></li>
+            <li>
+              <a href="https://github.com/getconnect">
+                <span class="ion ion-social-github"></span>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/getconnect_io">
+                <span class="ion ion-social-twitter"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+    
+    <div class="status">
+		    <a href="http://status.getconnect.io" target="_blank">
+		      <span class="color-dot"></span>
+		      <span class="color-description"></span>
+		    </a>
+		</div>
+    
+    <script src="https://statuspage-production.s3.amazonaws.com/se-v1.js"></script>
+    <script src="scripts/highlight.pack.min.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/svg-injector.min.js"></script>
+    <script src="scripts/docs.min.js"></script>
+
+  	<script>
+      var svgs = document.querySelectorAll('img.inject-me');
+      SVGInjector(svgs);
+  		
+      var sp = new StatusPage({ pageId: '3ynj22l3r4d8'});
+  		sp.getStatus({
+  		  success: function(data) {
+  		    $('.color-description').text(data.status.description);
+  		    $('.color-dot').addClass(data.status.indicator);
+  		  }
+  		});
+      
+      $(function() {
+  			$('pre code').each(function(i, block) {
+  		  	hljs.highlightBlock(block);
+  		  });  
+  		});
+  	</script>
+  </body>
+</html>
