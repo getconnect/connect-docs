@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HTTP API :: Connect Docs</title>
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+    <script src="//use.typekit.net/jyl8gjp.js?t=1438654489102"></script>
+    <script>try{Typekit.load();}catch(e){}</script>
+    <link rel="stylesheet" href="styles/all.min.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body data-spy="scroll" data-target="#nav-wrapper">
+    <header>
+      <nav class="header-nav navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand navbar-brand active" href="./">
+              <div class="docs-logo-small"></div>
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a class="return" href="https://app.getconnect.io"><i class="ion-arrow-return-left"></i> Return to portal</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="white-background-panel">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <nav data-spy="affix" id="nav-wrapper" class="hidden-xs" data-offset-top="60" data-offset-bottom="400">
+        <ul class="nav switcher">
+          <li class="dropdown active">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">HTTP API<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                  <a href="js.html">JavaScript</a>
+                </li>
+                <li>
+                  <a href="http.html">HTTP API</a>
+                </li>
+                <li>
+                  <a href="ios.html">iOS</a>
+                </li>
+                <li>
+                  <a href="ruby.html">Ruby</a>
+                </li>
+                <li>
+                  <a href="php.html">PHP</a>
+                </li>
+                <li>
+                  <a href="net.html">.NET</a>
+                </li>
+                <li>
+                  <a href="java.html">Java</a>
+                </li>
+                <li>
+                  <a href="android.html">Android</a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+        
+        <ul class="nav left-nav bs-docs-sidenav">
+              <li>
+                <a href="#getting-started">Getting Started</a>
+                
+              </li>    
+              <li>
+                <a href="#authentication">Authentication</a>
+                
+              </li>    
+              <li>
+                <a href="#pushing-events">Pushing events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#single-event">Single event</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#responses">Responses</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#batches-of-events">Batches of events</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#bulk-importing-events">Bulk importing events</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#monitoring-the-import">Monitoring the import</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#restrictions-on-pushing">Restrictions on pushing</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#reliability-of-events">Reliability of events</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#timestamps">Timestamps</a>
+                        
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#querying-events">Querying events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#metadata">Metadata</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#aggregations">Aggregations</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#limitations">Limitations</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#filters">Filters</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#exists-filter">Exists filter</a>
+                              </li>    
+                              <li>
+                                <a href="#in-filter">In filter</a>
+                              </li>    
+                              <li>
+                                <a href="#combining-filter-expressions">Combining filter expressions</a>
+                              </li>    
+                              <li>
+                                <a href="#-or-filters">&quot;Or&quot; filters</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#timeframes">Timeframes</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#relative-timeframes">Relative timeframes</a>
+                              </li>    
+                              <li>
+                                <a href="#absolute-timeframes">Absolute timeframes</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#group-by">Group by</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#grouping-by-multiple-properties">Grouping by multiple properties</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#time-intervals">Time intervals</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#time-interval-with-group-by">Time interval with group by</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#timezones">Timezones</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#error-handling">Error handling</a>
+                        
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#exporting-events">Exporting events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#small-exports">Small exports</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#exporting-to-amazon-s3">Exporting to Amazon S3</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#monitoring-the-export">Monitoring the export</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#deleting-collections">Deleting collections</a>
+                
+              </li>    
+              <li>
+                <a href="#projects-and-keys">Projects and keys</a>
+                
+              </li>    
+              <li>
+                <a href="#security">Security</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#api-keys">API Keys</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#keeping-api-keys-secure">Keeping API Keys Secure</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#pushing-events-securely">Pushing events securely</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#querying-events-securely">Querying events securely</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#resetting-the-master-key">Resetting the master key</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#filtered-keys">Filtered keys</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#generating-a-filtered-key">Generating a filtered key</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#modeling-your-events">Modeling your events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#what-is-an-event-">What is an event?</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#action">Action</a>
+                              </li>    
+                              <li>
+                                <a href="#time">Time</a>
+                              </li>    
+                              <li>
+                                <a href="#state">State</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#collections">Collections</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#structuring-your-events">Structuring your events</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#events-are-denormalized">Events are denormalized</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-immutable">Events are immutable</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-rich-and-nested">Events are rich and nested</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-schemaless">Events are schemaless</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#restrictions">Restrictions</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#property-names">Property names</a>
+                              </li>    
+                              <li>
+                                <a href="#arrays">Arrays</a>
+                              </li>    
+                              <li>
+                                <a href="#distinct-count">Distinct count</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                  </ul>
+              </li>    
+          </ul>
+        </nav>
+    </div>
+    <div class="col-sm-9">
+      <h1 id="getting-started">Getting Started</h1>
+<p>The following guide will help you to get started using Connect.  Once you have your <a href="#projects-and-keys">project ID and API key</a> and
+you have decided how to <a href="#modeling-your-events">model your events</a>, you can start <a href="#pushing-events">pushing events</a> and <a href="#querying-events">executing queries</a>.</p>
+<h1 id="authentication">Authentication</h1>
+<p>To <a href="#pushing-events">push events</a> or <a href="#querying-events">execute queries</a>, you must supply the following headers
+with the request for authentication:</p>
+<ul>
+<li><strong>X-Project-Id</strong> - the ID of the project to push to or query.</li>
+<li><strong>X-Api-Key</strong> - the push or query API key for the project.</li>
+</ul>
+<p>Read more about <a href="#projects-and-keys">projects and API keys here</a>. </p>
+<h1 id="pushing-events">Pushing events</h1>
+<p>Pushing events via HTTP is simple.  Once you have your <a href="#projects-and-keys">project ID and push API key</a>, simply POST the JSON event to your
+collection endpoint and your events are available for <a href="#querying">querying</a> immediately.</p>
+<h2 id="single-event">Single event</h2>
+<blockquote>
+<p><strong>POST</strong> <a href="https://api.getconnect.io/events/:collection">https://api.getconnect.io/events/:collection</a></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collection</td>
+<td>collection to which to push the event</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>To push a single event, POST it to your collection endpoint.</p>
+<p>For example, to push an event to <code>test-collection</code>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample1" role="tab" data-toggle="tab" data-lang="bash">cURL</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample1"><pre><code class="lang-bash">curl -X POST \
+  -H &quot;X-Project-Id: YOUR_PROJECT_ID&quot; \
+  -H &quot;X-API-Key: YOUR_API_KEY&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &apos;{ &quot;customer&quot;: { &quot;firstName&quot;: &quot;Tom&quot;, &quot;lastName&quot;: &quot;Smith&quot; }, &quot;product&quot;: &quot;12 red roses&quot;, &quot;purchasePrice&quot;: 34.95 }&apos; \
+  https://api.getconnect.io/events/test-collection
+</code></pre></div></div></div>
+<h3 id="responses">Responses</h3>
+<p><strong>200 OK</strong></p>
+<p>The event has been successfully recorded.</p>
+<p><strong>422 Unprocessable Entity</strong></p>
+<p>One or more errors have occurred with the event data sent.</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-json">{
+    &quot;errors&quot;: [
+        { &quot;field&quot;: &quot;fieldName&quot;, &quot;description&quot;: &quot;There was an error with this field.&quot; }
+    ]
+}
+</code></pre></div></div></div>
+<p><strong>500 Internal server Error</strong></p>
+<p>A server error occurred with the Connect API.</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample3"><pre><code class="lang-json">{
+    &quot;errorMessage&quot;: &quot;An error occurred while processing your request&quot;
+}
+</code></pre></div></div></div>
+<p><strong>409 Conflict</strong></p>
+<p>An event with the same <code>id</code> property has already been inserted into this collection.</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-json">{
+    &quot;errorMessage&quot;: &quot;An event with the same &apos;id&apos; has already been inserted.&quot;
+}
+</code></pre></div></div></div>
+<p><strong>400 Bad Request</strong></p>
+<p>The event data supplied is not valid.</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-json">{
+    &quot;errorMessage&quot;: &quot;Property names starting with tp_ are reserved and cannot be set.&quot;
+}
+</code></pre></div></div></div>
+<h2 id="batches-of-events">Batches of events</h2>
+<blockquote>
+<p><strong>POST</strong> <a href="https://api.getconnect.io/events">https://api.getconnect.io/events</a></p>
+</blockquote>
+<p>Instead of pushing events one by one, you can push events in batches. This is beneficial when you have a number of events to push in a single
+request or if you wish to push to multiple collections in a single request.</p>
+<blockquote>
+<p>For large batches (over 5,000 events), you must upload the events to S3 and provide a URL to the batch.
+See <a href="#bulk-importing-events">bulk importing events</a> for more information.</p>
+</blockquote>
+<p>To push event batches, you must POST a batch containing an object of collections to event batches. For example:</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">cURL<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="bash">cURL</a></li><li><a href="#code-sample7" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-bash">curl -X POST \
+  -H &quot;X-Project-Id: YOUR_PROJECT_ID&quot; \
+  -H &quot;X-API-Key: YOUR_API_KEY&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &apos;{
+    &quot;purchases&quot;: [
+        {
+            &quot;customer&quot;: {
+                &quot;firstName&quot;: &quot;Tom&quot;,
+                &quot;lastName&quot;: &quot;Smith&quot;
+            },
+            &quot;id&quot;: &quot;1849506679&quot;,
+            &quot;product&quot;: &quot;12 red roses&quot;,
+            &quot;purchasePrice&quot;: 34.95
+        },
+        {
+            &quot;customer&quot;: {
+                &quot;firstName&quot;: &quot;Jane&quot;,
+                &quot;lastName&quot;: &quot;Doe&quot;
+            },
+            &quot;id&quot;: &quot;123456&quot;,
+            &quot;product&quot;: &quot;1 daisy&quot;,
+            &quot;purchasePrice&quot;: 8.95
+        }
+    ],
+    &quot;refunds&quot;: [
+        {
+            &quot;customer&quot;: {
+                &quot;firstName&quot;: &quot;Tom&quot;,
+                &quot;lastName&quot;: &quot;Smith&quot;
+            },
+            &quot;id&quot;: &quot;REF-1234&quot;,
+            &quot;product&quot;: &quot;12 red roses&quot;,
+            &quot;purchasePrice&quot;: -34.95
+        }
+    ]
+}&apos; \
+  https://api.getconnect.io/events
+</code></pre></div><div class="tab-pane" id="code-sample7"><pre><code class="lang-json">{
+    &quot;purchases&quot;: [
+        {
+            &quot;customer&quot;: {
+                &quot;firstName&quot;: &quot;Tom&quot;,
+                &quot;lastName&quot;: &quot;Smith&quot;
+            },
+            &quot;id&quot;: &quot;1849506679&quot;,
+            &quot;product&quot;: &quot;12 red roses&quot;,
+            &quot;purchasePrice&quot;: 34.95
+        },
+        {
+            &quot;customer&quot;: {
+                &quot;firstName&quot;: &quot;Jane&quot;,
+                &quot;lastName&quot;: &quot;Doe&quot;
+            },
+            &quot;id&quot;: &quot;123456&quot;,
+            &quot;product&quot;: &quot;1 daisy&quot;,
+            &quot;purchasePrice&quot;: 8.95
+        }
+    ],
+    &quot;refunds&quot;: [
+        {
+            &quot;customer&quot;: {
+                &quot;firstName&quot;: &quot;Tom&quot;,
+                &quot;lastName&quot;: &quot;Smith&quot;
+            },
+            &quot;id&quot;: &quot;REF-1234&quot;,
+            &quot;product&quot;: &quot;12 red roses&quot;,
+            &quot;purchasePrice&quot;: -34.95
+        }
+    ]
+}
+</code></pre></div></div></div>
+
+<p>The above examples inserts events into two separate collections (purchases and refunds) in a single request.</p>
+<p>The <a href="#restrictions-on-pushing">restrictions</a> on events in the batches are the same as those for pushing a single event.</p>
+<p>Batches will always return a successful response unless the overall batch document is poorly formatted or the batch exceeds the limit (5,000 events).
+The response will contain an array of result objects for each collection, with each array containing the result of each event, in order, that was pushed.</p>
+<p>Each result object indicates a boolean of <code>success</code>, a boolean of <code>duplicate</code> (indicate a duplicate event based on the <code>id</code> property) and a <code>message</code>
+describing the reason for failure, if applicable.</p>
+<p>A possible response to the above example could be:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-json">{
+    &quot;purchases&quot;: [
+        {
+            &quot;success&quot;: true
+        },
+        {
+            &quot;success&quot;: false,
+            &quot;duplicate&quot;: true,
+            &quot;message&quot;: &quot;An event with the same id has already been inserted.&quot;
+        }
+    ],
+    &quot;refunds&quot;: [
+        {
+            &quot;success&quot;: true
+        }
+    ]
+}
+</code></pre></div></div></div>
+<h2 id="bulk-importing-events">Bulk importing events</h2>
+<blockquote>
+<p><strong>POST</strong> <a href="https://api.getconnect.io/event-import">https://api.getconnect.io/event-import</a></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collection</td>
+<td>collection to which to import the events</td>
+</tr>
+<tr>
+<td>s3Path</td>
+<td>path to the S3 file containing the events to import</td>
+</tr>
+<tr>
+<td>s3AccessKeyId</td>
+<td>key to access the S3 file</td>
+</tr>
+<tr>
+<td>s3SecretAccessKey</td>
+<td>secret key to access the S3 file</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>To import a large number of events (usually historical), you must use the event import API and provide a file accessible via S3.</p>
+<blockquote>
+<p>If you are importing a small number of events (fewer than 5,000), you can use <a href="#batches-of-events">event batches</a> to push the events in the request body.
+You&apos;re still welcome to use event imports if you prefer, though!</p>
+</blockquote>
+<p>The import requires the name of the collection in which to import the events and the S3 details to retrieve the file.</p>
+<p>Only JSON formatted files are supported and the format must be a single event per line (not a JSON array). For example, the following is a valid file to import:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample9" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample9"><pre><code class="lang-json">{ &quot;product&quot;: &quot;12 red roses&quot;, &quot;quantity&quot;: 5, &quot;price&quot;: 25.00 }
+{ &quot;product&quot;: &quot;White bouquet&quot;, &quot;quantity&quot;: 2, &quot;price&quot;: 48.40 }
+</code></pre></div></div></div>
+<p>The entire batch will be rejected if the format does not align with this.</p>
+<p>For example:</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">cURL<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample10" role="tab" data-toggle="tab" data-lang="bash">cURL</a></li><li><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample10"><pre><code class="lang-bash">curl -X POST \
+  -H &quot;X-Project-Id: YOUR_PROJECT_ID&quot; \
+  -H &quot;X-API-Key: YOUR_API_KEY&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &apos;{
+    &quot;collection&quot;: &quot;purchases&quot;,
+    &quot;s3Path&quot;: &quot;s3://mybucket/purchases.json&quot;,
+    &quot;s3AccessKeyId&quot;: &quot;YOUR_ACCESS_KEY_ID&quot;,
+    &quot;s3SecretAccessKey&quot;: &quot;YOUR_SECRET_ACCESS_KEY&quot;
+}&apos; \
+  https://api.getconnect.io/event-import
+</code></pre></div><div class="tab-pane" id="code-sample11"><pre><code class="lang-json">{
+    &quot;collection&quot;: &quot;purchases&quot;,
+    &quot;s3Path&quot;: &quot;s3://mybucket/purchases.json&quot;,
+    &quot;s3AccessKeyId&quot;: &quot;YOUR_ACCESS_KEY_ID&quot;,
+    &quot;s3SecretAccessKey&quot;: &quot;YOUR_SECRET_ACCESS_KEY&quot;
+}
+</code></pre></div></div></div>
+
+<p>A successful batch import operation results in a <strong>201 Created</strong> response and specifies a URI in the Location header of the response where you can monitor the
+status of the batch import.</p>
+<h3 id="monitoring-the-import">Monitoring the import</h3>
+<blockquote>
+<p><strong>GET</strong> <a href="https://api.getconnect.io/event-import/:id">https://api.getconnect.io/event-import/:id</a></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>ID of the event import (returned from the import endpoint on creation in the <code>Location</code> header)</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>Once you have started an import of events, you can monitor the import with the URI provided in the Location header of the import API.</p>
+<p>This allows you to check the status, progress and speed of the import, as well as any errors that have occurred during the import process.</p>
+<p>An example response would be:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample12"><pre><code class="lang-json">{
+    &quot;collection&quot;: &quot;purchases&quot;,
+    &quot;status&quot;: &quot;running&quot;,
+    &quot;created&quot;: &quot;2015-04-01T00:32:45.000Z&quot;,
+    &quot;started&quot;: &quot;2015-04-01T00:33:03.000Z&quot;,
+    &quot;finished&quot;: null,
+    &quot;importedEvents&quot;: 5130985,
+    &quot;duplicateEvents&quot;: 0,
+    &quot;percentComplete&quot;: 42.43,
+    &quot;insertRate&quot;: &quot;15096/s&quot;,
+    &quot;error&quot;: null,
+    &quot;eventErrors&quot;: [
+        { &quot;index&quot;: 9951, &quot;error&quot;: &quot;The JSON specified was not valid.&quot; },
+        { &quot;index&quot;: 45930, &quot;error&quot;: &quot;The JSON specified was not valid.&quot; }
+    ]
+}
+</code></pre></div></div></div>
+<p>An import can be in one of the following statuses:</p>
+<ul>
+<li><strong>Pending</strong> - the import is yet to start</li>
+<li><strong>Running</strong> - the import is currently running</li>
+<li><strong>Complete</strong> - the import completed successfully</li>
+<li><strong>Failed</strong> - the import failed (the error will contain the reason)</li>
+</ul>
+<p>The <code>eventErrors</code> property in the response refers to an array of errors, with the index property of each error referring to the index (or line number) in the import file.</p>
+<h2 id="restrictions-on-pushing">Restrictions on pushing</h2>
+<p>There are a number of restrictions on the properties you can use in your events and the
+limitations on querying which influences how you should structure your events.</p>
+<p>Refer to <a href="#restrictions">restrictions</a> in the <a href="#modeling-your-events">modeling your events</a> section.</p>
+<h2 id="reliability-of-events">Reliability of events</h2>
+<p>When posting an event to Connect, we guarantee the storage of the event if a successful (200) response is returned. This means you can safely flag the event as recorded.</p>
+<p>To guarantee event delivery, it is recommended to queue the events for sending to Connect and only remove them from the queue once a successful response has been received.</p>
+<p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is delivered multiple times). For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample13" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample13"><pre><code class="lang-json">{
+    &quot;customer&quot;: {
+        &quot;firstName&quot;: &quot;Tom&quot;,
+        &quot;lastName&quot;: &quot;Smith&quot;
+    },
+    &quot;id&quot;: &quot;1849506679&quot;,
+    &quot;product&quot;: &quot;12 red roses&quot;,
+    &quot;purchasePrice&quot;: 34.95
+}
+</code></pre></div></div></div>
+<h2 id="timestamps">Timestamps</h2>
+<p>All events have a single <code>timestamp</code> property which records when the event being pushed occurred.  Events cannot
+have more than one date/time property.  If you feel you need more than one date/time property, you probably need
+to reconsider how you&apos;re <a href="#modeling-your-events">modeling your events</a>.</p>
+<blockquote>
+<p><strong>Querying</strong></p>
+<p>You can only run time interval queries or timeframe filters on the <code>timestamp</code> property.  No other date/time property
+in an event is supported for querying.</p>
+</blockquote>
+<p>By default, if no <code>timestamp</code> property is sent with the event, Connect will use the current date and time as
+the timestamp of the event.</p>
+<p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
+of event times when events are queued.</p>
+<p>The timestamp must be supplied as an ISO-8601 formatted date.  The date must be in UTC (you cannot specify a timezone offset).
+For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample14" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample14"><pre><code class="lang-json">{
+    &quot;customer&quot;: {
+        &quot;firstName&quot;: &quot;Tom&quot;,
+        &quot;lastName&quot;: &quot;Smith&quot;
+    },
+    &quot;timestamp&quot;: &quot;2015-02-05T14:55:56.587Z&quot;,
+    &quot;product&quot;: &quot;12 red roses&quot;,
+    &quot;purchasePrice&quot;: 34.95
+}
+</code></pre></div></div></div>
+<blockquote>
+<p><strong>Timezones</strong></p>
+<p>Timestamps are always recorded in UTC.  If you supply a timestamp in a timezone other than UTC, it will
+be converted to UTC.  When you query your events, you can specify a timezone so things like time intervals
+will be returned in local time.</p>
+</blockquote>
+<h1 id="querying-events">Querying events</h1>
+<blockquote>
+<p><strong>GET</strong> <a href="https://api.getconnect.io/events/:collection?query=">https://api.getconnect.io/events/:collection?query=</a></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collection</td>
+<td>collection to query</td>
+</tr>
+<tr>
+<td>query (query string parameter)</td>
+<td>query to run</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>To query events in Connect, you construct a query document and perform a GET request with the URL-encoded JSON in the <code>query</code> parameter of the query string.</p>
+<p>For example, to get the sum of the <code>price</code> property in a collection called <code>purchases</code>, you would build the following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample15"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    }
+}
+</code></pre></div></div></div>
+<p>To execute the query, you would run:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample16" role="tab" data-toggle="tab" data-lang="bash">cURL</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample16"><pre><code class="lang-bash">curl -H &quot;X-Project-Id: YOUR_PROJECT_ID&quot; \
+     -H &quot;X-API-Key: YOUR_API_KEY&quot; \
+     https://api.getconnect.io/events/purchases?query={select:{totalPrice:{sum:&apos;price&apos;}}}
+</code></pre></div></div></div>
+<h2 id="metadata">Metadata</h2>
+<p>The query results return metadata on the executed query.  This includes any <a href="#group-by">groups</a> used, the <a href="#time-intervals">time interval</a>, if specified,
+and the <a href="#timezones">timezone</a>, if specified, for the query.</p>
+<p>For example, if you grouped by <code>product</code>, with a <strong>daily</strong> time interval and a timezone of <strong>Australia/Brisbane</strong>, the metadata would look like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample17" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample17"><pre><code class="lang-json">{
+    &quot;groups&quot;: [&quot;product&quot;],
+    &quot;interval&quot;: &quot;daily&quot;,
+    &quot;timezone&quot;: &quot;Australia/Brisbane&quot;
+}
+</code></pre></div></div></div>
+<p>Metadata is used by our Visualization SDK to discover the shape of your query so that we can easily display the results.  If you&apos;re doing your own visualization,
+you can take advantage of the metadata as hints on how to render the results.</p>
+<h2 id="aggregations">Aggregations</h2>
+<p>You can perform various aggregations over events you have pushed.  Simply specify in the query&apos;s select which
+properties you wish to aggregate and which aggregation you wish to use.  You also must specify an &quot;alias&quot; for the
+result set that is returned.</p>
+<p>For example, to query the <code>purchases</code> collection and perform aggregations on the <code>price</code> event property::</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample18" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample18"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;itemsSold&quot;: &quot;count&quot;,
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; },
+        &quot;averagePrice&quot;: { &quot;avg&quot;: &quot;price&quot; },
+        &quot;minPrice&quot;: { &quot;min&quot;: &quot;price&quot; },
+        &quot;maxPrice&quot;: { &quot;max&quot;: &quot;price&quot; }
+    }
+}
+</code></pre></div></div></div>
+
+
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample21"><pre><code class="lang-json">{
+    &quot;metadata&quot;: {
+        &quot;groups&quot;: [],
+        &quot;interval&quot;: null,
+        &quot;timezone&quot;: null
+    },
+    {
+        &quot;itemsSold&quot;: 25,
+        &quot;totalPrice&quot;: 5493.25,
+        &quot;averagePrice&quot;: 219.73,
+        &quot;minPrice&quot;: 5.49,
+        &quot;maxPrice&quot;: 589.20
+    }
+}
+</code></pre></div></div></div>
+
+<p>The following aggregations are supported:</p>
+<ul>
+<li>count</li>
+<li>sum</li>
+<li>avg</li>
+<li>min</li>
+<li>max</li>
+</ul>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>Aggregations only work on numeric properties.  If you try to aggregate a string property, you will receive a null result.
+If you try to aggregate a property with multiple types (e.g. some strings, some numbers), only the numeric values will be
+added - the rest are ignored.</li>
+</ul>
+<h2 id="filters">Filters</h2>
+<p>You can filter the events you wish to include in your queries by specifying one or more filters.  For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;filter&quot;: {
+        &quot;product&quot;: &quot;12 red roses&quot;
+    }
+}
+</code></pre></div></div></div>
+
+
+<p>The above will filter the query results for only those events that have a <code>product</code> property equalling &quot;12 red roses&quot;.
+The above is also shorthand for the <strong>eq</strong> operator. To illustrate this, the following is identical to the above:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample26" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample26"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;filter&quot;: {
+        &quot;product&quot;: { &quot;eq&quot;: &quot;12 red roses&quot; }
+    }
+}
+</code></pre></div></div></div>
+
+
+<p>The following match operators are currently supported:</p>
+<ul>
+<li>eq (equal to)</li>
+<li>neq (not equal to)</li>
+<li>gt (greater than)</li>
+<li>gte (greater than or equal to)</li>
+<li>lt (less than)</li>
+<li>lte (less than or equal to)</li>
+<li><a href="#exists-filter">exists (whether or not a property exists)</a></li>
+<li>startsWith (starts with - string values only)</li>
+<li>endsWidth (ends with - string values only)</li>
+<li>contains (contains - string values only)</li>
+<li><a href="#in-filter">in (property is one of a list of values)</a> </li>
+</ul>
+<h3 id="exists-filter">Exists filter</h3>
+<p>The exists filter will filter the query results for only events that either have or don&apos;t have the specified property
+and where the specified property is or isn&apos;t null respectively.  You supply a boolean value with the exists operator
+to specify whether to include or exclude the events.</p>
+<blockquote>
+<p><strong>Missing properties vs null values</strong></p>
+<p>We treat missing properties and properties with a null value the same for the purpose of the exists filter.  While we
+plan to change this behavior in the future, you should consider setting a default value as opposed to a null value on
+properties if you wish to make a distinction.</p>
+</blockquote>
+<p>For example, the following will filter for events that have a property called <code>gender</code>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample29" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample29"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;filter&quot;: {
+        &quot;gender&quot;: { &quot;exists&quot;: true }
+    }
+}
+</code></pre></div></div></div>
+
+
+<p>Whereas the following will filter for events that <em>do not</em> have a property called <code>gender</code>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample32" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample32"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;filter&quot;: {
+        &quot;gender&quot;: { &quot;exists&quot;: false }
+    }
+}
+</code></pre></div></div></div>
+
+
+<h3 id="in-filter">In filter</h3>
+<p>The in filter allows you to specify a list of values for which a property should match.</p>
+<p>For example, the following will filter for events that have a <code>category</code> of either &quot;Bikes&quot;, &quot;Books&quot; or &quot;Magazines&quot;:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample35" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample35"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;filter&quot;: {
+        &quot;category&quot;: { &quot;in&quot;: [&quot;Bikes&quot;, &quot;Books&quot;, &quot;Magazines&quot;] }
+    }
+}
+</code></pre></div></div></div>
+
+<p><strong>Note:</strong> All values in the list must be of the same type (i.e. string, numeric or boolean).  Mixed types are currently not supported.</p>
+<h3 id="combining-filter-expressions">Combining filter expressions</h3>
+<p>You can also combine filter expressions to filter multiple values on the same property.</p>
+<p>For example, the following will filter for events with a <code>price</code> property greater than 5 but less than 10:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;filter&quot;: {
+        &quot;price&quot;: { &quot;gt&quot;: 5, &quot;lt&quot;: 10 }
+    }
+}
+</code></pre></div></div></div>
+
+
+<h3 id="-or-filters">&quot;Or&quot; filters</h3>
+<p>Currently, &quot;or&quot; filters are not supported.</p>
+<h2 id="timeframes">Timeframes</h2>
+<p>You can restrict query results by specifying the <strong>timeframe</strong> for the query which will filter for events only within that specific timeframe.</p>
+<blockquote>
+<p>If no timeframe is specified, events will not be filtered by time; the query will match events from all time.</p>
+</blockquote>
+<p>For example, the following query filters for events only for this month:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;timeframe&quot;: &quot;this_month&quot;
+}
+</code></pre></div></div></div>
+
+
+<p>There are two types of timeframes:</p>
+<ul>
+<li><strong>Relative timeframes</strong> - a timeframe relative to the current date and time.</li>
+<li><strong>Absolute timeframes</strong> - a timeframe between two specific dates and times.</li>
+</ul>
+<h3 id="relative-timeframes">Relative timeframes</h3>
+<p>Relative timeframes can be specified as either a string or a complex type containing exact numbers of &quot;periods&quot; to filter.</p>
+<blockquote>
+<p><strong>Timezones</strong></p>
+<p>By default, all relative timeframes are <strong>UTC</strong> by default. See the <a href="#timezones">timezone section</a> to specify your own timezone.</p>
+</blockquote>
+<p>The following are supported string timeframes:</p>
+<ul>
+<li>this_minute</li>
+<li>last_minute</li>
+<li>this_hour</li>
+<li>last_hour</li>
+<li>today</li>
+<li>yesterday</li>
+<li>this_week</li>
+<li>last_week</li>
+<li>this_month</li>
+<li>last_month</li>
+<li>this_quarter</li>
+<li>last_quarter</li>
+<li>this_year</li>
+<li>last_year</li>
+</ul>
+<p>You can also specify exactly how many current/previous periods you wish to include in the query results.</p>
+<p>For example, if you want to filter by the <strong>today and the last 2 days</strong>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample43" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample43"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;timeframe&quot;: { &quot;current&quot;: { &quot;days&quot;: 3 } }
+}
+</code></pre></div></div></div>
+
+<p>Or, to filter by the <strong>last 2 months, excluding the current month</strong>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;timeframe&quot;: { &quot;previous&quot;: { &quot;months&quot;: 2 } }
+}
+</code></pre></div></div></div>
+
+<p>The following periods are supported for complex, relative timeframes:</p>
+<ul>
+<li>minutes</li>
+<li>hours</li>
+<li>days</li>
+<li>weeks</li>
+<li>months</li>
+<li>quarters</li>
+<li>years</li>
+</ul>
+<blockquote>
+<p><strong>Weeks</strong></p>
+<p>Our weeks start on a Sunday and finish on a Saturday.  In the future, we plan to support specifying on which
+day of the week you&apos;d like to start your weeks.</p>
+</blockquote>
+<h3 id="absolute-timeframes">Absolute timeframes</h3>
+<p>You can specify an absolute timeframe by constructing an object with the <strong>start</strong> and <strong>end</strong> properties set to
+the desired start and end times in ISO-8601 format.</p>
+<p>For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample47" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample47"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { sum: &quot;price&quot; }
+    },
+    &quot;timeframe&quot;: { &quot;start&quot;: &quot;2015-02-01T00:00:00.000Z&quot;, &quot;end&quot;: &quot;2015-02-25T00:00:00.000Z&quot; }
+}
+</code></pre></div></div></div>
+<p>This will match all events with a <code>timestamp</code> greater than or equal to 2015-02-01 00:00:00 and less than
+2015-02-25 00:00:00 UTC.</p>
+<blockquote>
+<p>You can&apos;t specify a timezone when using absolute timeframes as the timezone information comes from the ISO-8601
+dates specified.  An error will occur if you try to do this.</p>
+</blockquote>
+<h2 id="group-by">Group by</h2>
+<p>You can group the query results by one or more properties from your events.</p>
+<blockquote>
+<p><strong>Missing properties vs null values</strong></p>
+<p>We treat missing properties and properties with a null value the same for the purpose of grouping.
+This means that all events with a null value for a property or missing that property altogether will
+be grouped into the &quot;null&quot; value for that query.  While we plan to change this in the future, you
+should consider setting a default value as opposed to a null value on properties if you wish to make
+a distinction.</p>
+</blockquote>
+<p>For example, to query total sales by country:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;groupBy&quot;: &quot;country&quot;
+}
+</code></pre></div></div></div>
+
+
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-json">{
+    &quot;metadata&quot;: {
+        &quot;groups&quot;: [&quot;country&quot;],
+        &quot;interval&quot;: null,
+        &quot;timezone&quot;: null
+    },
+    &quot;results&quot;: [{
+        &quot;country&quot;: &quot;Australia&quot;,
+        &quot;totalPrice&quot;: 1000000
+    },
+    {
+        &quot;country&quot;: &quot;Italy&quot;,
+        &quot;totalPrice&quot;: 2500000
+    },
+    {
+        &quot;country&quot;: &quot;United States&quot;,
+        &quot;totalPrice&quot;: 10000000
+    }]
+}
+</code></pre></div></div></div>
+
+<h3 id="grouping-by-multiple-properties">Grouping by multiple properties</h3>
+<p>You can also group by multiple properties in your events by providing multiple property names.</p>
+<p>For example, to query total sales by country and product category:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample53" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample53"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;groupBy&quot;: [&quot;country&quot;, &quot;product.category&quot;]
+}
+</code></pre></div></div></div>
+
+
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample56" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample56"><pre><code class="lang-json">{
+    &quot;metadata&quot;: {
+        &quot;groups&quot;: [&quot;country&quot;, &quot;product.category&quot;],
+        &quot;interval&quot;: null,
+        &quot;timezone&quot;: null
+    },
+    &quot;results&quot;: [{
+        &quot;country&quot;: &quot;Australia&quot;,
+        &quot;product.category&quot;: &quot;Bikes&quot;,
+        &quot;totalPrice&quot;: 500000
+    },
+    {
+        &quot;country&quot;: &quot;Australia&quot;,
+        &quot;product.category&quot;: &quot;Cars&quot;,
+        &quot;totalPrice&quot;: 500000
+    },
+    {
+        &quot;country&quot;: &quot;Italy&quot;,
+        &quot;product.category&quot;: &quot;Scooters&quot;,
+        &quot;totalPrice&quot;: 2500000
+    },
+    {
+        &quot;country&quot;: &quot;United States&quot;,
+        &quot;product.category&quot;: &quot;Mobile Phones&quot;,
+        &quot;totalPrice&quot;: 8000000
+    },
+    {
+        &quot;country&quot;: &quot;United States&quot;,
+        &quot;product.category&quot;: &quot;Laptops&quot;,
+        &quot;totalPrice&quot;: 2000000
+    }] 
+}
+</code></pre></div></div></div>
+
+<h2 id="time-intervals">Time intervals</h2>
+<p>Time intervals allow you to group results by a time period, so that you could analyze your events over time.</p>
+<p>For example, to query daily total sales this month:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample58" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample58"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;timeframe&quot;: &quot;this_month&quot;,
+    &quot;interval&quot;: &quot;daily&quot;
+}
+</code></pre></div></div></div>
+
+
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample61" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample61"><pre><code class="lang-json">{
+    &quot;metadata&quot;: {
+        &quot;groups&quot;: [],
+        &quot;interval&quot;: &quot;daily&quot;,
+        &quot;timezone&quot;: null
+    },
+    &quot;results&quot;: [{
+        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-02T00:00:00Z&quot; },
+        &quot;results&quot;: [{
+            &quot;totalPrice&quot;: 500000
+        }]
+    },
+    {
+        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-02T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-03T00:00:00Z&quot; },
+        &quot;results&quot;: [{
+            &quot;totalPrice&quot;: 150000
+        }]
+    },
+    {
+        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-03T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-04T00:00:00Z&quot; },
+        &quot;results&quot;: [{
+            &quot;totalPrice&quot;: 25000
+        }]
+    }]
+}
+</code></pre></div></div></div>
+
+<p>The following time intervals are supported:</p>
+<ul>
+<li>minutely</li>
+<li>hourly</li>
+<li>daily</li>
+<li>weekly</li>
+<li>monthly</li>
+<li>quarterly</li>
+<li>yearly</li>
+</ul>
+<h3 id="time-interval-with-group-by">Time interval with group by</h3>
+<p>You can also combine a time interval with a group by in your query.</p>
+<p>For example, to query daily total sales this month by country:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample63" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample63"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;timeframe&quot;: &quot;this_month&quot;,
+    &quot;interval&quot;: &quot;daily&quot;,
+    &quot;groupBy&quot;: &quot;country&quot;
+}
+</code></pre></div></div></div>
+
+
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample66" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample66"><pre><code class="lang-json">{
+    &quot;metadata&quot;: {
+        &quot;groups&quot;: [&quot;country&quot;],
+        &quot;interval&quot;: &quot;daily&quot;,
+        &quot;timezone&quot;: null
+    },
+    &quot;results&quot;: [{
+        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-02T00:00:00Z&quot; },
+        &quot;results&quot;: [
+            {
+                &quot;country&quot;: &quot;Australia&quot;,
+                &quot;totalPrice&quot;: 100000
+            },
+            {
+                &quot;country&quot;: &quot;Italy&quot;,
+                &quot;totalPrice&quot;: 100000
+            },
+            {
+                &quot;country&quot;: &quot;United States&quot;,
+                &quot;totalPrice&quot;: 300000
+            }
+        ]
+    },
+    {
+        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-02T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-03T00:00:00Z&quot; },
+        &quot;results&quot;: [
+            {
+                &quot;country&quot;: &quot;Australia&quot;,
+                &quot;totalPrice&quot;: 25000
+            },
+            {
+                &quot;country&quot;: &quot;Italy&quot;,
+                &quot;totalPrice&quot;: 25000
+            },
+            {
+                &quot;country&quot;: &quot;United States&quot;,
+                &quot;totalPrice&quot;: 100000
+            }
+        ]
+    },
+    {
+        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-03T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-04T00:00:00Z&quot; },
+        &quot;results&quot;: [
+            {
+                &quot;country&quot;: &quot;Australia&quot;,
+                &quot;totalPrice&quot;: 5000
+            },
+            {
+                &quot;country&quot;: &quot;Italy&quot;,
+                &quot;totalPrice&quot;: 5000
+            },
+            {
+                &quot;country&quot;: &quot;United States&quot;,
+                &quot;totalPrice&quot;: 15000
+            }
+        ]
+    }]
+}
+</code></pre></div></div></div>
+
+<h2 id="timezones">Timezones</h2>
+<p>By default, Connect uses <strong>UTC</strong> as the timezone for queries with relative timeframes or time intervals.
+You can override this to be the timezone of your choice by specifying the <strong>timezone</strong> in your query.</p>
+<blockquote>
+<p>You can only specify a timezone when you have specified a <a href="#time-intervals">time interval</a> or a
+<a href="#relative-timeframes">relative timeframe</a>.  If you try to specify a timezone without one of these
+set, an error will be returned.</p>
+</blockquote>
+<p>You can specify a numeric (decimal) value for an hours offset of UTC, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample68" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample68"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;timezone&quot;: 10
+}
+</code></pre></div></div></div>
+
+
+<p>You can also specify a string which contains an <a href="http://www.iana.org/time-zones">IANA time zone identifier</a>, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample71" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample71"><pre><code class="lang-json">{
+    &quot;select&quot;: {
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    },
+    &quot;timezone&quot;: &quot;Australia/Brisbane&quot;
+}
+</code></pre></div></div></div>
+
+
+<h2 id="error-handling">Error handling</h2>
+<p>The following error responses may be returned from the API:</p>
+<p><strong>422 Unprocessable Entity</strong></p>
+<p>The query was not in the correct format.  The message body will contain a list of errors, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample74" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample74"><pre><code class="lang-json">{
+    &quot;errors&quot;: [
+        {
+            &quot;field&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;The query JSON supplied is not valid.&quot;
+        }
+    ]
+}
+</code></pre></div></div></div>
+<p><strong>413 Too Many Results</strong></p>
+<p>Queries result sets are limited to 10,000 results.  If you exceed this threshold, you will receive this error.</p>
+<p>Ideally, queries should return a small number of results, even if they are aggregating a large number of events.
+You should reconsider the way in which you are querying if you are hitting this limit.</p>
+<p><strong>500 Internal Server Error</strong></p>
+<p>An internal server error occurred in the Connect API. </p>
+<h1 id="exporting-events">Exporting events</h1>
+<p>Connect allows you to export the raw events that were <a href="#pushing-events">pushed</a> to a collection.</p>
+<p>You can <a href="#small-exports">export up to 10,000 events</a> and receive an immediate response, or
+<a href="#exporting-to-amazon-s3">export up to 1,000,000 events</a> to Amazon S3.</p>
+<h2 id="small-exports">Small exports</h2>
+<blockquote>
+<p><strong>GET</strong> <a href="https://api.getconnect.io/events/:collection/export?query=">https://api.getconnect.io/events/:collection/export?query=</a></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collection</td>
+<td>collection to export</td>
+</tr>
+<tr>
+<td>query (query string parameter)</td>
+<td>query to run</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>For exports of up to 10,000 events, you can provide a query and receive an immediate response with the
+raw events.</p>
+<p>The query specified only supports <a href="#filtering">filters</a> and <a href="#timeframes">timeframes</a> with the same format
+as the normal query language, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample75" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample75"><pre><code class="lang-json">{
+    &quot;filter&quot;: {
+        &quot;product&quot;: &quot;apple&quot;
+    },
+    &quot;timeframe&quot;: &quot;today&quot;
+}
+</code></pre></div></div></div>
+<p>The following responses may occur:</p>
+<p><strong>200 OK</strong></p>
+<p>The export was successful.  The body of the response contains the raw events, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample76" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample76"><pre><code class="lang-json">{
+  &quot;results&quot;: [
+    {
+      &quot;id&quot;: &quot;9eb91561-1964-468a-b6bf-c16034b6757c&quot;,
+      &quot;timestamp&quot;: &quot;2015-07-28T00:00:30.295Z&quot;,
+      &quot;name&quot;: &quot;test&quot;
+    },
+    {
+      &quot;id&quot;: &quot;28c86f2e-4ad8-423a-85ea-b09a5ab9549d&quot;,
+      &quot;timestamp&quot;: &quot;2015-07-28T00:00:52.549Z&quot;,
+      &quot;name&quot;: &quot;test&quot;
+    } 
+  ]
+}
+</code></pre></div></div></div>
+<p><strong>422 Unprocessable Entity</strong></p>
+<p>The query supplied is not valid.</p>
+<p><strong>413 Too Many Results</strong></p>
+<p>The query supplied resulted in over 10,000 events, which is not supported.  To export these events
+you can <a href="#exporting-to-amazon-s3">export to Amazon S3</a> (up to 1,000,000 events).</p>
+<p><strong>500 Internal Server Error</strong></p>
+<p>An internal server error occurred in the Connect API.</p>
+<h2 id="exporting-to-amazon-s3">Exporting to Amazon S3</h2>
+<blockquote>
+<p><strong>POST</strong> <a href="https://api.getconnect.io/events/:collection/export">https://api.getconnect.io/events/:collection/export</a></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collection</td>
+<td>collection to export</td>
+</tr>
+<tr>
+<td>query</td>
+<td>query to run</td>
+</tr>
+<tr>
+<td>s3Path</td>
+<td>the S3 path where the export will be uploaded</td>
+</tr>
+<tr>
+<td>s3AccessKeyId</td>
+<td>key to access the S3 bucket</td>
+</tr>
+<tr>
+<td>s3SecretAccessKey</td>
+<td>secret key to access the S3 bucket</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>You can export up to 1,000,000 events to Amazon S3.  The results of the export will be uploaded to the
+S3 path you specify, using the credentials specified.</p>
+<p>You must POST these options in JSON format to the above URL, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample77" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample77"><pre><code class="lang-json">{
+&quot;query&quot;: {
+&quot;timeframe&quot;: &quot;today&quot;
+},
+&quot;s3Path&quot;: &quot;https://my-bucket.s3.amazonaws.com/exports/&quot;,
+&quot;s3AccessKeyId&quot;: &quot;NOT_TELLING&quot;,
+&quot;s3SecretAccessKey&quot;: &quot;NOT_TELLING&quot;
+}
+</code></pre></div></div></div>
+<p>The query specified only supports <a href="#filtering">filters</a> and <a href="#timeframes">timeframes</a> with the same format
+as the normal query language.</p>
+<p>A unique ID is generated for every export.  This ID is used to <a href="#monitoring-the-export">monitor the export</a> and
+as the filename for the export (<em>unique_id</em>.json).  The exported file will contain one line per event.</p>
+<p>The following responses may occur:</p>
+<p><strong>201 Created</strong></p>
+<p>The export was successfully created.  The <code>Location</code> header will contain the URL with which you can
+<a href="#monitoring-the-export">monitor the export</a>.</p>
+<p><strong>422 Unprocessable Entity</strong></p>
+<p>The query supplied is not valid.</p>
+<p><strong>500 Internal Server Error</strong></p>
+<p>An internal server error occurred in the Connect API.</p>
+<h3 id="monitoring-the-export">Monitoring the export</h3>
+<blockquote>
+<p><strong>GET</strong> <a href="https://api.getconnect.io/events/:collection/export/:id">https://api.getconnect.io/events/:collection/export/:id</a></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collection</td>
+<td>collection being exported</td>
+</tr>
+<tr>
+<td>id</td>
+<td>unique ID of the export (from the Location header of a successful <a href="#exporting-to-amazon-s3">export</a></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>Once you have successfully <a href="#exporting-to-amazon-s3">created an export</a>, the <code>Location</code> header will provide a URL to monitor
+the export.</p>
+<p>This allows you to check the status and progress of an export, as well as any errors that may occur during the export process.</p>
+<p>For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample78" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample78"><pre><code class="lang-json">{
+    &quot;filename&quot;: &quot;55b80dd4eb6742481c62c05e.json&quot;,
+    &quot;collection&quot;: &quot;testing&quot;,
+    &quot;status&quot;: &quot;Pending&quot;,
+    &quot;created&quot;: &quot;2015-07-28T23:18:44.698Z&quot;,
+    &quot;started&quot;: null,
+    &quot;finished&quot;: null,
+    &quot;error&quot;: null,
+    &quot;percentDone&quot;: 0,
+    &quot;transferredBytes&quot;: 0,
+    &quot;totalBytes&quot;: 0
+}
+</code></pre></div></div></div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>filename</td>
+<td>the filename being uploaded to Amazon S3 (to the path specified in the export request)</td>
+</tr>
+<tr>
+<td>collection</td>
+<td>the collection being exported</td>
+</tr>
+<tr>
+<td>status</td>
+<td>the status of the export</td>
+</tr>
+<tr>
+<td>created</td>
+<td>the date the export was created (in UTC)</td>
+</tr>
+<tr>
+<td>started</td>
+<td>the date the export started (in UTC, null if the status is Pending)</td>
+</tr>
+<tr>
+<td>finished</td>
+<td>the date the export finished (in UTC, null if the status is Pending or Running)</td>
+</tr>
+<tr>
+<td>error</td>
+<td>an error message indicating the reason for failure, if the status is Failed</td>
+</tr>
+<tr>
+<td>percentDone</td>
+<td>a number (0 to 100) indicating the progress of the export</td>
+</tr>
+<tr>
+<td>transferredBytes</td>
+<td>the number of bytes transferred to Amazon S3 so far</td>
+</tr>
+<tr>
+<td>totalBytes</td>
+<td>the total number of bytes to transfer to Amazon S3 (i.e. the size of the export)</td>
+</tr>
+</tbody>
+</table>
+<p>An export can be in one of the following statuses:</p>
+<ul>
+<li><strong>Pending</strong> - the export is yet to start</li>
+<li><strong>Running</strong> - the export is currently running</li>
+<li><strong>Complete</strong> - the export completed successfully</li>
+<li><strong>Failed</strong> - the export failed (the error will contain the reason)</li>
+</ul>
+<h1 id="deleting-collections">Deleting collections</h1>
+<blockquote>
+<p><strong>DELETE</strong> <a href="https://api.getconnect.io/events/:collection">https://api.getconnect.io/events/:collection</a></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collection</td>
+<td>collection to delete</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>You can delete entire collections by sending a DELETE request to the collection resource URL.</p>
+<p><strong>This is an irreversible action.</strong>  Once a collection is deleted, all events that were pushed to that collection
+are also deleted.  You should use this operation carefully.</p>
+<h1 id="projects-and-keys">Projects and keys</h1>
+<p>Connect allows you to manage multiple projects under a single account so that you can easily segregate
+your collections into logical projects.</p>
+<p>You could use this to separate analytics for entire projects, or to implement separation between different
+environments (e.g. My Project (Prod) and My Project (Dev)).</p>
+<p>To start pushing and querying your event data, you will need both a project ID and an API key.  This information
+is available to you <a href="http://app.getconnect.io/#/projects">via the admin console</a> inside each project under the &quot;Keys&quot; tab:</p>
+<p><img src="images/screens/projects-keys.png" alt="Screenshot of project keys in Connect admin console"></p>
+<p>By default, you can choose from four different types of keys, each with their own specific use:</p>
+<ul>
+<li><p><code>Push/Query Key</code> - you can use this key to both push events and execute queries.<br>You should only use this key in situations where it is not possible to isolate merely pushing or querying.</p>
+</li>
+<li><p><code>Push Key</code> - you can only use this key to push events.<br>You should use this key in your apps where you are tracking event data, but do not require querying.</p>
+</li>
+<li><p><code>Query Key</code> - you can only use this key to execute queries.<br>You should use this key in your reporting interfaces where you do not wish to track events.</p>
+</li>
+<li><p><code>Master Project Key</code> - you can use this key to execute all types of operations on a project, including
+pushing, querying and deleting collections.<br><strong>Keep this key safe</strong> - it is intended for very limited use and definitely should not be included in your main apps.</p>
+</li>
+</ul>
+<p>You must use your project ID and desired key to begin using Connect:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample82" role="tab" data-toggle="tab" data-lang="bash">cURL</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample82"><pre><code class="lang-bash">curl -X POST \
+  -H &quot;X-Project-Id: YOUR_PROJECT_ID&quot; \
+  -H &quot;X-API-Key: YOUR_API_KEY&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &apos;{ &quot;customer&quot;: { &quot;firstName&quot;: &quot;Tom&quot;, &quot;lastName&quot;: &quot;Smith&quot; }, &quot;product&quot;: &quot;12 red roses&quot;, &quot;purchasePrice&quot;: 34.95 }&apos; \
+  https://api.getconnect.io/events/test-collection
+</code></pre></div></div></div>
+
+
+
+
+
+
+
+
+<h1 id="security">Security</h1>
+<p>Security is a vital component to the Connect service and we take it very seriously.  It is important to consider
+how to ensure your data remains secure.</p>
+<h2 id="api-keys">API Keys</h2>
+<p>API keys are the core security mechanisms by which you can <a href="#pushing-events">push</a> and <a href="#querying-events">query</a>
+your data.  It is important to keep these keys safe by controlling where these keys exist and who has access to them.</p>
+<p>Each key can either push, query or both.  The most important key is the <code>Project Master Key</code> which can perform all of
+these actions, as well as administrative functions such as deleting data.  Read more about the keys <a href="#projects-and-keys">here</a>.</p>
+<h2 id="keeping-api-keys-secure">Keeping API Keys Secure</h2>
+<p>You should carefully consider when and which API keys to expose to users.</p>
+<p>Crucially, you should <strong>never</strong> expose your <code>Project Master Key</code> to users or embed it in client applications.
+If this key does get compromised, you can <a href="#resetting-the-master-key">reset it</a>.</p>
+<p>If you embed API keys in client applications, you should consider these keys as fully accessible to anyone having access
+to that client application.  This includes both mobile and web applications.</p>
+<h2 id="pushing-events-securely">Pushing events securely</h2>
+<p>While you can use a <code>Push Key</code> to prevent clients from querying events, you cannot restrict the collections or events
+clients can push to the API.  Unfortunately, this is the nature of tracking events directly client-side and opens the
+door to malicious users potentially sending bad data.</p>
+<p>In many circumstances, this is not an issue as users can already generate bad data simply by using your application in
+an incorrect way, generating events with bad or invalid data.  In circumstances where you absolutely cannot withstand
+bad event data, you should consider pushing the events server-side from a service under your control.</p>
+<p>Finally, if a <code>Push Key</code> is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<h2 id="querying-events-securely">Querying events securely</h2>
+<p>To query events, you must use an API key that has query permissions.  By default, a <code>Query Key</code> has full access to all
+events in all collections in your project.  If this key is exposed, a client could execute any type of query on your
+collections.</p>
+<p>You have a number of options on querying events securely:</p>
+<ol>
+<li><p>For internal querying or dashboard, you may consider it acceptable to expose the normal <code>Query Key</code> in client applications.
+Keep in mind that this key can execute any query on any collection in the project.</p>
+</li>
+<li><p>Generate a <a href="#filtered-keys">filtered key</a>, which applies a specific set of filters to all queries executed by clients
+with the key.</p>
+</li>
+<li><p>Only allow clients to execute queries via a service you control, which in turn executes queries via the Connect API server-side.</p>
+</li>
+</ol>
+<p>Finally, if a <code>Query Key</code> is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<h2 id="resetting-the-master-key">Resetting the master key</h2>
+<p>Resetting the <code>Project Master Key</code> will invalidate the previous key and generate a new, random key.  This action will also
+reset all other keys for the project (including the push, query and any <a href="#filtered-keys">filter keys</a> generated).</p>
+<p>Doing this is <strong>irreversible</strong> and would prevent all applications with existing keys from pushing to or querying the project.</p>
+<p>You can only reset the master key in the projects section of the <a href="http://app.getconnect.io">admin console</a>.</p>
+<h2 id="filtered-keys">Filtered keys</h2>
+<p>Filtered keys allows you to create an API key that can either push or query, and in the case of querying,
+apply one or more <a href="#filters">filters</a> to all queries executed with the key.</p>
+<p>This allows you to have finer control over security and what data clients can access, especially in multi-tenant
+environments.</p>
+<blockquote>
+<p><strong>Filters are only applied to queries</strong></p>
+<p>Any filters specified in your filtered key only apply to querying.  We currently do not support applying
+filters to restrict the pushing of events.</p>
+</blockquote>
+<p>Filtered keys can only push or query (as you specify), <em>never</em> administrative functions or deleting data.  </p>
+<h3 id="generating-a-filtered-key">Generating a filtered key</h3>
+<p>Filtered keys are generated and encrypted with the <code>Project Master Key</code>.  You do not have to register the
+filtered key with the Connect service.</p>
+<p>It is important that you <strong>never</strong> generate filtered keys client-side and always ensure the are generated by a secure,
+server-side service.</p>
+<ol>
+<li><p>Create a JSON object describing the access allowed by the key, including any <a href="#filters">filters</a>, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample88" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample88"><pre><code class="lang-json">{
+    &quot;filters&quot;: {
+        &quot;customerId&quot;: 1234
+    },
+    &quot;canQuery&quot;: true,
+    &quot;canPush&quot;: false
+}
+</code></pre></div></div></div>
+ <table>
+     <tr>
+         <th>Property</th>
+         <th>Type</th>
+         <th>Description</th>
+     </tr>
+     <tr>
+         <td><code>filters</code></td>
+         <td><code>object</code></td>
+         <td>The filters to apply all queries executed when using the key.  This uses the same specification for <a href="#filters">defining filters</a> when querying normally.</td>
+     </tr>
+     <tr>
+         <td><code>canQuery</code></td>
+         <td><code>boolean</code></td>
+         <td>Whether or not the key can be used to execute queries.  If <code>false</code>, the <code>filters</code> property is ignored (as it does not applying to pushing).</td>
+     </tr>
+     <tr>
+         <td><code>canPush</code></td>
+         <td><code>boolean</code></td>
+         <td>Whether or not the key can be used to push events.</td>
+     </tr>
+ </table>
+</li>
+<li><p>Serialize the JSON object to a string.</p>
+</li>
+<li><p>Generate a random 128-bit initialization vector (IV).</p>
+</li>
+<li><p>Encrypt the JSON string using AES256-CBC with PKCS7 padding (128-bit block size) using the 128-bit random IV we generated in the previous step
+and the <code>Project Master Key</code> as the encryption key.</p>
+</li>
+<li><p>Convert the IV and cipher text to hex strings and combine them (IV first, followed by the cipher text), separating them with a hyphen (-). The resulting
+key should look something like this:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample89" role="tab" data-toggle="tab" data-lang="">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample89"><pre><code class="nohighlight">5D07A77D87D5B20FA5508303F748A43B-DDFA284A9341068A704A846E83ACF49069D960632C4F74A44B5EE330073F79A8324ADC91023F88F63AAE4507F3D119B5C7F31A2D7D9616408E9665EC6C1DEBE3
+</code></pre></div></div></div></li>
+</ol>
+<p>You can now use this API key to either <a href="#pushing-events">push events</a> or <a href="#querying-events">execute queries</a> depending on the <code>canPush</code>
+and <code>canQuery</code> properties, respectively.</p>
+<p>Finally, if a filtered key is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<h1 id="modeling-your-events">Modeling your events</h1>
+<p>When using Connect to analyze and visualize your data, it is important to understand how best to model your events.
+The way you structure your events will directly affect your ability to answer questions with your data.  It is therefore
+important to consider up-front the kind of questions you anticipate answering.</p>
+<h2 id="what-is-an-event-">What is an event?</h2>
+<p>An event is an action that occurs at a specific point in <strong>time</strong>. To answer &quot;why did this event occur?&quot;, our event needs
+to contain rich details about what the &quot;world&quot; looked like at that point in time.</p>
+<p>Put simply, events = action + time + state.</p>
+<p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
+analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample90" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample90"><pre><code class="lang-json">{
+    &quot;type&quot;: &quot;cycling&quot;,
+    &quot;timestamp&quot;: &quot;2015-06-23T16:31:56.587Z&quot;,
+    &quot;duration&quot;: 67,
+    &quot;distance&quot;: 21255,
+    &quot;caloriesBurned&quot;: 455,
+    &quot;maxHeartRate&quot;: 182,
+    &quot;user&quot;: {
+        &quot;id&quot;: &quot;638396&quot;,
+        &quot;firstName&quot;: &quot;Bruce&quot;,
+        &quot;lastName&quot;: &quot;Jones&quot;,
+        &quot;age&quot;: 35
+    }
+}
+</code></pre></div></div></div>
+
+
+
+
+
+
+<h3 id="action">Action</h3>
+<p>What happened? In the above example, the action is <em>an activity was completed</em>.</p>
+<p>In most circumstances, we <a href="#collections">group all events of the same action into a single collection</a>.
+In this case, we could call our collection <code>activityCompleted</code>, or alternatively, just <code>activity</code>.</p>
+<h3 id="time">Time</h3>
+<p>When did it happen? In the above example, we specified the start time of the activity as the value of the <strong>timestamp</strong> property.
+The top-level <strong>timestamp</strong> property is a special property in Connect.  This is because <em>time</em> is an essential property of event
+data - it&apos;s not optional.</p>
+<p>When an event is pushed to Connect, the current time is assigned to the timestamp property if no value was provided by you.</p>
+<h3 id="state">State</h3>
+<p>What do we know about this action?  What do we know about the entities associated with this action?  What do we know about the &quot;world&quot;
+at this moment in time?  Every property in our event, besides the timestamp and the name of the collection, serves to answer those
+questions.  This is the most important aspect of our event - it&apos;s where all the answers live.</p>
+<p>The richer the data you provide in your event, the more questions you can answer for your users, therefore it&apos;s important to enrich
+your events with as much information as possible.  In stark contrast to the relational model where you would store this related
+information in separate tables and join at query time, in the event model this data is denormalized into each event, so as to know
+the state of the &quot;world&quot; at the point in time of the event.</p>
+<h2 id="collections">Collections</h2>
+<p>It is important when modeling your events to consider how you intend to group those events into collections.  This is a careful balance between events being
+broad enough to answer queries for your users, while specific enough to be manageable.</p>
+<p>In our <a href="#what-is-an-event-">activity example</a>, the activity contains different properties based on what the type of activity.  Our cycling activity contains properties associated
+with the bike that was used, while a kayaking activity may contain properties associated with a kayak that is used.</p>
+<p>Because a kayaking event may have different properties to a running event, it might seem logical to put each of them in distinct collections.  However, if we
+had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</code> collections, we would lose the opportunity to query details that are common to all activities.</p>
+<p>As a general rule, consider the common action among your events and decide if the specific variants of that action warrant grouping those events together. </p>
+<h2 id="structuring-your-events">Structuring your events</h2>
+<p>Events have the following core properties:</p>
+<ul>
+<li>Denormalized</li>
+<li>Immutable</li>
+<li>Rich/nested</li>
+<li>Schemaless</li>
+</ul>
+<p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
+<h3 id="events-are-denormalized">Events are denormalized</h3>
+<p>Consider our example event again, notice the age property of the user:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample97" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample97"><pre><code class="lang-json">{
+    &quot;type&quot;: &quot;cycling&quot;,
+    ...
+    &quot;user&quot;: {
+        &quot;id&quot;: &quot;638396&quot;,
+        &quot;firstName&quot;: &quot;Bruce&quot;,
+        &quot;lastName&quot;: &quot;Jones&quot;,
+        &quot;age&quot;: 35
+    }
+}
+</code></pre></div></div></div>
+
+
+
+
+
+
+<p>The user&apos;s age is going to be duplicated in every activity he/she completes throughout the year. This may seem inefficient; however,
+remember that Connect is about <strong>analyzing</strong>.  This denormalization is a real win for analysis; the key is that event data stores state
+over time, rather than merely current state.  This helps us answer questions about <em>why</em> something happened, because we know what the
+&quot;world&quot; looked like at that point of time.</p>
+<p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
+We could simply execute the following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample106" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample106"><pre><code class="lang-json">{
+    &quot;select&quot;: { &quot;averageDistance&quot;: { &quot;avg&quot;: &quot;distance&quot; } },
+    &quot;groupBy&quot;: &quot;user.age&quot;
+}
+</code></pre></div></div></div>
+
+
+<p>It&apos;s this persistence of state over time that makes event data perfect for analysis.</p>
+<h3 id="events-are-immutable">Events are immutable</h3>
+<p>By their very nature, events cannot change, as they always record state at the point in time of the event.  This is also the reason to
+record as much rich information about the event and &quot;state of the world&quot; as possible.</p>
+<p>For example, in our example event above, while Bruce Jones may now be many years older, at the time he completed his bike ride, he was
+35 years of age.  By ensuring this event remains immutable, we can correctly analyze bike riding over time by 35-year-olds.</p>
+<p>Consider events as recording history - as much as we&apos;d occasionally like to, we can&apos;t change history!</p>
+<h3 id="events-are-rich-and-nested">Events are rich and nested</h3>
+<p>Events are rich in that they specify very detailed state.  They specify details about the event itself, the entities involved and the state of
+the &quot;world&quot; at that point in time. </p>
+<p>Consider our example activity event - the top level <strong>type</strong> property describes something about the activity itself (a run, a bike ride, a kayak
+etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
+activity, complete with their name and age.</p>
+<p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample107" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample107"><pre><code class="lang-json">{
+    &quot;type&quot;: &quot;cycling&quot;,
+    ...
+    &quot;user&quot;: {
+        &quot;id&quot;: &quot;638396&quot;,
+        &quot;firstName&quot;: &quot;Bruce&quot;,
+        ...
+    },
+    &quot;bike&quot;: {
+        &quot;id&quot;: &quot;231806&quot;,
+        &quot;brand&quot;: &quot;Specialized&quot;,
+        &quot;model&quot;: &quot;S-Works Venge&quot;
+    },
+    &quot;weather&quot;: {
+        &quot;condition&quot;: &quot;Raining&quot;,
+        &quot;temperature&quot;: 21,
+        &quot;humidity&quot;: 99,
+        &quot;wind&quot;: 17
+    }
+}
+</code></pre></div></div></div>
+
+
+
+
+
+
+<p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
+to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
+that was built by &quot;Specialized&quot;:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample116" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample116"><pre><code class="lang-json">{
+    &quot;select&quot;: { &quot;averageDistance&quot;: { &quot;avg&quot;: &quot;distance&quot; } },
+    &quot;groupBy&quot;: &quot;bike.model&quot;,
+    &quot;filter&quot;: { &quot;bike.brand&quot;: &quot;Specialized&quot; }
+}
+</code></pre></div></div></div>
+
+
+<p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
+allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
+following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample119" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample119"><pre><code class="lang-json">{
+    &quot;select&quot;: { &quot;averageDistance&quot;: { &quot;avg&quot;: &quot;distance&quot; } },
+    &quot;groupBy&quot;: [&quot;user.age&quot;, &quot;weather.condition&quot;]
+}
+</code></pre></div></div></div>
+
+
+<p>As you can see, the richer and more denormalized the event, the more interesting answers can be derived when later querying.</p>
+<h3 id="events-are-schemaless">Events are schemaless</h3>
+<p>Events in Connect should be considered semi-structured - that is, they have an inherent structure, but it is not defined.  This means you can, and should,
+push as much detailed information about an event and the state of the &quot;world&quot; as possible.  Moreover, this allows you to improve your schema over time and
+add extra information about new events as that information becomes available.</p>
+<h2 id="restrictions">Restrictions</h2>
+<p>While you can post almost any event structure to Connect, there are a few, by-design restrictions.</p>
+<h3 id="property-names">Property names</h3>
+<ul>
+<li><p>You cannot have any property in the root document beginning with &quot;tp_&quot;. This is because we prefix our
+own internal properties with this. Internally, we merge our properties into your events for performance
+at query time.</p>
+</li>
+<li><p>The property &quot;_id&quot; is reserved and cannot be pushed.</p>
+</li>
+<li><p>The properties &quot;id&quot; and &quot;timestamp&quot; have special purposes. These allow consumers to specify a unique ID
+per event and override the event&apos;s timestamp respectively.  You cannot use the &quot;id&quot; property in queries.
+Refer to <a href="#reliability-of-events">&quot;reliability of events&quot;</a> and <a href="#timestamps">&quot;timestamps&quot;</a> for information.</p>
+</li>
+<li><p>The length of property names can&apos;t exceed 255 characters.  If you need property names longer than this, you
+probably <a href="#structuring-your-events">need to reconsider the structure of your event!</a></p>
+</li>
+<li><p>Properties cannot include a dot in their names.  This is because dots are used in querying to access nested
+properties.  The following is an example of an invalid event property due to a dot in the name:</p>
+</li>
+</ul>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample120" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample120"><pre><code class="lang-json">{
+    &quot;invalid.property&quot;: &quot;value&quot;
+}
+</code></pre></div></div></div>
+
+
+
+
+
+
+<h3 id="arrays">Arrays</h3>
+<p>While you can create events with arrays, it is currently not possible to take advantage of these arrays at
+query time.  Therefore, you should avoid using arrays in your events unless you plan to export the raw events.</p>
+<h3 id="distinct-count">Distinct count</h3>
+<p>Distinct count is currently not supported for querying, therefore you should consider how to structure your
+event if your application relies on this.</p>
+
+    </div>
+  </div>  
+</div>
+
+    </div>
+    
+    <footer>
+      <nav class="footer-nav navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand hidden-xs navbar-brand active" href="http://getconnect.io">
+              <div class="brand-logo-small"></div>
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://app.getconnect.io/#/projects">Projects</a></li>
+            <li><a href="https://app.getconnect.io/#/settings">Settings</a></li>
+            <li><a href="https://gitter.im/getconnect">Community</a></li>
+            <li><a href="http://docs.getconnect.io/">Docs</a></li>
+            <li>
+              <a href="https://github.com/getconnect">
+                <span class="ion ion-social-github"></span>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/getconnect_io">
+                <span class="ion ion-social-twitter"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+    
+    <div class="status">
+		    <a href="http://status.getconnect.io" target="_blank">
+		      <span class="color-dot"></span>
+		      <span class="color-description"></span>
+		    </a>
+		</div>
+    
+    <script src="https://statuspage-production.s3.amazonaws.com/se-v1.js"></script>
+    <script src="scripts/highlight.pack.min.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/svg-injector.min.js"></script>
+    <script src="scripts/docs.min.js"></script>
+  </body>
+</html>

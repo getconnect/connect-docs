@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PHP :: Connect Docs</title>
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+    <script src="//use.typekit.net/jyl8gjp.js?t=1438654489102"></script>
+    <script>try{Typekit.load();}catch(e){}</script>
+    <link rel="stylesheet" href="styles/all.min.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body data-spy="scroll" data-target="#nav-wrapper">
+    <header>
+      <nav class="header-nav navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand navbar-brand active" href="./">
+              <div class="docs-logo-small"></div>
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a class="return" href="https://app.getconnect.io"><i class="ion-arrow-return-left"></i> Return to portal</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="white-background-panel">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <nav data-spy="affix" id="nav-wrapper" class="hidden-xs" data-offset-top="60" data-offset-bottom="400">
+        <ul class="nav switcher">
+          <li class="dropdown active">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">PHP<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                  <a href="js.html">JavaScript</a>
+                </li>
+                <li>
+                  <a href="http.html">HTTP API</a>
+                </li>
+                <li>
+                  <a href="ios.html">iOS</a>
+                </li>
+                <li>
+                  <a href="ruby.html">Ruby</a>
+                </li>
+                <li>
+                  <a href="php.html">PHP</a>
+                </li>
+                <li>
+                  <a href="net.html">.NET</a>
+                </li>
+                <li>
+                  <a href="java.html">Java</a>
+                </li>
+                <li>
+                  <a href="android.html">Android</a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+        
+        <ul class="nav left-nav bs-docs-sidenav">
+              <li>
+                <a href="#getting-started">Getting Started</a>
+                
+              </li>    
+              <li>
+                <a href="#installing-the-sdk">Installing the SDK</a>
+                
+              </li>    
+              <li>
+                <a href="#initializing-the-client">Initializing the client</a>
+                
+              </li>    
+              <li>
+                <a href="#pushing-events">Pushing events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#single-event">Single event</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#batches-of-events">Batches of events</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#exception-handling">Exception handling</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#bulk-importing-events">Bulk importing events</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#restrictions-on-pushing">Restrictions on pushing</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#reliability-of-events">Reliability of events</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#timestamps">Timestamps</a>
+                        
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#querying-events">Querying events</a>
+                
+              </li>    
+              <li>
+                <a href="#exporting-events">Exporting events</a>
+                
+              </li>    
+              <li>
+                <a href="#deleting-collections">Deleting collections</a>
+                
+              </li>    
+              <li>
+                <a href="#projects-and-keys">Projects and keys</a>
+                
+              </li>    
+              <li>
+                <a href="#security">Security</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#api-keys">API Keys</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#keeping-api-keys-secure">Keeping API Keys Secure</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#pushing-events-securely">Pushing events securely</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#querying-events-securely">Querying events securely</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#resetting-the-master-key">Resetting the master key</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#filtered-keys">Filtered keys</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#generating-a-filtered-key">Generating a filtered key</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#modeling-your-events">Modeling your events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#what-is-an-event-">What is an event?</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#action">Action</a>
+                              </li>    
+                              <li>
+                                <a href="#time">Time</a>
+                              </li>    
+                              <li>
+                                <a href="#state">State</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#collections">Collections</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#structuring-your-events">Structuring your events</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#events-are-denormalized">Events are denormalized</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-immutable">Events are immutable</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-rich-and-nested">Events are rich and nested</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-schemaless">Events are schemaless</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#restrictions">Restrictions</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#property-names">Property names</a>
+                              </li>    
+                              <li>
+                                <a href="#arrays">Arrays</a>
+                              </li>    
+                              <li>
+                                <a href="#distinct-count">Distinct count</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                  </ul>
+              </li>    
+          </ul>
+        </nav>
+    </div>
+    <div class="col-sm-9">
+      <h1 id="getting-started">Getting Started</h1>
+<p>The following guide will help you to get started using Connect.  Once you have your <a href="#projects-and-keys">project ID and API key</a> and
+you have decided how to <a href="#modeling-your-events">model your events</a>, you can start <a href="#pushing-events">pushing events</a> and <a href="#querying-events">executing queries</a>.</p>
+<h1 id="installing-the-sdk">Installing the SDK</h1>
+<p>The quickest and easiest way to install the SDK is using <a href="https://getcomposer.org">Composer</a>: <a href="https://packagist.org/packages/connect/connect-client"><img src="https://poser.pugx.org/connect/connect-client/version" alt="Latest Stable Version"></a></p>
+<p>Simply add the following to your composer.json and run <code>php composer.phar install</code>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample1" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample1"><pre><code class="lang-json">&quot;require&quot;: {
+    ...
+    &quot;connect/connect-client&quot; : &quot;0.*&quot;
+    ...
+}
+</code></pre></div></div></div>
+<h1 id="initializing-the-client">Initializing the client</h1>
+<p>Before you can start <a href="#pushing-events">pushing events</a>, you must initialize the
+Connect client with your <a href="#projects-and-keys">project ID and API key</a>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-php">use Connect\Connect;
+
+Connect::initialize(&apos;your-project-id&apos;, &apos;your-push-api-key&apos;);
+</code></pre></div></div></div>
+<h1 id="pushing-events">Pushing events</h1>
+<p>Once you have initialized the client, you can start pushing events easily.</p>
+<h2 id="single-event">Single event</h2>
+<p>To push a single event, simply provide the collection name and event to push:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample3"><pre><code class="lang-php">$purchase = [
+    &apos;customer&apos; =&gt; [
+       &apos;firstName&apos; =&gt; &apos;Tom&apos;,
+       &apos;lastName&apos; =&gt; &apos;Smith&apos;
+    ],
+    &apos;product&apos; =&gt; &apos;12 red roses&apos;,
+    &apos;purchasePrice&apos; =&gt; 34.95
+];
+
+Connect::push(&apos;purchases&apos;, $purchase);
+</code></pre></div></div></div>
+<h2 id="batches-of-events">Batches of events</h2>
+<p>To push multiple events to one or more collections, simply provide an associative array of collection name
+to arrays of events to push:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-php">$batch = [
+    &apos;purchases&apos; =&gt; [
+        [
+            &apos;customer&apos; =&gt; [
+                &apos;firstName&apos; =&gt; &apos;Tom&apos;,
+                &apos;lastName&apos; =&gt; &apos;Smith&apos;
+            ],
+            &apos;product&apos; =&gt; &apos;12 red roses&apos;,
+            &apos;purchasePrice&apos; =&gt; 34.95
+        ],
+        [
+            &apos;customer&apos; =&gt; [
+                &apos;firstName&apos; =&gt; &apos;Fred&apos;,
+                &apos;lastName&apos; =&gt; &apos;Jones&apos;
+            ],
+            &apos;product&apos; =&gt; &apos;12 pink roses&apos;,
+            &apos;purchasePrice&apos; =&gt; 38.95
+        ]
+    ]
+];
+
+Connect::push($batch);
+</code></pre></div></div></div>
+<h2 id="exception-handling">Exception handling</h2>
+<p>When pushing events, exceptions could be thrown, so you should either ignore or handle those exceptions gracefully.</p>
+<p>Currently, the following exception could be thrown when pushing events:</p>
+<ul>
+<li><code>InvalidEventException</code> - the event being pushed is invalid (e.g. invalid event properties)</li>
+</ul>
+<h2 id="bulk-importing-events">Bulk importing events</h2>
+<p>Currently, this SDK does not support bulk importing events.</p>
+<p>However, you can use the <a href="http.html#bulk-importing-events">HTTP API</a> to run bulk imports if you need.</p>
+<h2 id="restrictions-on-pushing">Restrictions on pushing</h2>
+<p>There are a number of restrictions on the properties you can use in your events and the
+limitations on querying which influences how you should structure your events.</p>
+<p>Refer to <a href="#restrictions">restrictions</a> in the <a href="#modeling-your-events">modeling your events</a> section.</p>
+<h2 id="reliability-of-events">Reliability of events</h2>
+<p>Currently, it is not possible to persist/queue events for delivery in the PHP SDK.  Pushing events performs a synchronous operation.
+If that push fails, it is not persisted in a queue of any sort.</p>
+<p>We recommend that you consider using a queuing mechanism to ensure reliability of the events if your application relies on the delivery of all events.</p>
+<p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is delivered multiple times). For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-php">Connect::push(&apos;purchases&apos;, [
+    &apos;id&apos; =&gt; &apos;12345678&apos;,
+    &apos;product&apos; =&gt; &apos;12 red roses&apos;,
+    &apos;purchasePrice&apos; =&gt; 34.95
+]);
+</code></pre></div></div></div>
+<h2 id="timestamps">Timestamps</h2>
+<p>All events have a single <code>timestamp</code> property which records when the event being pushed occurred.  Events cannot
+have more than one date/time property.  If you feel you need more than one date/time property, you probably need
+to reconsider how you&apos;re <a href="#modeling-your-events">modeling your events</a>.</p>
+<blockquote>
+<p><strong>Querying</strong></p>
+<p>You can only run time interval queries or timeframe filters on the <code>timestamp</code> property.  No other date/time property
+in an event is supported for querying.</p>
+</blockquote>
+<p>By default, if no <code>timestamp</code> property is sent with the event, the SDK will use the current date and time as
+the timestamp of the event.</p>
+<p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
+of event times when events are queued.  For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample9" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample9"><pre><code class="lang-php">Connect::push(&apos;purchases&apos;, [
+    &apos;timestamp&apos; =&gt; new DateTime(null, new DateTimeZone(&apos;UTC&apos;)),
+    &apos;product&apos; =&gt; &apos;12 red roses&apos;,
+    &apos;purchasePrice&apos; =&gt; 34.95
+]);
+</code></pre></div></div></div>
+
+
+
+
+
+<blockquote>
+<p><strong>Timezones</strong></p>
+<p>Timestamps are always recorded in UTC.  If you supply a timestamp in a timezone other than UTC, it will
+be converted to UTC.  When you query your events, you can specify a timezone so things like time intervals
+will be returned in local time.</p>
+</blockquote>
+<h1 id="querying-events">Querying events</h1>
+<p>Currently, this SDK does not support querying events.  However, you have the following options to query:</p>
+<ul>
+<li><a href="http.html#querying-events"><strong>HTTP API</strong></a> - send queries and receives results directly via JSON</li>
+<li><a href="js.html#querying-events"><strong>JavaScript SDK</strong></a> - query events and build visualizations client-side in the browser</li>
+<li><a href="net.html#querying-events"><strong>.NET SDK</strong></a> - query events using the fluent .NET query syntax</li>
+</ul>
+<p>We&apos;re really looking forward to supporting querying in all SDKs soon!</p>
+<h1 id="exporting-events">Exporting events</h1>
+<p>Currently, this SDK does not support exporting events.</p>
+<p>However, you can use <a href="http.html#exporting-events">HTTP API</a> to perform exports as required.</p>
+<h1 id="deleting-collections">Deleting collections</h1>
+<p>Currently, this SDK does not support deleting collections.</p>
+<p>However, you can use the one of the following methods to delete collections if required:</p>
+<ul>
+<li><a href="https://app.getconnect.io/">Via the admin console</a></li>
+<li><a href="http.html#deleting-collections">With the HTTP API</a></li>
+</ul>
+<h1 id="projects-and-keys">Projects and keys</h1>
+<p>Connect allows you to manage multiple projects under a single account so that you can easily segregate
+your collections into logical projects.</p>
+<p>You could use this to separate analytics for entire projects, or to implement separation between different
+environments (e.g. My Project (Prod) and My Project (Dev)).</p>
+<p>To start pushing and querying your event data, you will need both a project ID and an API key.  This information
+is available to you <a href="http://app.getconnect.io/#/projects">via the admin console</a> inside each project under the &quot;Keys&quot; tab:</p>
+<p><img src="images/screens/projects-keys.png" alt="Screenshot of project keys in Connect admin console"></p>
+<p>By default, you can choose from four different types of keys, each with their own specific use:</p>
+<ul>
+<li><p><code>Push/Query Key</code> - you can use this key to both push events and execute queries.<br>You should only use this key in situations where it is not possible to isolate merely pushing or querying.</p>
+</li>
+<li><p><code>Push Key</code> - you can only use this key to push events.<br>You should use this key in your apps where you are tracking event data, but do not require querying.</p>
+</li>
+<li><p><code>Query Key</code> - you can only use this key to execute queries.<br>You should use this key in your reporting interfaces where you do not wish to track events.</p>
+</li>
+<li><p><code>Master Project Key</code> - you can use this key to execute all types of operations on a project, including
+pushing, querying and deleting collections.<br><strong>Keep this key safe</strong> - it is intended for very limited use and definitely should not be included in your main apps.</p>
+</li>
+</ul>
+<p>You must use your project ID and desired key to begin using Connect:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample17" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample17"><pre><code class="lang-php">use Connect\Connect;
+
+Connect::initialize(&apos;YOUR_PROJECT_ID&apos;, &apos;YOUR_API_KEY&apos;);
+</code></pre></div></div></div>
+
+
+
+
+
+
+
+
+<h1 id="security">Security</h1>
+<p>Security is a vital component to the Connect service and we take it very seriously.  It is important to consider
+how to ensure your data remains secure.</p>
+<h2 id="api-keys">API Keys</h2>
+<p>API keys are the core security mechanisms by which you can <a href="#pushing-events">push</a> and <a href="#querying-events">query</a>
+your data.  It is important to keep these keys safe by controlling where these keys exist and who has access to them.</p>
+<p>Each key can either push, query or both.  The most important key is the <code>Project Master Key</code> which can perform all of
+these actions, as well as administrative functions such as deleting data.  Read more about the keys <a href="#projects-and-keys">here</a>.</p>
+<h2 id="keeping-api-keys-secure">Keeping API Keys Secure</h2>
+<p>You should carefully consider when and which API keys to expose to users.</p>
+<p>Crucially, you should <strong>never</strong> expose your <code>Project Master Key</code> to users or embed it in client applications.
+If this key does get compromised, you can <a href="#resetting-the-master-key">reset it</a>.</p>
+<p>If you embed API keys in client applications, you should consider these keys as fully accessible to anyone having access
+to that client application.  This includes both mobile and web applications.</p>
+<h2 id="pushing-events-securely">Pushing events securely</h2>
+<p>While you can use a <code>Push Key</code> to prevent clients from querying events, you cannot restrict the collections or events
+clients can push to the API.  Unfortunately, this is the nature of tracking events directly client-side and opens the
+door to malicious users potentially sending bad data.</p>
+<p>In many circumstances, this is not an issue as users can already generate bad data simply by using your application in
+an incorrect way, generating events with bad or invalid data.  In circumstances where you absolutely cannot withstand
+bad event data, you should consider pushing the events server-side from a service under your control.</p>
+<p>Finally, if a <code>Push Key</code> is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<h2 id="querying-events-securely">Querying events securely</h2>
+<p>To query events, you must use an API key that has query permissions.  By default, a <code>Query Key</code> has full access to all
+events in all collections in your project.  If this key is exposed, a client could execute any type of query on your
+collections.</p>
+<p>You have a number of options on querying events securely:</p>
+<ol>
+<li><p>For internal querying or dashboard, you may consider it acceptable to expose the normal <code>Query Key</code> in client applications.
+Keep in mind that this key can execute any query on any collection in the project.</p>
+</li>
+<li><p>Generate a <a href="#filtered-keys">filtered key</a>, which applies a specific set of filters to all queries executed by clients
+with the key.</p>
+</li>
+<li><p>Only allow clients to execute queries via a service you control, which in turn executes queries via the Connect API server-side.</p>
+</li>
+</ol>
+<p>Finally, if a <code>Query Key</code> is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<h2 id="resetting-the-master-key">Resetting the master key</h2>
+<p>Resetting the <code>Project Master Key</code> will invalidate the previous key and generate a new, random key.  This action will also
+reset all other keys for the project (including the push, query and any <a href="#filtered-keys">filter keys</a> generated).</p>
+<p>Doing this is <strong>irreversible</strong> and would prevent all applications with existing keys from pushing to or querying the project.</p>
+<p>You can only reset the master key in the projects section of the <a href="http://app.getconnect.io">admin console</a>.</p>
+<h2 id="filtered-keys">Filtered keys</h2>
+<p>Filtered keys allows you to create an API key that can either push or query, and in the case of querying,
+apply one or more <a href="#filters">filters</a> to all queries executed with the key.</p>
+<p>This allows you to have finer control over security and what data clients can access, especially in multi-tenant
+environments.</p>
+<blockquote>
+<p><strong>Filters are only applied to queries</strong></p>
+<p>Any filters specified in your filtered key only apply to querying.  We currently do not support applying
+filters to restrict the pushing of events.</p>
+</blockquote>
+<p>Filtered keys can only push or query (as you specify), <em>never</em> administrative functions or deleting data.  </p>
+<h3 id="generating-a-filtered-key">Generating a filtered key</h3>
+<p>Filtered keys are generated and encrypted with the <code>Project Master Key</code>.  You do not have to register the
+filtered key with the Connect service.</p>
+<p>To generate a filtered key, you must supply the master key, key settings and <a href="http.html#filters">filters</a>.
+The structure of the filters should match the structure of <a href="http.html#filters">JSON filters in the HTTP API</a>.
+For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample21"><pre><code class="lang-php">$masterKey = &apos;YOUR_MASTER_KEY&apos;;
+$keyDefinition = [
+    &apos;filters&apos; =&gt; [
+        &apos;type&apos; =&gt; &apos;cycling&apos;
+    ],
+    &apos;canQuery&apos; =&gt; True,
+    &apos;canPush&apos; =&gt; True
+];
+
+$filteredKey = Connect::generateFilteredKey($keyDefinition, $masterKey);
+print $filteredKey;
+</code></pre></div></div></div>
+<table>
+    <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>filters</code></td>
+        <td><code>object</code></td>
+        <td>The filters to apply all queries executed when using the key.  These filters should be generated with the same structure as <a href="http.html#filters">filters</a> from the HTTP API.</td>
+    </tr>
+    <tr>
+        <td><code>canQuery</code></td>
+        <td><code>boolean</code></td>
+        <td>Whether or not the key can be used to execute queries.  If <code>false</code>, the <code>filters</code> property is ignored (as it does not applying to pushing).</td>
+    </tr>
+    <tr>
+        <td><code>canPush</code></td>
+        <td><code>boolean</code></td>
+        <td>Whether or not the key can be used to push events.</td>
+    </tr>
+</table>
+
+<p>You would use the resulting key to provide to client applications (e.g. in a browser using the <a href="js.html">JavaScript SDK</a>).</p>
+<h1 id="modeling-your-events">Modeling your events</h1>
+<p>When using Connect to analyze and visualize your data, it is important to understand how best to model your events.
+The way you structure your events will directly affect your ability to answer questions with your data.  It is therefore
+important to consider up-front the kind of questions you anticipate answering.</p>
+<h2 id="what-is-an-event-">What is an event?</h2>
+<p>An event is an action that occurs at a specific point in <strong>time</strong>. To answer &quot;why did this event occur?&quot;, our event needs
+to contain rich details about what the &quot;world&quot; looked like at that point in time.</p>
+<p>Put simply, events = action + time + state.</p>
+<p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
+analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-php">$myEvent = [
+    &apos;type&apos; =&gt; &apos;cycling&apos;,
+    &apos;timestamp&apos; =&gt; new DateTime(null, new DateTimeZone(&apos;UTC&apos;)),
+    &apos;duration&apos; =&gt; 67,
+    &apos;distance&apos; =&gt; 21255,
+    &apos;caloriesBurned&apos; =&gt; 455,
+    &apos;maxHeartRate&apos; =&gt; 182,
+    &apos;user&apos; =&gt; [
+        &apos;id&apos; =&gt; 698396,
+        &apos;firstName&apos; =&gt; &apos;Bruce&apos;,
+        &apos;lastName&apos; =&gt; &apos;Jones&apos;,
+        &apos;age&apos; =&gt; 35
+    ]
+];
+</code></pre></div></div></div>
+
+
+
+
+
+
+<h3 id="action">Action</h3>
+<p>What happened? In the above example, the action is <em>an activity was completed</em>.</p>
+<p>In most circumstances, we <a href="#collections">group all events of the same action into a single collection</a>.
+In this case, we could call our collection <code>activityCompleted</code>, or alternatively, just <code>activity</code>.</p>
+<h3 id="time">Time</h3>
+<p>When did it happen? In the above example, we specified the start time of the activity as the value of the <strong>timestamp</strong> property.
+The top-level <strong>timestamp</strong> property is a special property in Connect.  This is because <em>time</em> is an essential property of event
+data - it&apos;s not optional.</p>
+<p>When an event is pushed to Connect, the current time is assigned to the timestamp property if no value was provided by you.</p>
+<h3 id="state">State</h3>
+<p>What do we know about this action?  What do we know about the entities associated with this action?  What do we know about the &quot;world&quot;
+at this moment in time?  Every property in our event, besides the timestamp and the name of the collection, serves to answer those
+questions.  This is the most important aspect of our event - it&apos;s where all the answers live.</p>
+<p>The richer the data you provide in your event, the more questions you can answer for your users, therefore it&apos;s important to enrich
+your events with as much information as possible.  In stark contrast to the relational model where you would store this related
+information in separate tables and join at query time, in the event model this data is denormalized into each event, so as to know
+the state of the &quot;world&quot; at the point in time of the event.</p>
+<h2 id="collections">Collections</h2>
+<p>It is important when modeling your events to consider how you intend to group those events into collections.  This is a careful balance between events being
+broad enough to answer queries for your users, while specific enough to be manageable.</p>
+<p>In our <a href="#what-is-an-event-">activity example</a>, the activity contains different properties based on what the type of activity.  Our cycling activity contains properties associated
+with the bike that was used, while a kayaking activity may contain properties associated with a kayak that is used.</p>
+<p>Because a kayaking event may have different properties to a running event, it might seem logical to put each of them in distinct collections.  However, if we
+had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</code> collections, we would lose the opportunity to query details that are common to all activities.</p>
+<p>As a general rule, consider the common action among your events and decide if the specific variants of that action warrant grouping those events together. </p>
+<h2 id="structuring-your-events">Structuring your events</h2>
+<p>Events have the following core properties:</p>
+<ul>
+<li>Denormalized</li>
+<li>Immutable</li>
+<li>Rich/nested</li>
+<li>Schemaless</li>
+</ul>
+<p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
+<h3 id="events-are-denormalized">Events are denormalized</h3>
+<p>Consider our example event again, notice the age property of the user:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample35" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample35"><pre><code class="lang-php">$myEvent = [
+    &apos;type&apos; =&gt; &apos;cycling&apos;,
+    ...
+    &apos;user&apos; =&gt; [
+        &apos;id&apos; =&gt; 698396,
+        &apos;firstName&apos; =&gt; &apos;Bruce&apos;,
+        &apos;lastName&apos; =&gt; &apos;Jones&apos;,
+        &apos;age&apos; =&gt; 35
+    ]
+];
+</code></pre></div></div></div>
+
+
+
+
+
+
+<p>The user&apos;s age is going to be duplicated in every activity he/she completes throughout the year. This may seem inefficient; however,
+remember that Connect is about <strong>analyzing</strong>.  This denormalization is a real win for analysis; the key is that event data stores state
+over time, rather than merely current state.  This helps us answer questions about <em>why</em> something happened, because we know what the
+&quot;world&quot; looked like at that point of time.</p>
+<p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
+We could simply execute the following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample36" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample36"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+  .select({ averageDistance: { avg: &apos;distance&apos; } })
+  .groupBy(&apos;user.age&apos;);
+
+var chart = connect.chart(query, &apos;#chart&apos;, {
+    title: &apos;Average distance per activity by age&apos;,
+    chart: { type: &apos;bar&apos; }
+});
+</code></pre></div></div></div>
+
+
+<p>It&apos;s this persistence of state over time that makes event data perfect for analysis.</p>
+<h3 id="events-are-immutable">Events are immutable</h3>
+<p>By their very nature, events cannot change, as they always record state at the point in time of the event.  This is also the reason to
+record as much rich information about the event and &quot;state of the world&quot; as possible.</p>
+<p>For example, in our example event above, while Bruce Jones may now be many years older, at the time he completed his bike ride, he was
+35 years of age.  By ensuring this event remains immutable, we can correctly analyze bike riding over time by 35-year-olds.</p>
+<p>Consider events as recording history - as much as we&apos;d occasionally like to, we can&apos;t change history!</p>
+<h3 id="events-are-rich-and-nested">Events are rich and nested</h3>
+<p>Events are rich in that they specify very detailed state.  They specify details about the event itself, the entities involved and the state of
+the &quot;world&quot; at that point in time. </p>
+<p>Consider our example activity event - the top level <strong>type</strong> property describes something about the activity itself (a run, a bike ride, a kayak
+etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
+activity, complete with their name and age.</p>
+<p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-php">$myEvent = [
+    &apos;type&apos; =&gt; &apos;cycling&apos;,
+    ...
+    &apos;user&apos; =&gt; [
+        &apos;id&apos; =&gt; 698396,
+        &apos;firstName&apos; =&gt; &apos;Bruce&apos;,
+        ...
+    ],
+    &apos;bike&apos; =&gt; [
+        &apos;id&apos; =&gt; 231806,
+        &apos;brand&apos; =&gt; &apos;Specialized&apos;,
+        &apos;model&apos; =&gt; &apos;S-Works Venge&apos;
+    ],
+    &apos;weather&apos; =&gt; [
+        &apos;condition&apos; =&gt; &apos;Raining&apos;,
+        &apos;temperature&apos; =&gt; 21,
+        &apos;humidity&apos; =&gt; 99,
+        &apos;wind&apos; =&gt; 17
+    ]
+];
+</code></pre></div></div></div>
+
+
+
+
+
+
+<p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
+to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
+that was built by &quot;Specialized&quot;:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample46" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample46"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+  .select({ averageDistance: { avg: &apos;distance&apos; } })
+  .groupBy(&apos;bike.model&apos;);
+  .filter({
+    &apos;bike.brand&apos;: &apos;Specialized&apos;
+  });
+</code></pre></div></div></div>
+
+
+<p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
+allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
+following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample49" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample49"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+  .select({ averageDistance: { avg: &apos;distance&apos; } })
+  .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
+</code></pre></div></div></div>
+
+
+<p>As you can see, the richer and more denormalized the event, the more interesting answers can be derived when later querying.</p>
+<h3 id="events-are-schemaless">Events are schemaless</h3>
+<p>Events in Connect should be considered semi-structured - that is, they have an inherent structure, but it is not defined.  This means you can, and should,
+push as much detailed information about an event and the state of the &quot;world&quot; as possible.  Moreover, this allows you to improve your schema over time and
+add extra information about new events as that information becomes available.</p>
+<h2 id="restrictions">Restrictions</h2>
+<p>While you can post almost any event structure to Connect, there are a few, by-design restrictions.</p>
+<h3 id="property-names">Property names</h3>
+<ul>
+<li><p>You cannot have any property in the root document beginning with &quot;tp_&quot;. This is because we prefix our
+own internal properties with this. Internally, we merge our properties into your events for performance
+at query time.</p>
+</li>
+<li><p>The property &quot;_id&quot; is reserved and cannot be pushed.</p>
+</li>
+<li><p>The properties &quot;id&quot; and &quot;timestamp&quot; have special purposes. These allow consumers to specify a unique ID
+per event and override the event&apos;s timestamp respectively.  You cannot use the &quot;id&quot; property in queries.
+Refer to <a href="#reliability-of-events">&quot;reliability of events&quot;</a> and <a href="#timestamps">&quot;timestamps&quot;</a> for information.</p>
+</li>
+<li><p>The length of property names can&apos;t exceed 255 characters.  If you need property names longer than this, you
+probably <a href="#structuring-your-events">need to reconsider the structure of your event!</a></p>
+</li>
+<li><p>Properties cannot include a dot in their names.  This is because dots are used in querying to access nested
+properties.  The following is an example of an invalid event property due to a dot in the name:</p>
+</li>
+</ul>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample56" role="tab" data-toggle="tab" data-lang="php">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample56"><pre><code class="lang-php">Connect::push(&apos;mycollection&apos;, [
+  &apos;invalid.property&apos; =&gt; &apos;value&apos;
+]);
+</code></pre></div></div></div>
+
+
+
+
+
+
+<h3 id="arrays">Arrays</h3>
+<p>While you can create events with arrays, it is currently not possible to take advantage of these arrays at
+query time.  Therefore, you should avoid using arrays in your events unless you plan to export the raw events.</p>
+<h3 id="distinct-count">Distinct count</h3>
+<p>Distinct count is currently not supported for querying, therefore you should consider how to structure your
+event if your application relies on this.</p>
+
+    </div>
+  </div>  
+</div>
+
+    </div>
+    
+    <footer>
+      <nav class="footer-nav navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand hidden-xs navbar-brand active" href="http://getconnect.io">
+              <div class="brand-logo-small"></div>
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://app.getconnect.io/#/projects">Projects</a></li>
+            <li><a href="https://app.getconnect.io/#/settings">Settings</a></li>
+            <li><a href="https://gitter.im/getconnect">Community</a></li>
+            <li><a href="http://docs.getconnect.io/">Docs</a></li>
+            <li>
+              <a href="https://github.com/getconnect">
+                <span class="ion ion-social-github"></span>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/getconnect_io">
+                <span class="ion ion-social-twitter"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+    
+    <div class="status">
+		    <a href="http://status.getconnect.io" target="_blank">
+		      <span class="color-dot"></span>
+		      <span class="color-description"></span>
+		    </a>
+		</div>
+    
+    <script src="https://statuspage-production.s3.amazonaws.com/se-v1.js"></script>
+    <script src="scripts/highlight.pack.min.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/svg-injector.min.js"></script>
+    <script src="scripts/docs.min.js"></script>
+  </body>
+</html>

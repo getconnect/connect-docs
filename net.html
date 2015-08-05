@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>.NET :: Connect Docs</title>
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+    <script src="//use.typekit.net/jyl8gjp.js?t=1438654489102"></script>
+    <script>try{Typekit.load();}catch(e){}</script>
+    <link rel="stylesheet" href="styles/all.min.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body data-spy="scroll" data-target="#nav-wrapper">
+    <header>
+      <nav class="header-nav navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand navbar-brand active" href="./">
+              <div class="docs-logo-small"></div>
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a class="return" href="https://app.getconnect.io"><i class="ion-arrow-return-left"></i> Return to portal</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    
+    <div class="white-background-panel">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <nav data-spy="affix" id="nav-wrapper" class="hidden-xs" data-offset-top="60" data-offset-bottom="400">
+        <ul class="nav switcher">
+          <li class="dropdown active">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">.NET<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                  <a href="js.html">JavaScript</a>
+                </li>
+                <li>
+                  <a href="http.html">HTTP API</a>
+                </li>
+                <li>
+                  <a href="ios.html">iOS</a>
+                </li>
+                <li>
+                  <a href="ruby.html">Ruby</a>
+                </li>
+                <li>
+                  <a href="php.html">PHP</a>
+                </li>
+                <li>
+                  <a href="net.html">.NET</a>
+                </li>
+                <li>
+                  <a href="java.html">Java</a>
+                </li>
+                <li>
+                  <a href="android.html">Android</a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+        
+        <ul class="nav left-nav bs-docs-sidenav">
+              <li>
+                <a href="#getting-started">Getting Started</a>
+                
+              </li>    
+              <li>
+                <a href="#installing-the-sdk">Installing the SDK</a>
+                
+              </li>    
+              <li>
+                <a href="#initializing-the-client">Initializing the client</a>
+                
+              </li>    
+              <li>
+                <a href="#pushing-events">Pushing events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#single-event">Single event</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#multiple-events">Multiple events</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#queuing-events">Queuing events</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#queuing-a-single-event">Queuing a single event</a>
+                              </li>    
+                              <li>
+                                <a href="#queuing-multiple-events">Queuing multiple events</a>
+                              </li>    
+                              <li>
+                                <a href="#pushing-pending-events">Pushing pending events</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#bulk-importing-events">Bulk importing events</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#restrictions-on-pushing">Restrictions on pushing</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#reliability-of-events">Reliability of events</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#timestamps">Timestamps</a>
+                        
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#querying-events">Querying events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#metadata">Metadata</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#aggregations">Aggregations</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#limitations">Limitations</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#filters">Filters</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#exists-filter">Exists filter</a>
+                              </li>    
+                              <li>
+                                <a href="#in-filter">In filter</a>
+                              </li>    
+                              <li>
+                                <a href="#combining-filter-expressions">Combining filter expressions</a>
+                              </li>    
+                              <li>
+                                <a href="#chaining-filters">Chaining filters</a>
+                              </li>    
+                              <li>
+                                <a href="#filter-dictionaries">Filter dictionaries</a>
+                              </li>    
+                              <li>
+                                <a href="#-or-filters">&quot;Or&quot; filters</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#timeframes">Timeframes</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#relative-timeframes">Relative timeframes</a>
+                              </li>    
+                              <li>
+                                <a href="#absolute-timeframes">Absolute timeframes</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#group-by">Group by</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#grouping-by-multiple-properties">Grouping by multiple properties</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#time-intervals">Time intervals</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#time-interval-with-group-by">Time interval with group by</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#timezones">Timezones</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#error-handling">Error handling</a>
+                        
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#exporting-events">Exporting events</a>
+                
+              </li>    
+              <li>
+                <a href="#deleting-collections">Deleting collections</a>
+                
+              </li>    
+              <li>
+                <a href="#projects-and-keys">Projects and keys</a>
+                
+              </li>    
+              <li>
+                <a href="#security">Security</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#api-keys">API Keys</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#keeping-api-keys-secure">Keeping API Keys Secure</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#pushing-events-securely">Pushing events securely</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#querying-events-securely">Querying events securely</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#resetting-the-master-key">Resetting the master key</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#filtered-keys">Filtered keys</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#generating-a-filtered-key">Generating a filtered key</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#modeling-your-events">Modeling your events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#what-is-an-event-">What is an event?</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#action">Action</a>
+                              </li>    
+                              <li>
+                                <a href="#time">Time</a>
+                              </li>    
+                              <li>
+                                <a href="#state">State</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#collections">Collections</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#structuring-your-events">Structuring your events</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#events-are-denormalized">Events are denormalized</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-immutable">Events are immutable</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-rich-and-nested">Events are rich and nested</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-schemaless">Events are schemaless</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                      <li>
+                        <a href="#restrictions">Restrictions</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#property-names">Property names</a>
+                              </li>    
+                              <li>
+                                <a href="#arrays">Arrays</a>
+                              </li>    
+                              <li>
+                                <a href="#distinct-count">Distinct count</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                  </ul>
+              </li>    
+          </ul>
+        </nav>
+    </div>
+    <div class="col-sm-9">
+      <h1 id="getting-started">Getting Started</h1>
+<p>The following guide will help you to get started using Connect.  Once you have your <a href="#projects-and-keys">project ID and API key</a> and
+you have decided how to <a href="#modeling-your-events">model your events</a>, you can start <a href="#pushing-events">pushing events</a> and <a href="#querying-events">executing queries</a>.</p>
+<h1 id="installing-the-sdk">Installing the SDK</h1>
+<p>Getting started is easy - simply install the .NET SDK using NuGet.  For example, from the package manager console:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample1" role="tab" data-toggle="tab" data-lang="ps">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample1"><pre><code class="lang-ps">Install-Package ConnectSdk
+</code></pre></div></div></div>
+<h1 id="initializing-the-client">Initializing the client</h1>
+<p>Before you can start <a href="#pushing-events">pushing events</a> or <a href="#querying">executing queries</a>, you must initialize the
+Connect client with your <a href="#projects-and-keys">project ID and API key</a>.</p>
+<p>You can either do this statically (when you don&apos;t wish to manage the client instances):</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-csharp">Connect.Initialize(new BasicConfiguration(&quot;API_KEY&quot;, &quot;PROJECT_ID&quot;))
+</code></pre></div></div></div>
+<p>Or you can create a specific instance of a client (e.g. to push to/query multiple projects):</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample3"><pre><code class="lang-csharp">IConnect connect = new ConnectClient(new BasicConfiguration(&quot;API_KEY&quot;, &quot;PROJECT_ID&quot;));
+</code></pre></div></div></div>
+<p>Both these classes confirm to the same API, so which you use is purely personal preference. The static method
+will be used in the remaining examples.</p>
+<h1 id="pushing-events">Pushing events</h1>
+<p>The SDK supports pushing events directly into collections.  All methods take advantage of
+<a href="https://msdn.microsoft.com/en-us/library/hh191443.aspx">asynchronous programming with async/await</a>.</p>
+<h2 id="single-event">Single event</h2>
+<p>To push a single event to a collection, you can specify the collection name and the event to push:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new {
+    product = &quot;Something&quot;,
+    cost = 2.01m
+});
+</code></pre></div></div></div>
+<h2 id="multiple-events">Multiple events</h2>
+<p>To push multiple events to a collection, you can specify the collection name and an enumerable of events to push:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-csharp">var events = new[] 
+{
+    new { product = &quot;Something&quot;, cost = 2.01m },
+    new { product = &quot;Something Else&quot;, cost = 4.02m }
+}
+
+var result = await Connect.Push(&quot;mycollection&quot;, events);
+</code></pre></div></div></div>
+<h2 id="queuing-events">Queuing events</h2>
+<p>Events can be stored/cached locally and pushed to Connect later.  This provides a level of reliability to mitigate
+the risk of network outages and is best practice.</p>
+<p>This can be achieved in the SDK by &quot;adding&quot; events into collections.</p>
+<h3 id="queuing-a-single-event">Queuing a single event</h3>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-csharp">await Connect.Add(&quot;mycollection&quot;, new { Name = &quot;Something&quot;, Cost = 2.01m });
+</code></pre></div></div></div>
+<h3 id="queuing-multiple-events">Queuing multiple events</h3>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample7" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample7"><pre><code class="lang-csharp">var events = new[] 
+{
+    new { product = &quot;Something&quot;, cost = 2.01m },
+    new { product = &quot;Something Else&quot;, cost = 4.02m }
+}
+
+await Connect.Add(&quot;mycollection&quot;, events);
+</code></pre></div></div></div>
+<h3 id="pushing-pending-events">Pushing pending events</h3>
+<p>Once you have queued events, you must call <code>PushPending()</code> to have those events pushed to Connect.  Ideally, this
+would be done regularly at an appropriate time in your application lifecycle.</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-csharp">var response = await Connect.PushPending();
+
+var status = response.Status; // status of the batch push (EventPushResponseStatus)
+var httpStatusCode = response.HttpStatusCode; // HTTP status code
+var errorMessage = response.ErrorMessage; // error message if applicable
+
+// loop through the collections
+foreach (var collectionResult in response.ResponsesByCollection) {
+    var collectionName = collectionResult.Key;
+
+    // loop through the results of individual events
+    foreach (var result in collectionResult.Value) {
+        var originalEvent = result.Event; // original event pushed
+        var status = result.Status; // status of the individual event
+        var errorMessage = result.ErrorMessage; // error message if applicable
+        var fieldErrors = result.FieldErrors; // Dictionary of field to error message
+    }
+}
+</code></pre></div></div></div>
+<h2 id="bulk-importing-events">Bulk importing events</h2>
+<p>Currently, this SDK does not support bulk importing events.</p>
+<p>However, you can use the <a href="http.html#bulk-importing-events">HTTP API</a> to run bulk imports if you need.</p>
+<h2 id="restrictions-on-pushing">Restrictions on pushing</h2>
+<p>There are a number of restrictions on the properties you can use in your events and the
+limitations on querying which influences how you should structure your events.</p>
+<p>Refer to <a href="#restrictions">restrictions</a> in the <a href="#modeling-your-events">modeling your events</a> section.</p>
+<h2 id="reliability-of-events">Reliability of events</h2>
+<p>You can ensure delivery of events reliably by <a href="#queuing-events">queuing the events</a>.
+You should then handle the response from <code>PushPending()</code> to verify that all the events were successfully pushed.</p>
+<p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is
+delivered multiple times). For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample9" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample9"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new {
+    id = &quot;12345&quot;,
+    product = &quot;Something&quot;,
+    cost = 2.01m
+});
+</code></pre></div></div></div>
+<h2 id="timestamps">Timestamps</h2>
+<p>All events have a single <code>timestamp</code> property which records when the event being pushed occurred.  Events cannot
+have more than one date/time property.  If you feel you need more than one date/time property, you probably need
+to reconsider how you&apos;re <a href="#modeling-your-events">modeling your events</a>.</p>
+<blockquote>
+<p><strong>Querying</strong></p>
+<p>You can only run time interval queries or timeframe filters on the <code>timestamp</code> property.  No other date/time property
+in an event is supported for querying.</p>
+</blockquote>
+<p>By default, if no <code>timestamp</code> property is sent with the event, the SDK will use the current date and time as
+the timestamp of the event.</p>
+<p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
+of event times when events are queued.  For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample11"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new {
+    timestamp = DateTime.Now,
+    product = &quot;Something&quot;,
+    cost = 2.01m
+});
+</code></pre></div></div></div>
+
+
+
+
+
+<blockquote>
+<p><strong>Timezones</strong></p>
+<p>Timestamps are always recorded in UTC.  If you supply a timestamp in a timezone other than UTC, it will
+be converted to UTC.  When you query your events, you can specify a timezone so things like time intervals
+will be returned in local time.</p>
+</blockquote>
+<h1 id="querying-events">Querying events</h1>
+<p>Querying events in Connect is easy.  Using the SDK, you can construct and execute queries using async/await.</p>
+<p>Once you have <a href="#initializing-the-client">initialized the client</a> with a valid <a href="#projects-and-keys">read key</a>, you can start querying
+your collections immediately.</p>
+<p>For example, to get the sum of the <code>price</code> property in a collection called <code>purchases</code>, you would build the following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample16" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample16"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;),
+        averagePrice = Aggregations.Avg(&quot;price&quot;),
+        minPrice = Aggregations.Min(&quot;price&quot;),
+        maxPrice = Aggregations.Max(&quot;price&quot;),
+        purchaseCount = Aggregations.Count()
+    })
+    .Where(new {
+        product = Filters.Eq(&quot;12 red roses&quot;)
+    })
+    .Daily()
+    .ThisMonth()
+    .GroupBy(&quot;country&quot;)
+    .Timezone(&quot;Australia/Brisbane&quot;)
+    .Execute();
+</code></pre></div></div></div>
+<h2 id="metadata">Metadata</h2>
+<p>The query results return metadata on the executed query.  This includes any <a href="#group-by">groups</a> used, the <a href="#time-intervals">time interval</a>, if specified,
+and the <a href="#timezones">timezone</a>, if specified, for the query.</p>
+<p>For example, the following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample17" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample17"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .GroupBy(&quot;product&quot;)
+    .Daily()
+    .ThisMonth()
+    .Timezone(&quot;Australia/Brisbane&quot;)
+    .Execute();
+</code></pre></div></div></div>
+<p>The metadata would be:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample18" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample18"><pre><code class="lang-csharp">Console.WriteLine(string.Format(&quot;Groups: {0}&quot;, string.Join(&quot;, &quot;, queryResponse.Metadata.Groups.ToArray())));
+Console.WriteLine(&quot;Interval: &quot; + queryResponse.Metadata.Interval.ToString());
+Console.WriteLine(&quot;Timezone: &quot; + queryResponse.Metadata.Timezone);
+
+// output is:
+//
+// Groups: product
+// Interval: Daily
+// Timezone: Australia/Brisbane
+</code></pre></div></div></div>
+<p>The metadata can assist you if you wish to visualize the query results as it provides useful information on how to display that data.</p>
+<h2 id="aggregations">Aggregations</h2>
+<p>You can perform various aggregations over events you have pushed.  Simply specify in the query&apos;s select which
+properties you wish to aggregate and which aggregation you wish to use.  You also must specify an &quot;alias&quot; for the
+result set that is returned.</p>
+<p>For example, to query the <code>purchases</code> collection and perform aggregations on the <code>price</code> event property::</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample21"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        itemsSold = Aggregations.Count(),
+        totalPrice = Aggregations.Sum(&quot;price&quot;),
+        averagePrice = Aggregations.Avg(&quot;price&quot;),
+        minPrice = Aggregations.Min(&quot;price&quot;),
+        maxPrice = Aggregations.Max(&quot;price&quot;)
+    })
+    .Execute();
+</code></pre></div></div></div>
+
+
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-csharp">// no important metadata because no group by, interval or timezone
+var metadata = queryResponse.Metadata;
+
+// no group by, so only a single result
+var singleResult = queryResponse.Results.First();
+
+// get the values from the result
+var itemsSold = (double)singleResult[&quot;itemsSold&quot;];
+var totalPrice = (double)singleResult[&quot;totalPrice&quot;];
+var averagePrice = (double)singleResult[&quot;averagePrice&quot;];
+var minPrice = (double)singleResult[&quot;minPrice&quot;];
+var maxPrice = (double)singleResult[&quot;maxPrice&quot;];
+</code></pre></div></div></div>
+
+<p>You can also use the <code>AggregationOperation</code> enum to specify the aggregation operation:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample24"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Use(AggregationOperation.Sum, &quot;price&quot;),
+        averagePrice = Aggregations.Use(AggregationOperation.Avg, &quot;price&quot;),
+        minPrice = Aggregations.Use(AggregationOperation.Min, &quot;price&quot;),
+        maxPrice = Aggregations.Use(AggregationOperation.Max, &quot;price&quot;),
+        purchaseCount = Aggregations.Use(AggregationOperation.Count)
+    })
+    .Execute();
+</code></pre></div></div></div>
+<p>Or a string:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample25" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample25"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Use(&quot;Sum&quot;, &quot;price&quot;),
+        averagePrice = Aggregations.Use(&quot;Avg&quot;, &quot;price&quot;),
+        minPrice = Aggregations.Use(&quot;Min&quot;, &quot;price&quot;),
+        maxPrice = Aggregations.Use(&quot;Max&quot;, &quot;price&quot;),
+        purchaseCount = Aggregations.Use(&quot;Count&quot;)
+    })
+    .Execute();
+</code></pre></div></div></div>
+<blockquote>
+<p>If you are using C# 6.0 or above you may find it useful to statically include the <code>Aggregations</code> class:</p>
+<p><code>using static ConnectSdk.Querying.Aggregations</code></p>
+<p>This enables you to use methods like Count() without prefixing with <code>Aggregations</code></p>
+</blockquote>
+<p>The following aggregations are supported:</p>
+<ul>
+<li>Aggregations.Count (AggregationOperation.Count or &quot;Count&quot;)</li>
+<li>Aggregations.Sum (AggregationOperation.Sum or &quot;Sum&quot;)</li>
+<li>Aggregations.Avg (AggregationOperation.Avg or &quot;Avg&quot;)</li>
+<li>Aggregations.Min (AggregationOperation.Min or &quot;Min&quot;)</li>
+<li>Aggregations.Max (AggregationOperation.Max or &quot;Max&quot;)</li>
+</ul>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>Aggregations only work on numeric properties.  If you try to aggregate a string property, you will receive a null result.
+If you try to aggregate a property with multiple types (e.g. some strings, some numbers), only the numeric values will be
+added - the rest are ignored.</li>
+</ul>
+<h2 id="filters">Filters</h2>
+<p>You can filter the events you wish to include in your queries by specifying one or more filters.  For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(&quot;product&quot;, &quot;12 red roses&quot;)
+    .Execute();
+</code></pre></div></div></div>
+
+
+<p>The above will filter the query results for only those events that have a <code>product</code> property equalling &quot;12 red roses&quot;.
+The above is also shorthand for the <strong>eq</strong> operator. To illustrate this, the following is identical to the above:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample31" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample31"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new {
+        product = Filters.Eq(&quot;12 red roses&quot;)
+    })
+    .Execute();
+</code></pre></div></div></div>
+
+
+<p>The following match operators are currently supported:</p>
+<ul>
+<li>Filters.Eq (equal to)</li>
+<li>Filters.Neq (not equal to)</li>
+<li>Filters.Gt (greater than)</li>
+<li>Filters.Gte (greater than or equal to)</li>
+<li>Filters.Lt (less than)</li>
+<li>Filters.Lte (less than or equal to)</li>
+<li><a href="#exists-filter">Filters.Exists (whether or not a property exists)</a></li>
+<li>Filters.StartsWith (starts with - string values only)</li>
+<li>Filters.EndsWith (ends with - string values only)</li>
+<li>Filters.Contains (contains - string values only)</li>
+<li><a href="#in-filter">Filters.In (property is one of a list of values)</a> </li>
+</ul>
+<h3 id="exists-filter">Exists filter</h3>
+<p>The exists filter will filter the query results for only events that either have or don&apos;t have the specified property
+and where the specified property is or isn&apos;t null respectively.  You supply a boolean value with the exists operator
+to specify whether to include or exclude the events.</p>
+<blockquote>
+<p><strong>Missing properties vs null values</strong></p>
+<p>We treat missing properties and properties with a null value the same for the purpose of the exists filter.  While we
+plan to change this behavior in the future, you should consider setting a default value as opposed to a null value on
+properties if you wish to make a distinction.</p>
+</blockquote>
+<p>For example, the following will filter for events that have a property called <code>gender</code>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample34" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample34"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        TotalPrice = Aggregations.Sum(&quot;Price&quot;)
+    })
+    .Where(new {
+        gender = Filters.Exists(true)
+    })
+    .Execute();
+</code></pre></div></div></div>
+
+
+<p>Whereas the following will filter for events that <em>do not</em> have a property called <code>gender</code>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new {
+        gender = Filters.Exists(false)
+    })
+    .Execute();
+</code></pre></div></div></div>
+
+
+<h3 id="in-filter">In filter</h3>
+<p>The in filter allows you to specify a list of values for which a property should match.</p>
+<p>For example, the following will filter for events that have a <code>category</code> of either &quot;Bikes&quot;, &quot;Books&quot; or &quot;Magazines&quot;:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample38" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample38"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new {
+        category = Filters.In(new[] {&quot;Bikes&quot;, &quot;Books&quot;, &quot;Magazines&quot;})
+    })
+    .Execute();
+</code></pre></div></div></div>
+<p>You can also use the shorthand of this:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample39" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample39"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(&quot;category&quot;, new[] {&quot;Bikes&quot;, &quot;Books&quot;, &quot;Magazines&quot;})
+    .Execute();
+</code></pre></div></div></div>
+<p><strong>Note:</strong> All values in the list must be of the same type (i.e. string, numeric or boolean).  Mixed types are currently not supported.</p>
+<h3 id="combining-filter-expressions">Combining filter expressions</h3>
+<p>You can also combine filter expressions to filter multiple values on the same property.</p>
+<p>For example, the following will filter for events with a <code>price</code> property greater than 5 but less than 10:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new Dictionary&lt;string, Filter[]&gt;{
+        {&quot;price&quot;, new[]{ Filters.Gt(5), Filters.Lt(10) }}
+    })
+    .Execute();
+</code></pre></div></div></div>
+
+
+<h3 id="chaining-filters">Chaining filters</h3>
+<p>Filters can be chained by calling the <code>Where</code> method multiple times. The query below will query for purchase that are
+in the &quot;Shirts&quot; category <strong>and</strong> have a delivery type of &quot;Standard&quot; or &quot;Express&quot;:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample43" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample43"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new {
+        category = Filters.Eq(&quot;Shirts&quot;)
+    })
+    .Where(new {    
+        delivery = Filters.In(new [] {&quot;Express&quot;, &quot;Standard&quot;})
+    })
+    .Execute();
+</code></pre></div></div></div>
+<h3 id="filter-dictionaries">Filter dictionaries</h3>
+<p>The SDK also supports specifying filters as dictionaries. This especially useful if you wish to specify a nested property path.
+For example, to filter on <code>product.category</code>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample44" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample44"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new Dictionary&lt;string, Filter[]&gt;{
+        {&quot;product.category&quot;, Filters.Eq(&quot;Shirts&quot;)}
+    })
+    .Execute();
+</code></pre></div></div></div>
+<h3 id="-or-filters">&quot;Or&quot; filters</h3>
+<p>Currently, &quot;or&quot; filters are not supported.</p>
+<h2 id="timeframes">Timeframes</h2>
+<p>You can restrict query results by specifying the <strong>timeframe</strong> for the query which will filter for events only within that specific timeframe.</p>
+<blockquote>
+<p>If no timeframe is specified, events will not be filtered by time; the query will match events from all time.</p>
+</blockquote>
+<p>For example, the following query filters for events only for this month:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample47" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample47"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .ThisMonth()
+    .Execute();
+</code></pre></div></div></div>
+
+
+<p>There are two types of timeframes:</p>
+<ul>
+<li><strong>Relative timeframes</strong> - a timeframe relative to the current date and time.</li>
+<li><strong>Absolute timeframes</strong> - a timeframe between two specific dates and times.</li>
+</ul>
+<h3 id="relative-timeframes">Relative timeframes</h3>
+<p>Relative timeframes can be specified as either a string or a complex type containing exact numbers of &quot;periods&quot; to filter.</p>
+<blockquote>
+<p><strong>Timezones</strong></p>
+<p>By default, all relative timeframes are <strong>UTC</strong> by default. See the <a href="#timezones">timezone section</a> to specify your own timezone.</p>
+</blockquote>
+<p>The following are supported timeframes:</p>
+<ul>
+<li>ThisMinute()</li>
+<li>LastMinute()</li>
+<li>ThisHour()</li>
+<li>LastHour()</li>
+<li>Today()</li>
+<li>Yesterday()</li>
+<li>ThisWeek()</li>
+<li>LastWeek()</li>
+<li>ThisMonth()</li>
+<li>LastMonth()</li>
+<li>ThisQuarter()</li>
+<li>LastQuarter()</li>
+<li>ThisYear()</li>
+<li>LastYear()</li>
+</ul>
+<p>You can also specify a relative timeframe with an enum:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .WithRelativeTimeframe(RelativeTimeWindow.ThisMonth)
+    .Execute();
+</code></pre></div></div></div>
+<p>Or a string:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample49" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample49"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .WithRelativeTimeframe(&quot;this_month&quot;)
+    .Execute();
+</code></pre></div></div></div>
+<p>You can also specify exactly how many current/previous periods you wish to include in the query results.</p>
+<p>For example, if you want to filter by the <strong>today and the last 2 days</strong>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample50" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample50"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Current(3, TimeType.Days)
+    .Execute();
+</code></pre></div></div></div>
+<p>Or, to filter by the <strong>last 2 months, excluding the current month</strong>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Previous(2, TimeType.Months)
+    .Execute();
+</code></pre></div></div></div>
+<blockquote>
+<p>If you are using C# 6.0 or above you may find it useful to statically include the RelativeWindow and TimeType enums.</p>
+<p><code>using static ConnectSdk.Querying.RelativeWindow</code><br><code>using static ConnectSdk.Querying.TimeType</code></p>
+<p>This enables you to use the enums without prefixes.</p>
+</blockquote>
+<p>The following periods are supported for complex, relative timeframes:</p>
+<ul>
+<li>TimeType.Minutes</li>
+<li>TimeType.Hours</li>
+<li>TimeType.Days</li>
+<li>TimeType.Weeks</li>
+<li>TimeType.Months</li>
+<li>TimeType.Quarters</li>
+<li>TimeType.Years</li>
+</ul>
+<blockquote>
+<p><strong>Weeks</strong></p>
+<p>Our weeks start on a Sunday and finish on a Saturday.  In the future, we plan to support specifying on which
+day of the week you&apos;d like to start your weeks.</p>
+</blockquote>
+<h3 id="absolute-timeframes">Absolute timeframes</h3>
+<p>You can specify an absolute timeframe to filter events that occurred between specific dates.  For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample52"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Between(new DateTime(2015, 01, 01), new DateTime(2015, 01, 06))
+    .Execute()
+</code></pre></div></div></div>
+<blockquote>
+<p>The Connect API only accepts UTC dates for an absolute timeframe, therefore if you specify a DateTime with a kind of
+<code>DateTimeKind.Local</code>, it will be converted to UTC before querying.</p>
+</blockquote>
+<p>You can also use <code>StartingAt</code> or <code>EndingAt</code> to filter events that occurred after or before a specific date, respectively:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample53" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample53"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .StartingAt(new DateTime(2015, 01, 01))
+    .Execute()
+</code></pre></div></div></div>
+<blockquote>
+<p>You can&apos;t specify a timezone when using absolute timeframes as the timezone information comes from the ISO-8601
+dates specified.  An error will occur if you try to do this.</p>
+</blockquote>
+<h2 id="group-by">Group by</h2>
+<p>You can group the query results by one or more properties from your events.</p>
+<blockquote>
+<p><strong>Missing properties vs null values</strong></p>
+<p>We treat missing properties and properties with a null value the same for the purpose of grouping.
+This means that all events with a null value for a property or missing that property altogether will
+be grouped into the &quot;null&quot; value for that query.  While we plan to change this in the future, you
+should consider setting a default value as opposed to a null value on properties if you wish to make
+a distinction.</p>
+</blockquote>
+<p>For example, to query total sales by country:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample56" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample56"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .GroupBy(&quot;country&quot;)
+    .Execute();
+</code></pre></div></div></div>
+
+
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample58" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample58"><pre><code class="lang-csharp">var metadata = queryResponse.Metadata;
+// metadata.Groups is new string[] {&quot;country&quot;}
+
+foreach (var result in queryResponse.Results) {
+    Console.WriteLine(string.Format(&quot;{0}: {1}&quot;, result[&quot;country&quot;], result[&quot;totalPrice&quot;]));
+}
+
+// output is:
+//
+// Australia: 1000000
+// Italy: 2500000
+// United States: 10000000
+</code></pre></div></div></div>
+
+<h3 id="grouping-by-multiple-properties">Grouping by multiple properties</h3>
+<p>You can also group by multiple properties in your events by providing multiple property names.</p>
+<p>For example, to query total sales by country and product category:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample61" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample61"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .GroupBy(&quot;country&quot;, &quot;product.category&quot;)
+    .Execute();
+</code></pre></div></div></div>
+
+
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample63" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample63"><pre><code class="lang-csharp">var metadata = queryResponse.Metadata;
+// metadata.Groups is new string[] {&quot;country&quot;, &quot;product.category&quot;}
+
+foreach (var result in queryResponse.Results) {
+    Console.WriteLine(string.Format(&quot;{0} - {1}: {2}&quot;, result[&quot;country&quot;],
+        result[&quot;product.category&quot;], result[&quot;totalPrice&quot;]));
+}
+
+// output is:
+//
+// Australia - Bikes: 500000
+// Austrlaia - Cars: 500000
+// Italy - Scooters: 2500000
+// United States - Mobile Phones: 8000000
+// United States - Laptops: 2000000
+</code></pre></div></div></div>
+
+<h2 id="time-intervals">Time intervals</h2>
+<p>Time intervals allow you to group results by a time period, so that you could analyze your events over time.</p>
+<p>For example, to query daily total sales this month:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample66" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample66"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .ThisMonth()
+    .Daily()
+    .Execute();
+</code></pre></div></div></div>
+
+
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample68" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample68"><pre><code class="lang-csharp">var metadata = queryResponse.Metadata;
+// metadata.Interval is Interval.Daily
+
+foreach (var intervalResult in queryResponse.Results) {
+    // intervalResult is QueryIntervalResult&lt;IDictionary&lt;string, object&gt;&gt;
+
+    // single result because no group by
+    var result = intervalResult.Results.First();
+
+    Console.WriteLine(string.Format(&quot;{0:d} to {1:d}: {2}&quot;, intervalResult.Start,
+        intervalResult.End, result[&quot;totalPrice&quot;]));
+}
+
+// output is (en-US dates):
+//
+// 02/01/2015 to 02/02/2015: 500000
+// 02/02/2015 to 02/03/2015: 150000
+// 02/03/2015 to 02/04/2015: 25000
+</code></pre></div></div></div>
+
+<p>The following time intervals are supported:</p>
+<ul>
+<li>minutely</li>
+<li>hourly</li>
+<li>daily</li>
+<li>weekly</li>
+<li>monthly</li>
+<li>quarterly</li>
+<li>yearly</li>
+</ul>
+<h3 id="time-interval-with-group-by">Time interval with group by</h3>
+<p>You can also combine a time interval with a group by in your query.</p>
+<p>For example, to query daily total sales this month by country:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample71" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample71"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .ThisMonth()
+    .Daily()
+    .GroupBy(&quot;country&quot;)
+    .Execute();
+</code></pre></div></div></div>
+
+
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample73" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample73"><pre><code class="lang-csharp">var metadata = queryResponse.Metadata;
+// metadata.Interval is Interval.Daily
+// metadata.Groups is new string[] { &quot;country&quot; }
+
+foreach (var intervalResult in queryResponse.Results) {
+    // intervalResult is QueryIntervalResult&lt;IDictionary&lt;string, object&gt;&gt;
+
+    Console.WriteLine(string.Format(&quot;Totals for {0:d} to {1:d}:&quot;,
+        intervalResult.Start, intervalResult.End));
+
+    foreach (var result in intervalResult.Results) {
+        Console.WriteLine(string.Format(&quot;{0}: {1}&quot;, result[&quot;country&quot;], result[&quot;totalPrice&quot;]));
+    }
+
+    Console.WriteLine();
+}
+
+// output is (en-US dates):
+//
+// Totals for 02/01/2015 to 02/02/2015:
+// Australia: 100000
+// Italy: 100000
+// United States: 300000
+//
+// Totals for 02/02/2015 to 02/03/2015:
+// Australia: 25000
+// Italy: 25000
+// United States: 100000
+//
+// Totals for 02/03/2015 to 02/04/2015:
+// Australia: 5000
+// Italy: 5000
+// United States: 15000
+//
+</code></pre></div></div></div>
+
+<h2 id="timezones">Timezones</h2>
+<p>By default, Connect uses <strong>UTC</strong> as the timezone for queries with relative timeframes or time intervals.
+You can override this to be the timezone of your choice by specifying the <strong>timezone</strong> in your query.</p>
+<blockquote>
+<p>You can only specify a timezone when you have specified a <a href="#time-intervals">time interval</a> or a
+<a href="#relative-timeframes">relative timeframe</a>.  If you try to specify a timezone without one of these
+set, an error will be returned.</p>
+</blockquote>
+<p>You can specify a numeric (decimal) value for an hours offset of UTC, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample76" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample76"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Timezone(10)
+    .Execute();
+</code></pre></div></div></div>
+
+
+<p>You can also specify a string which contains an <a href="http://www.iana.org/time-zones">IANA time zone identifier</a>, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample79" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample79"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Timezone(&quot;Australia/Brisbane&quot;)
+    .Execute();
+</code></pre></div></div></div>
+
+
+<h2 id="error-handling">Error handling</h2>
+<p>When you <code>Execute()</code> a query, you will receive a <code>QueryResponse</code> in response to the query.
+You should check the <code>Status</code> of this response to ensure it is successful and, if not, handle the error
+gracefully.</p>
+<p><code>QueryResponse</code> is an enum with the following values:</p>
+<ul>
+<li><strong>Successful</strong> - the query was successful</li>
+<li><strong>Unauthorized</strong> - the project ID or API key used were not correct</li>
+<li><strong>QueryFormatError</strong> - the query was not correctly formatted</li>
+<li><strong>NetworkError</strong> - a network error occurred while running the query</li>
+<li><strong>GeneralError</strong> - a general/unknown error occurred while running the query  </li>
+</ul>
+<p>If the result is not successful, you will be able to find a general error message in <code>ErrorMessage</code>
+as well as field specific errors (if applicable) in <code>FieldErrors</code>.</p>
+<p>Exceptions are only thrown when a valid response is not received from the Connect API.  These would
+capture issues like client network connectivity. </p>
+<h1 id="exporting-events">Exporting events</h1>
+<p>Currently, this SDK does not support exporting events.</p>
+<p>However, you can use <a href="http.html#exporting-events">HTTP API</a> to perform exports as required.</p>
+<h1 id="deleting-collections">Deleting collections</h1>
+<p>Currently, this SDK does not support deleting collections.</p>
+<p>However, you can use the one of the following methods to delete collections if required:</p>
+<ul>
+<li><a href="https://app.getconnect.io/">Via the admin console</a></li>
+<li><a href="http.html#deleting-collections">With the HTTP API</a></li>
+</ul>
+<h1 id="projects-and-keys">Projects and keys</h1>
+<p>Connect allows you to manage multiple projects under a single account so that you can easily segregate
+your collections into logical projects.</p>
+<p>You could use this to separate analytics for entire projects, or to implement separation between different
+environments (e.g. My Project (Prod) and My Project (Dev)).</p>
+<p>To start pushing and querying your event data, you will need both a project ID and an API key.  This information
+is available to you <a href="http://app.getconnect.io/#/projects">via the admin console</a> inside each project under the &quot;Keys&quot; tab:</p>
+<p><img src="images/screens/projects-keys.png" alt="Screenshot of project keys in Connect admin console"></p>
+<p>By default, you can choose from four different types of keys, each with their own specific use:</p>
+<ul>
+<li><p><code>Push/Query Key</code> - you can use this key to both push events and execute queries.<br>You should only use this key in situations where it is not possible to isolate merely pushing or querying.</p>
+</li>
+<li><p><code>Push Key</code> - you can only use this key to push events.<br>You should use this key in your apps where you are tracking event data, but do not require querying.</p>
+</li>
+<li><p><code>Query Key</code> - you can only use this key to execute queries.<br>You should use this key in your reporting interfaces where you do not wish to track events.</p>
+</li>
+<li><p><code>Master Project Key</code> - you can use this key to execute all types of operations on a project, including
+pushing, querying and deleting collections.<br><strong>Keep this key safe</strong> - it is intended for very limited use and definitely should not be included in your main apps.</p>
+</li>
+</ul>
+<p>You must use your project ID and desired key to begin using Connect:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample88" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample88"><pre><code class="lang-csharp">Connect.Initialize(new BasicConfiguration(&quot;YOUR_API_KEY&quot;, &quot;YOUR_PROJECT_ID&quot;));
+</code></pre></div></div></div>
+
+
+
+
+
+
+
+
+<h1 id="security">Security</h1>
+<p>Security is a vital component to the Connect service and we take it very seriously.  It is important to consider
+how to ensure your data remains secure.</p>
+<h2 id="api-keys">API Keys</h2>
+<p>API keys are the core security mechanisms by which you can <a href="#pushing-events">push</a> and <a href="#querying-events">query</a>
+your data.  It is important to keep these keys safe by controlling where these keys exist and who has access to them.</p>
+<p>Each key can either push, query or both.  The most important key is the <code>Project Master Key</code> which can perform all of
+these actions, as well as administrative functions such as deleting data.  Read more about the keys <a href="#projects-and-keys">here</a>.</p>
+<h2 id="keeping-api-keys-secure">Keeping API Keys Secure</h2>
+<p>You should carefully consider when and which API keys to expose to users.</p>
+<p>Crucially, you should <strong>never</strong> expose your <code>Project Master Key</code> to users or embed it in client applications.
+If this key does get compromised, you can <a href="#resetting-the-master-key">reset it</a>.</p>
+<p>If you embed API keys in client applications, you should consider these keys as fully accessible to anyone having access
+to that client application.  This includes both mobile and web applications.</p>
+<h2 id="pushing-events-securely">Pushing events securely</h2>
+<p>While you can use a <code>Push Key</code> to prevent clients from querying events, you cannot restrict the collections or events
+clients can push to the API.  Unfortunately, this is the nature of tracking events directly client-side and opens the
+door to malicious users potentially sending bad data.</p>
+<p>In many circumstances, this is not an issue as users can already generate bad data simply by using your application in
+an incorrect way, generating events with bad or invalid data.  In circumstances where you absolutely cannot withstand
+bad event data, you should consider pushing the events server-side from a service under your control.</p>
+<p>Finally, if a <code>Push Key</code> is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<h2 id="querying-events-securely">Querying events securely</h2>
+<p>To query events, you must use an API key that has query permissions.  By default, a <code>Query Key</code> has full access to all
+events in all collections in your project.  If this key is exposed, a client could execute any type of query on your
+collections.</p>
+<p>You have a number of options on querying events securely:</p>
+<ol>
+<li><p>For internal querying or dashboard, you may consider it acceptable to expose the normal <code>Query Key</code> in client applications.
+Keep in mind that this key can execute any query on any collection in the project.</p>
+</li>
+<li><p>Generate a <a href="#filtered-keys">filtered key</a>, which applies a specific set of filters to all queries executed by clients
+with the key.</p>
+</li>
+<li><p>Only allow clients to execute queries via a service you control, which in turn executes queries via the Connect API server-side.</p>
+</li>
+</ol>
+<p>Finally, if a <code>Query Key</code> is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<h2 id="resetting-the-master-key">Resetting the master key</h2>
+<p>Resetting the <code>Project Master Key</code> will invalidate the previous key and generate a new, random key.  This action will also
+reset all other keys for the project (including the push, query and any <a href="#filtered-keys">filter keys</a> generated).</p>
+<p>Doing this is <strong>irreversible</strong> and would prevent all applications with existing keys from pushing to or querying the project.</p>
+<p>You can only reset the master key in the projects section of the <a href="http://app.getconnect.io">admin console</a>.</p>
+<h2 id="filtered-keys">Filtered keys</h2>
+<p>Filtered keys allows you to create an API key that can either push or query, and in the case of querying,
+apply one or more <a href="#filters">filters</a> to all queries executed with the key.</p>
+<p>This allows you to have finer control over security and what data clients can access, especially in multi-tenant
+environments.</p>
+<blockquote>
+<p><strong>Filters are only applied to queries</strong></p>
+<p>Any filters specified in your filtered key only apply to querying.  We currently do not support applying
+filters to restrict the pushing of events.</p>
+</blockquote>
+<p>Filtered keys can only push or query (as you specify), <em>never</em> administrative functions or deleting data.  </p>
+<h3 id="generating-a-filtered-key">Generating a filtered key</h3>
+<p>Filtered keys are generated and encrypted with the <code>Project Master Key</code>.  You do not have to register the
+filtered key with the Connect service.</p>
+<p>To generate a filtered key, you must supply the master key, key settings and <a href="#filters">filters</a>.  For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample89" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample89"><pre><code class="lang-csharp">var canPush = true;
+var canQuery = true;
+var keySettings = new KeySettings(canPush, canQuery);
+
+string filteredKey = Connect.FilteredKeyQuery()
+    .Where(&quot;customer.firstName&quot;, &quot;Tom&quot;)
+    .GenerateFilteredKey(&quot;YOUR_MASTER_KEY&quot;, keySettings);
+</code></pre></div></div></div>
+<table>
+    <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>filters</code></td>
+        <td><code>object</code></td>
+        <td>The filters to apply all queries executed when using the key.  This uses the same specification for <a href="#filters">defining filters</a> when querying normally.</td>
+    </tr>
+    <tr>
+        <td><code>canQuery</code></td>
+        <td><code>boolean</code></td>
+        <td>Whether or not the key can be used to execute queries.  If <code>false</code>, the <code>filters</code> property is ignored (as it does not applying to pushing).</td>
+    </tr>
+    <tr>
+        <td><code>canPush</code></td>
+        <td><code>boolean</code></td>
+        <td>Whether or not the key can be used to push events.</td>
+    </tr>
+</table>
+
+<p>You would use the resulting key when <a href="#initializing-the-client">creating a client</a> or to provide to client
+applications (e.g. in a browser using the <a href="js.html">JavaScript SDK</a>).</p>
+<h1 id="modeling-your-events">Modeling your events</h1>
+<p>When using Connect to analyze and visualize your data, it is important to understand how best to model your events.
+The way you structure your events will directly affect your ability to answer questions with your data.  It is therefore
+important to consider up-front the kind of questions you anticipate answering.</p>
+<h2 id="what-is-an-event-">What is an event?</h2>
+<p>An event is an action that occurs at a specific point in <strong>time</strong>. To answer &quot;why did this event occur?&quot;, our event needs
+to contain rich details about what the &quot;world&quot; looked like at that point in time.</p>
+<p>Put simply, events = action + time + state.</p>
+<p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
+analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample91" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample91"><pre><code class="lang-csharp">var myEvent = new {
+    type = &quot;cycling&quot;,
+    timestamp = DateTime.UtcNow,
+    duration = 67,
+    distance = 21255,
+    caloriesBurned = 455,
+    maxHeartRate = 182,
+    user = new {
+        id = 698396,
+        firstName = &quot;Bruce&quot;,
+        lastName = &quot;Jones&quot;,
+        age = 35
+    }
+};
+</code></pre></div></div></div>
+
+
+
+
+
+
+<h3 id="action">Action</h3>
+<p>What happened? In the above example, the action is <em>an activity was completed</em>.</p>
+<p>In most circumstances, we <a href="#collections">group all events of the same action into a single collection</a>.
+In this case, we could call our collection <code>activityCompleted</code>, or alternatively, just <code>activity</code>.</p>
+<h3 id="time">Time</h3>
+<p>When did it happen? In the above example, we specified the start time of the activity as the value of the <strong>timestamp</strong> property.
+The top-level <strong>timestamp</strong> property is a special property in Connect.  This is because <em>time</em> is an essential property of event
+data - it&apos;s not optional.</p>
+<p>When an event is pushed to Connect, the current time is assigned to the timestamp property if no value was provided by you.</p>
+<h3 id="state">State</h3>
+<p>What do we know about this action?  What do we know about the entities associated with this action?  What do we know about the &quot;world&quot;
+at this moment in time?  Every property in our event, besides the timestamp and the name of the collection, serves to answer those
+questions.  This is the most important aspect of our event - it&apos;s where all the answers live.</p>
+<p>The richer the data you provide in your event, the more questions you can answer for your users, therefore it&apos;s important to enrich
+your events with as much information as possible.  In stark contrast to the relational model where you would store this related
+information in separate tables and join at query time, in the event model this data is denormalized into each event, so as to know
+the state of the &quot;world&quot; at the point in time of the event.</p>
+<h2 id="collections">Collections</h2>
+<p>It is important when modeling your events to consider how you intend to group those events into collections.  This is a careful balance between events being
+broad enough to answer queries for your users, while specific enough to be manageable.</p>
+<p>In our <a href="#what-is-an-event-">activity example</a>, the activity contains different properties based on what the type of activity.  Our cycling activity contains properties associated
+with the bike that was used, while a kayaking activity may contain properties associated with a kayak that is used.</p>
+<p>Because a kayaking event may have different properties to a running event, it might seem logical to put each of them in distinct collections.  However, if we
+had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</code> collections, we would lose the opportunity to query details that are common to all activities.</p>
+<p>As a general rule, consider the common action among your events and decide if the specific variants of that action warrant grouping those events together. </p>
+<h2 id="structuring-your-events">Structuring your events</h2>
+<p>Events have the following core properties:</p>
+<ul>
+<li>Denormalized</li>
+<li>Immutable</li>
+<li>Rich/nested</li>
+<li>Schemaless</li>
+</ul>
+<p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
+<h3 id="events-are-denormalized">Events are denormalized</h3>
+<p>Consider our example event again, notice the age property of the user:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample98" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample98"><pre><code class="lang-csharp">var myEvent = new {
+    type = &quot;cycling&quot;,
+    ...
+    user = new {
+        id = 698396,
+        firstName = &quot;Bruce&quot;,
+        lastName = &quot;Jones&quot;,
+        age = 35
+    }
+};
+</code></pre></div></div></div>
+
+
+
+
+
+
+<p>The user&apos;s age is going to be duplicated in every activity he/she completes throughout the year. This may seem inefficient; however,
+remember that Connect is about <strong>analyzing</strong>.  This denormalization is a real win for analysis; the key is that event data stores state
+over time, rather than merely current state.  This helps us answer questions about <em>why</em> something happened, because we know what the
+&quot;world&quot; looked like at that point of time.</p>
+<p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
+We could simply execute the following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample105" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample105"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
+  .Select(new {
+    AverageDistance = Aggregations.Avg(&quot;distance&quot;)
+  })
+  .GroupBy(&quot;user.age&quot;)
+  .Execute();
+</code></pre></div></div></div>
+
+
+<p>It&apos;s this persistence of state over time that makes event data perfect for analysis.</p>
+<h3 id="events-are-immutable">Events are immutable</h3>
+<p>By their very nature, events cannot change, as they always record state at the point in time of the event.  This is also the reason to
+record as much rich information about the event and &quot;state of the world&quot; as possible.</p>
+<p>For example, in our example event above, while Bruce Jones may now be many years older, at the time he completed his bike ride, he was
+35 years of age.  By ensuring this event remains immutable, we can correctly analyze bike riding over time by 35-year-olds.</p>
+<p>Consider events as recording history - as much as we&apos;d occasionally like to, we can&apos;t change history!</p>
+<h3 id="events-are-rich-and-nested">Events are rich and nested</h3>
+<p>Events are rich in that they specify very detailed state.  They specify details about the event itself, the entities involved and the state of
+the &quot;world&quot; at that point in time. </p>
+<p>Consider our example activity event - the top level <strong>type</strong> property describes something about the activity itself (a run, a bike ride, a kayak
+etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
+activity, complete with their name and age.</p>
+<p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample108" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample108"><pre><code class="lang-csharp">var myEvent = new {
+    type = &quot;cycling&quot;,
+    ...
+    user = new {
+        id = 698396,
+        firstName = &quot;Bruce&quot;,
+        ...
+    },
+    bike = new {
+        id = 231806,
+        brand = &quot;Specialized&quot;,
+        model = &quot;S-Works Venge&quot;
+    },
+    weather = new {
+        condition = &quot;Raining&quot;,
+        temperature = 21,
+        humidity = 99,
+        wind = 17
+    }
+};
+</code></pre></div></div></div>
+
+
+
+
+
+
+<p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
+to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
+that was built by &quot;Specialized&quot;:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample115" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample115"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
+  .Select(new {
+    AverageDistance = Aggregations.Avg(&quot;distance&quot;)
+  })
+  .Where(&quot;bike.brand&quot;, &quot;Specialized&quot;)
+  .GroupBy(&quot;bike.model&quot;)
+  .Execute();
+</code></pre></div></div></div>
+
+
+<p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
+allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
+following query:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample118" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample118"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
+  .Select(new {
+    AverageDistance = Aggregations.Avg(&quot;distance&quot;)
+  })
+  .GroupBy(&quot;user.age&quot;, &quot;weather.condition&quot;)
+  .Execute();
+</code></pre></div></div></div>
+
+
+<p>As you can see, the richer and more denormalized the event, the more interesting answers can be derived when later querying.</p>
+<h3 id="events-are-schemaless">Events are schemaless</h3>
+<p>Events in Connect should be considered semi-structured - that is, they have an inherent structure, but it is not defined.  This means you can, and should,
+push as much detailed information about an event and the state of the &quot;world&quot; as possible.  Moreover, this allows you to improve your schema over time and
+add extra information about new events as that information becomes available.</p>
+<h2 id="restrictions">Restrictions</h2>
+<p>While you can post almost any event structure to Connect, there are a few, by-design restrictions.</p>
+<h3 id="property-names">Property names</h3>
+<ul>
+<li><p>You cannot have any property in the root document beginning with &quot;tp_&quot;. This is because we prefix our
+own internal properties with this. Internally, we merge our properties into your events for performance
+at query time.</p>
+</li>
+<li><p>The property &quot;_id&quot; is reserved and cannot be pushed.</p>
+</li>
+<li><p>The properties &quot;id&quot; and &quot;timestamp&quot; have special purposes. These allow consumers to specify a unique ID
+per event and override the event&apos;s timestamp respectively.  You cannot use the &quot;id&quot; property in queries.
+Refer to <a href="#reliability-of-events">&quot;reliability of events&quot;</a> and <a href="#timestamps">&quot;timestamps&quot;</a> for information.</p>
+</li>
+<li><p>The length of property names can&apos;t exceed 255 characters.  If you need property names longer than this, you
+probably <a href="#structuring-your-events">need to reconsider the structure of your event!</a></p>
+</li>
+<li><p>Properties cannot include a dot in their names.  This is because dots are used in querying to access nested
+properties.  The following is an example of an invalid event property due to a dot in the name:</p>
+</li>
+</ul>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample122" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample122"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new Dictionary&lt;string, object&gt; {
+    { &quot;invalid.property&quot;, &quot;value&quot; }
+});
+</code></pre></div></div></div>
+
+
+
+
+
+
+<h3 id="arrays">Arrays</h3>
+<p>While you can create events with arrays, it is currently not possible to take advantage of these arrays at
+query time.  Therefore, you should avoid using arrays in your events unless you plan to export the raw events.</p>
+<h3 id="distinct-count">Distinct count</h3>
+<p>Distinct count is currently not supported for querying, therefore you should consider how to structure your
+event if your application relies on this.</p>
+
+    </div>
+  </div>  
+</div>
+
+    </div>
+    
+    <footer>
+      <nav class="footer-nav navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand hidden-xs navbar-brand active" href="http://getconnect.io">
+              <div class="brand-logo-small"></div>
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://app.getconnect.io/#/projects">Projects</a></li>
+            <li><a href="https://app.getconnect.io/#/settings">Settings</a></li>
+            <li><a href="https://gitter.im/getconnect">Community</a></li>
+            <li><a href="http://docs.getconnect.io/">Docs</a></li>
+            <li>
+              <a href="https://github.com/getconnect">
+                <span class="ion ion-social-github"></span>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/getconnect_io">
+                <span class="ion ion-social-twitter"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+    
+    <div class="status">
+		    <a href="http://status.getconnect.io" target="_blank">
+		      <span class="color-dot"></span>
+		      <span class="color-description"></span>
+		    </a>
+		</div>
+    
+    <script src="https://statuspage-production.s3.amazonaws.com/se-v1.js"></script>
+    <script src="scripts/highlight.pack.min.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/svg-injector.min.js"></script>
+    <script src="scripts/docs.min.js"></script>
+  </body>
+</html>
