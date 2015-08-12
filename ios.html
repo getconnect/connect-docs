@@ -120,15 +120,15 @@ analyze their performance over time.  This is an event produced by our hypotheti
 <div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-objc">NSDictionary *myEvent = @{
                             @&quot;type&quot;: @&quot;cycling&quot;,
                             @&quot;timestamp&quot;: [NSDate date],
-                            @&quot;duration&quot;: 67,
-                            @&quot;distance&quot;: 21255,
-                            @&quot;caloriesBurned&quot;: 455,
-                            @&quot;maxHeartRate&quot;: 182,
+                            @&quot;duration&quot;: @67,
+                            @&quot;distance&quot;: @21255,
+                            @&quot;caloriesBurned&quot;: @455,
+                            @&quot;maxHeartRate&quot;: @182,
                             @&quot;user&quot;: @{
-                                @&quot;id&quot;: 698396,
+                                @&quot;id&quot;: @698396,
                                 @&quot;firstName&quot;: @&quot;Bruce&quot;,
                                 @&quot;lastName&quot;: @&quot;Jones&quot;,
-                                @&quot;age&quot;: 35
+                                @&quot;age&quot;: @35
                             }
                         };
 </code></pre></div><div class="tab-pane" id="code-sample5"><pre><code class="lang-swift">let myEvent = [
@@ -183,10 +183,10 @@ the state of the &quot;world&quot; at the point in time of the event.</p>
                             @&quot;type&quot;: @&quot;cycling&quot;,
                             ...
                             @&quot;user&quot;: @{
-                                @&quot;id&quot;: 698396,
+                                @&quot;id&quot;: @698396,
                                 @&quot;firstName&quot;: @&quot;Bruce&quot;,
                                 @&quot;lastName&quot;: @&quot;Jones&quot;,
-                                @&quot;age&quot;: 35
+                                @&quot;age&quot;: @35
                             }
                         };
 </code></pre></div><div class="tab-pane" id="code-sample12"><pre><code class="lang-swift">let myEvent = [
@@ -240,20 +240,20 @@ activity, complete with their name and age.</p>
                             @&quot;type&quot;: @&quot;cycling&quot;,
                             ...
                             @&quot;user&quot;: @{
-                                @&quot;id&quot;: 698396,
+                                @&quot;id&quot;: @698396,
                                 @&quot;firstName&quot;: @&quot;Bruce&quot;,
                                 ...
                             },
                             @&quot;bike&quot;: @{
-                                @&quot;id&quot;: 231806,
+                                @&quot;id&quot;: @231806,
                                 @&quot;brand&quot;: @&quot;Specialized&quot;,
                                 @&quot;model&quot;: @&quot;S-Works Venge&quot;
                             },
                             @&quot;weather&quot;: @{
                                 @&quot;condition&quot;: @&quot;Raining&quot;,
-                                @&quot;temperature&quot;: 21,
-                                @&quot;humidity&quot;: 99,
-                                @&quot;wind&quot;: 17
+                                @&quot;temperature&quot;: @21,
+                                @&quot;humidity&quot;: @99,
+                                @&quot;wind&quot;: @17
                             }
                         };
 </code></pre></div><div class="tab-pane" id="code-sample21"><pre><code class="lang-swift">let myEvent = [
