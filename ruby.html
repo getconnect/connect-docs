@@ -39,7 +39,7 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-3">
-      <nav data-spy="affix" id="nav-wrapper" class="hidden-xs" data-offset-top="60">
+      <nav data-spy="affix" id="nav-wrapper" class="hidden-xs" data-offset-top="60" data-offset-bottom="400">
         <ul class="nav switcher">
           <li class="dropdown active">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ruby<span class="caret"></span></a>
@@ -119,7 +119,7 @@ to contain rich details about what the &quot;world&quot; looked like at that poi
 analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample3"><pre><code class="lang-ruby">myEvent = {
     :type =&gt; &quot;cycling&quot;,
-    :timestamp =&gt; DateTime.now,
+    :timestamp =&gt; Time.now.utc,
     :duration =&gt; 67,
     :distance =&gt; 21255,
     :caloriesBurned =&gt; 455,
