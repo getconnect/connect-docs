@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Connect Docs :: Node.JS</title>
+    <title>HTTP API :: Connect Docs</title>
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
     <script src="//use.typekit.net/jyl8gjp.js?t=1438654489102"></script>
     <script>try{Typekit.load();}catch(e){}</script>
     <link rel="stylesheet" href="styles/all.min.css"/>
@@ -21,7 +22,7 @@
       <nav class="header-nav navbar navbar-inverse" role="navigation">
         <div class="container">
           <div class="navbar-header">
-            <a class="navbar-brand hidden-xs navbar-brand active" href="/">
+            <a class="navbar-brand navbar-brand active" href="/">
               <div class="docs-logo-small"></div>
             </a>
           </div>
@@ -38,22 +39,19 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-3">
-      <nav data-spy="affix" id="nav-wrapper" data-offset-top="60">
+      <nav data-spy="affix" id="nav-wrapper" class="hidden-xs" data-offset-top="60">
         <ul class="nav switcher">
           <li class="dropdown active">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Node.JS<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">HTTP API<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
-                  <a href="browser.html">Browser</a>
+                  <a href="js.html">JavaScript</a>
                 </li>
                 <li>
-                  <a href="nodejs.html">Node.JS</a>
+                  <a href="http.html">HTTP API</a>
                 </li>
                 <li>
                   <a href="ios.html">iOS</a>
-                </li>
-                <li>
-                  <a href="curl.html">Curl</a>
                 </li>
                 <li>
                   <a href="ruby.html">Ruby</a>
@@ -62,13 +60,13 @@
                   <a href="php.html">PHP</a>
                 </li>
                 <li>
+                  <a href="net.html">.NET</a>
+                </li>
+                <li>
                   <a href="java.html">Java</a>
                 </li>
                 <li>
                   <a href="android.html">Android</a>
-                </li>
-                <li>
-                  <a href="net.html">.NET</a>
                 </li>
             </ul>
           </li>
@@ -96,8 +94,19 @@
                 
               </li>    
               <li>
-                <a href="#nodejs-quickstart">Nodejs Quickstart</a>
+                <a href="#pushing-events">Pushing events</a>
                 
+                  <ul class="nav">
+                      <li>
+                        <a href="#restrictions">Restrictions</a>
+                      </li>    
+                      <li>
+                        <a href="#reliability-of-events">Reliability of events</a>
+                      </li>    
+                      <li>
+                        <a href="#overriding-the-timestamp">Overriding the timestamp</a>
+                      </li>    
+                  </ul>
               </li>    
           </ul>
         </nav>
@@ -134,6 +143,12 @@ analyze their performance over time.  This is an event produced by our hypotheti
     }
 }
 </code></pre></div></div></div>
+
+
+
+
+
+
 <h3 id="action">Action</h3>
 <p>What happened? In the above example, the action is <em>an activity was completed</em>.  We group all events of the same action into
 a single collection.  In this case, we could call our collection <code>activityCompleted</code>, or alternatively, just <code>activity</code>.</p>
@@ -161,7 +176,7 @@ the state of the &quot;world&quot; at the point in time of the event.</p>
 <p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
 <h3 id="events-are-denormalized">Events are denormalized</h3>
 <p>Consider our example event again, notice the age property of the user:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     ...
     &quot;user&quot;: {
@@ -172,13 +187,19 @@ the state of the &quot;world&quot; at the point in time of the event.</p>
     }
 }
 </code></pre></div></div></div>
+
+
+
+
+
+
 <p>The user&apos;s age is going to be duplicated in every activity he/she completes throughout the year. This may seem inefficient; however,
 remember that Connect is about <strong>analyzing</strong>.  This denormalization is a real win for analysis; the key is that event data stores state
 over time, rather than merely current state.  This helps us answer questions about <em>why</em> something happened, because we know what the
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample3"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample15"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;user.age&apos;);
 
@@ -202,7 +223,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample17" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample17"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     ...
     &quot;user&quot;: {
@@ -223,10 +244,16 @@ activity, complete with their name and age.</p>
     }
 }
 </code></pre></div></div></div>
+
+
+
+
+
+
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample24"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;bike.model&apos;);
   .filter({
@@ -237,7 +264,7 @@ that was built by &quot;Specialized&quot;:</p>
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample26" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample26"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
 </code></pre></div></div></div>
@@ -276,12 +303,12 @@ pushing, querying and deleteing collections.<br><strong>Keep this key safe</stro
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample10" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample10"><pre><code class="lang-js">var Connect = require(&apos;connect-js&apos;);
-
-var connect = new Connect({
-    projectId: &apos;YOUR_PROJECT_ID&apos;,
-    apiKey: &apos;YOUR_API_KEY&apos;
-});
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample31" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample31"><pre><code class="lang-bash">curl -X POST \
+  -H &quot;X-Project-Id: YOUR_PROJECT_ID&quot; \
+  -H &quot;X-API-Key: YOUR_API_KEY&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &apos;{ &quot;customer&quot;: { &quot;firstName&quot;: &quot;Tom&quot;, &quot;lastName&quot;: &quot;Smith&quot; }, &quot;product&quot;: &quot;12 red roses&quot;, &quot;purchasePrice&quot;: 34.95 }&apos; \
+  https://api.getconnect.io/events/test-collection
 </code></pre></div></div></div>
 
 
@@ -291,8 +318,73 @@ var connect = new Connect({
 
 
 
-<h1 id="nodejs-quickstart">Nodejs Quickstart</h1>
-<p>Welcome to node the docs!</p>
+<h1 id="pushing-events">Pushing events</h1>
+<p>Pushing events via HTTP is simple and requires no up-front schema definition or configuration.  Simply
+POST the JSON event to your collection endpoint and your data is available for querying immediately.</p>
+<p>The event can have any shape including nesting and arrays. This allows you to post complex, denormalized
+events from your application which allow for powerful querying and analysis.</p>
+<p>For example, <a href="#projects-and-keys">once you have your project ID and push API key</a>, to push an event to <code>test-collection</code>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-bash">curl -X POST \
+  -H &quot;X-Project-Id: YOUR_PROJECT_ID&quot; \
+  -H &quot;X-API-Key: YOUR_API_KEY&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &apos;{ &quot;customer&quot;: { &quot;firstName&quot;: &quot;Tom&quot;, &quot;lastName&quot;: &quot;Smith&quot; }, &quot;product&quot;: &quot;12 red roses&quot;, &quot;purchasePrice&quot;: 34.95 }&apos; \
+  https://api.getconnect.io/events/test-collection
+</code></pre></div></div></div>
+<p>Your event is now ready for <a href="#querying">querying</a>.</p>
+<h2 id="restrictions">Restrictions</h2>
+<p>While you can post almost any event structure to Connect, there are a few, by-design restrictions:</p>
+<ul>
+<li><p>You cannot have any property in the root document beginning with &quot;tp_&quot;. This is because we prefix our
+own internal properties with this. Internally, we merge our properties into your events for performance
+at query time.</p>
+</li>
+<li><p>The properties &quot;id&quot; and &quot;timestamp&quot; have special purposes. These allow consumers to specify a unique ID
+per event and override the event&apos;s timestamp respectively.  Read on below for more information.</p>
+</li>
+<li><p>The length of property names can&apos;t exceed 255 characters.  If you need property names longer than this, you
+probably <a href="#structuring-your-events">need to reconsider the structure of your event!</a></p>
+</li>
+<li><p>Properties cannot include a dot in its name.  This is because dots are used in querying to access nested
+properties.  The following is an example of an invalid event property due to a dot in the name:</p>
+</li>
+</ul>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample38" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample38"><pre><code class="lang-json">{
+    &quot;invalid.property&quot;: &quot;value&quot;
+}
+</code></pre></div></div></div>
+
+
+<h2 id="reliability-of-events">Reliability of events</h2>
+<p>When posting an event to Connect, we guarantee the storage of the event if a successful (200) response is returned. This means you can safely flag the event as recorded.</p>
+<p>To guarantee event delivery, it is recommended to queue the events for sending to Connect and only remove them from the queue once a successful response has been received.</p>
+<p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is delivered multiple times). For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-json">{
+    &quot;customer&quot;: {
+        &quot;firstName&quot;: &quot;Tom&quot;,
+        &quot;lastName&quot;: &quot;Smith&quot;
+    },
+    &quot;id&quot;: &quot;1849506679&quot;,
+    &quot;product&quot;: &quot;12 red roses&quot;,
+    &quot;purchasePrice&quot;: 34.95
+}
+</code></pre></div></div></div>
+<h2 id="overriding-the-timestamp">Overriding the timestamp</h2>
+<p>By default, if no &quot;timestamp&quot; property is sent with the event, Connect will use the current date and time as
+the timestamp of the event.</p>
+<p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
+of event times when events are queued.</p>
+<p>The timestamp must be supplied as an ISO-8601 formatted date. For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-json">{
+    &quot;customer&quot;: {
+        &quot;firstName&quot;: &quot;Tom&quot;,
+        &quot;lastName&quot;: &quot;Smith&quot;
+    },
+    &quot;timestamp&quot;: &quot;2015-02-05T14:55:56.587Z&quot;,
+    &quot;product&quot;: &quot;12 red roses&quot;,
+    &quot;purchasePrice&quot;: 34.95
+}
+</code></pre></div></div></div>
 
     </div>
   </div>  

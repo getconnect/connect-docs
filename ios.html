@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Connect Docs :: iOS</title>
+    <title>iOS :: Connect Docs</title>
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
     <script src="//use.typekit.net/jyl8gjp.js?t=1438654489102"></script>
     <script>try{Typekit.load();}catch(e){}</script>
     <link rel="stylesheet" href="styles/all.min.css"/>
@@ -21,7 +22,7 @@
       <nav class="header-nav navbar navbar-inverse" role="navigation">
         <div class="container">
           <div class="navbar-header">
-            <a class="navbar-brand hidden-xs navbar-brand active" href="/">
+            <a class="navbar-brand navbar-brand active" href="/">
               <div class="docs-logo-small"></div>
             </a>
           </div>
@@ -38,22 +39,19 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-3">
-      <nav data-spy="affix" id="nav-wrapper" data-offset-top="60">
+      <nav data-spy="affix" id="nav-wrapper" class="hidden-xs" data-offset-top="60">
         <ul class="nav switcher">
           <li class="dropdown active">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">iOS<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
-                  <a href="browser.html">Browser</a>
+                  <a href="js.html">JavaScript</a>
                 </li>
                 <li>
-                  <a href="nodejs.html">Node.JS</a>
+                  <a href="http.html">HTTP API</a>
                 </li>
                 <li>
                   <a href="ios.html">iOS</a>
-                </li>
-                <li>
-                  <a href="curl.html">Curl</a>
                 </li>
                 <li>
                   <a href="ruby.html">Ruby</a>
@@ -62,13 +60,13 @@
                   <a href="php.html">PHP</a>
                 </li>
                 <li>
+                  <a href="net.html">.NET</a>
+                </li>
+                <li>
                   <a href="java.html">Java</a>
                 </li>
                 <li>
                   <a href="android.html">Android</a>
-                </li>
-                <li>
-                  <a href="net.html">.NET</a>
                 </li>
             </ul>
           </li>
@@ -119,21 +117,41 @@ to contain rich details about what the &quot;world&quot; looked like at that poi
 <p>Put simply, events = action + time + state.</p>
 <p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
 analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample1" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample1"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-objc">NSDictionary *myEvent = @{
+                            @&quot;type&quot;: @&quot;cycling&quot;,
+                            @&quot;timestamp&quot;: [NSDate date],
+                            @&quot;duration&quot;: 67,
+                            @&quot;distance&quot;: 21255,
+                            @&quot;caloriesBurned&quot;: 455,
+                            @&quot;maxHeartRate&quot;: 182,
+                            @&quot;user&quot;: @{
+                                @&quot;id&quot;: 698396,
+                                @&quot;firstName&quot;: @&quot;Bruce&quot;,
+                                @&quot;lastName&quot;: @&quot;Jones&quot;,
+                                @&quot;age&quot;: 35
+                            }
+                        };
+</code></pre></div><div class="tab-pane" id="code-sample5"><pre><code class="lang-swift">let myEvent = [
     &quot;type&quot;: &quot;cycling&quot;,
-    &quot;timestamp&quot;: &quot;2015-06-23T16:31:56.587Z&quot;,
+    &quot;timestamp&quot;: NSDate(),
     &quot;duration&quot;: 67,
     &quot;distance&quot;: 21255,
     &quot;caloriesBurned&quot;: 455,
     &quot;maxHeartRate&quot;: 182,
-    &quot;user&quot;: {
-        &quot;id&quot;: &quot;638396&quot;,
+    &quot;user&quot;: [
+        &quot;id&quot;: 698396,
         &quot;firstName&quot;: &quot;Bruce&quot;,
         &quot;lastName&quot;: &quot;Jones&quot;,
         &quot;age&quot;: 35
-    }
-}
+    ]
+]
 </code></pre></div></div></div>
+
+
+
+
+
+
 <h3 id="action">Action</h3>
 <p>What happened? In the above example, the action is <em>an activity was completed</em>.  We group all events of the same action into
 a single collection.  In this case, we could call our collection <code>activityCompleted</code>, or alternatively, just <code>activity</code>.</p>
@@ -161,24 +179,40 @@ the state of the &quot;world&quot; at the point in time of the event.</p>
 <p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
 <h3 id="events-are-denormalized">Events are denormalized</h3>
 <p>Consider our example event again, notice the age property of the user:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample11"><pre><code class="lang-objc">NSDictionary *myEvent = @{
+                            @&quot;type&quot;: @&quot;cycling&quot;,
+                            ...
+                            @&quot;user&quot;: @{
+                                @&quot;id&quot;: 698396,
+                                @&quot;firstName&quot;: @&quot;Bruce&quot;,
+                                @&quot;lastName&quot;: @&quot;Jones&quot;,
+                                @&quot;age&quot;: 35
+                            }
+                        };
+</code></pre></div><div class="tab-pane" id="code-sample12"><pre><code class="lang-swift">let myEvent = [
     &quot;type&quot;: &quot;cycling&quot;,
     ...
-    &quot;user&quot;: {
-        &quot;id&quot;: &quot;638396&quot;,
+    &quot;user&quot;: [
+        &quot;id&quot;: 698396,
         &quot;firstName&quot;: &quot;Bruce&quot;,
         &quot;lastName&quot;: &quot;Jones&quot;,
         &quot;age&quot;: 35
-    }
-}
+    ]
+]
 </code></pre></div></div></div>
+
+
+
+
+
+
 <p>The user&apos;s age is going to be duplicated in every activity he/she completes throughout the year. This may seem inefficient; however,
 remember that Connect is about <strong>analyzing</strong>.  This denormalization is a real win for analysis; the key is that event data stores state
 over time, rather than merely current state.  This helps us answer questions about <em>why</em> something happened, because we know what the
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample3"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample15"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;user.age&apos;);
 
@@ -202,31 +236,57 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample20" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample20"><pre><code class="lang-objc">NSDictionary *myEvent = @{
+                            @&quot;type&quot;: @&quot;cycling&quot;,
+                            ...
+                            @&quot;user&quot;: @{
+                                @&quot;id&quot;: 698396,
+                                @&quot;firstName&quot;: @&quot;Bruce&quot;,
+                                ...
+                            },
+                            @&quot;bike&quot;: @{
+                                @&quot;id&quot;: 231806,
+                                @&quot;brand&quot;: @&quot;Specialized&quot;,
+                                @&quot;model&quot;: @&quot;S-Works Venge&quot;
+                            },
+                            @&quot;weather&quot;: @{
+                                @&quot;condition&quot;: @&quot;Raining&quot;,
+                                @&quot;temperature&quot;: 21,
+                                @&quot;humidity&quot;: 99,
+                                @&quot;wind&quot;: 17
+                            }
+                        };
+</code></pre></div><div class="tab-pane" id="code-sample21"><pre><code class="lang-swift">let myEvent = [
     &quot;type&quot;: &quot;cycling&quot;,
     ...
-    &quot;user&quot;: {
-        &quot;id&quot;: &quot;638396&quot;,
+    &quot;user&quot;: [
+        &quot;id&quot;: 698396,
         &quot;firstName&quot;: &quot;Bruce&quot;,
         ...
-    },
-    &quot;bike&quot;: {
-        &quot;id&quot;: &quot;231806&quot;,
+    ],
+    &quot;bike&quot;: [
+        &quot;id&quot;: 231806,
         &quot;brand&quot;: &quot;Specialized&quot;,
         &quot;model&quot;: &quot;S-Works Venge&quot;
-    }
-    &quot;weather&quot;: {
+    ],
+    &quot;weather&quot;: [
         &quot;condition&quot;: &quot;Raining&quot;,
         &quot;temperature&quot;: 21,
         &quot;humidity&quot;: 99,
         &quot;wind&quot;: 17
-    }
-}
+    ]
+]
 </code></pre></div></div></div>
+
+
+
+
+
+
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample24"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;bike.model&apos;);
   .filter({
@@ -237,7 +297,7 @@ that was built by &quot;Specialized&quot;:</p>
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample26" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample26"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
 </code></pre></div></div></div>
@@ -276,11 +336,11 @@ pushing, querying and deleteing collections.<br><strong>Keep this key safe</stro
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="swift">swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample11"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample29" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample30" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample29"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
 
 [TPConnectClient sharedClientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
                                     apiKey:@&quot;YOUR_API_KEY&quot;];
-</code></pre></div><div class="tab-pane" id="code-sample12"><pre><code class="lang-swift">TPConnectClient.sharedClientWithProjectId(&quot;YOUR_PROJECT_ID&quot;, apiKey: &quot;YOUR_API_KEY&quot;)
+</code></pre></div><div class="tab-pane" id="code-sample30"><pre><code class="lang-swift">TPConnectClient.sharedClientWithProjectId(&quot;YOUR_PROJECT_ID&quot;, apiKey: &quot;YOUR_API_KEY&quot;)
 </code></pre></div></div></div>
 
 
@@ -292,7 +352,7 @@ pushing, querying and deleteing collections.<br><strong>Keep this key safe</stro
 
 <h1 id="ios-quickstart">iOS Quickstart</h1>
 <p>Welcome to <em>ios</em> the docs!</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">swift<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample19" role="tab" data-toggle="tab" data-lang="swift">swift</a></li><li><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="swift">swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample19"><pre><code class="lang-swift">let connect = TPConnectClient(projectId: &quot;your-project-id&quot;, apiKey: &quot;your-api-key&quot;)
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Swift<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li><li><a href="#code-sample39" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-swift">let connect = TPConnectClient(projectId: &quot;your-project-id&quot;, apiKey: &quot;your-api-key&quot;)
 
 let purchase = [
   &quot;customer&quot;: [
@@ -306,7 +366,7 @@ let purchase = [
 connect.pushEvent(eventProperties, toCollection: &quot;purchases&quot;) {
   (success, error) in
 }
-</code></pre></div><div class="tab-pane" id="code-sample21"><pre><code class="lang-swift">let connect = TPConnectClient(projectId: &quot;your-project-id&quot;, apiKey: &quot;your-api-key&quot;)
+</code></pre></div><div class="tab-pane" id="code-sample39"><pre><code class="lang-swift">let connect = TPConnectClient(projectId: &quot;your-project-id&quot;, apiKey: &quot;your-api-key&quot;)
 
 let purchase = [
   &quot;customer&quot;: [
