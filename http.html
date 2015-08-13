@@ -199,15 +199,12 @@ over time, rather than merely current state.  This helps us answer questions abo
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample15"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
-  .select({ averageDistance: { avg: &apos;distance&apos; } })
-  .groupBy(&apos;user.age&apos;);
-
-var chart = connect.chart(query, &apos;#chart&apos;, {
-    title: &apos;Average distance per activity by age&apos;,
-    chart: { type: &apos;bar&apos; }
-});
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample17" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample17"><pre><code class="lang-json">{
+    &quot;select&quot;: { &quot;averageDistance&quot;: { &quot;avg&quot;: &quot;distance&quot; } },
+    &quot;groupBy&quot;: &quot;user.age&quot;
+}
 </code></pre></div></div></div>
+
 
 <p>It&apos;s this persistence of state over time that makes event data perfect for analysis.</p>
 <h3 id="events-are-immutable">Events are immutable</h3>
@@ -223,7 +220,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample17" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample17"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample18" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample18"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     ...
     &quot;user&quot;: {
@@ -253,21 +250,23 @@ activity, complete with their name and age.</p>
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample24"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
-  .select({ averageDistance: { avg: &apos;distance&apos; } })
-  .groupBy(&apos;bike.model&apos;);
-  .filter({
-    &apos;bike.brand&apos;: &apos;Specialized&apos;
-  });
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample27" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample27"><pre><code class="lang-json">{
+    &quot;select&quot;: { &quot;averageDistance&quot;: { &quot;avg&quot;: &quot;distance&quot; } },
+    &quot;groupBy&quot;: &quot;bike.model&quot;,
+    &quot;filter&quot;: { &quot;bike.brand&quot;: &quot;Specialized&quot; }
+}
 </code></pre></div></div></div>
+
 
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample26" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample26"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
-  .select({ averageDistance: { avg: &apos;distance&apos; } })
-  .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample30" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample30"><pre><code class="lang-json">{
+    &quot;select&quot;: { &quot;averageDistance&quot;: { &quot;avg&quot;: &quot;distance&quot; } },
+    &quot;groupBy&quot;: [&quot;user.age&quot;, &quot;weather.condition&quot;]
+}
 </code></pre></div></div></div>
+
 
 <p>As you can see, the richer and more denormalized the event, the more interesting answers can be derived when later querying.</p>
 <h3 id="events-are-schemaless">Events are schemaless</h3>
@@ -303,7 +302,7 @@ pushing, querying and deleteing collections.<br><strong>Keep this key safe</stro
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample31" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample31"><pre><code class="lang-bash">curl -X POST \
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample34" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample34"><pre><code class="lang-bash">curl -X POST \
   -H &quot;X-Project-Id: YOUR_PROJECT_ID&quot; \
   -H &quot;X-API-Key: YOUR_API_KEY&quot; \
   -H &quot;Content-Type: application/json&quot; \
@@ -324,7 +323,7 @@ POST the JSON event to your collection endpoint and your data is available for q
 <p>The event can have any shape including nesting and arrays. This allows you to post complex, denormalized
 events from your application which allow for powerful querying and analysis.</p>
 <p>For example, <a href="#projects-and-keys">once you have your project ID and push API key</a>, to push an event to <code>test-collection</code>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-bash">curl -X POST \
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-bash">curl -X POST \
   -H &quot;X-Project-Id: YOUR_PROJECT_ID&quot; \
   -H &quot;X-API-Key: YOUR_API_KEY&quot; \
   -H &quot;Content-Type: application/json&quot; \
@@ -349,7 +348,7 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample38" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample38"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-json">{
     &quot;invalid.property&quot;: &quot;value&quot;
 }
 </code></pre></div></div></div>
@@ -359,7 +358,7 @@ properties.  The following is an example of an invalid event property due to a d
 <p>When posting an event to Connect, we guarantee the storage of the event if a successful (200) response is returned. This means you can safely flag the event as recorded.</p>
 <p>To guarantee event delivery, it is recommended to queue the events for sending to Connect and only remove them from the queue once a successful response has been received.</p>
 <p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is delivered multiple times). For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample44" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample44"><pre><code class="lang-json">{
     &quot;customer&quot;: {
         &quot;firstName&quot;: &quot;Tom&quot;,
         &quot;lastName&quot;: &quot;Smith&quot;
@@ -375,7 +374,7 @@ the timestamp of the event.</p>
 <p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
 of event times when events are queued.</p>
 <p>The timestamp must be supplied as an ISO-8601 formatted date. For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-json">{
     &quot;customer&quot;: {
         &quot;firstName&quot;: &quot;Tom&quot;,
         &quot;lastName&quot;: &quot;Smith&quot;

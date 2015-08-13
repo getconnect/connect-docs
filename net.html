@@ -224,6 +224,7 @@ We could simply execute the following query:</p>
   .Execute();
 </code></pre></div></div></div>
 
+
 <p>It&apos;s this persistence of state over time that makes event data perfect for analysis.</p>
 <h3 id="events-are-immutable">Events are immutable</h3>
 <p>Events occur at a single point in time and record rich information about the event and state of the &quot;world&quot; at the point in time of that
@@ -238,7 +239,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample18" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample18"><pre><code class="lang-csharp">var myEvent = new {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample19" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample19"><pre><code class="lang-csharp">var myEvent = new {
     type = &quot;cycling&quot;,
     ...
     user = new {
@@ -268,7 +269,7 @@ activity, complete with their name and age.</p>
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample25" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample25"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample26" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample26"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
   .Select(new {
     AverageDistance = Aggregations.Avg(&quot;distance&quot;)
   })
@@ -277,16 +278,18 @@ that was built by &quot;Specialized&quot;:</p>
   .Execute();
 </code></pre></div></div></div>
 
+
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample27" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample27"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample29" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample29"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
   .Select(new {
     AverageDistance = Aggregations.Avg(&quot;distance&quot;)
   })
   .GroupBy(&quot;user.age&quot;, &quot;weather.condition&quot;)
   .Execute();
 </code></pre></div></div></div>
+
 
 <p>As you can see, the richer and more denormalized the event, the more interesting answers can be derived when later querying.</p>
 <h3 id="events-are-schemaless">Events are schemaless</h3>
@@ -322,7 +325,7 @@ pushing, querying and deleteing collections.<br><strong>Keep this key safe</stro
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample36" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample36"><pre><code class="lang-csharp">Connect.Initialize(new BasicConfiguration(&quot;YOUR_API_KEY&quot;, &quot;YOUR_PROJECT_ID&quot;));
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample39" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample39"><pre><code class="lang-csharp">Connect.Initialize(new BasicConfiguration(&quot;YOUR_API_KEY&quot;, &quot;YOUR_PROJECT_ID&quot;));
 </code></pre></div></div></div>
 
 
@@ -334,16 +337,16 @@ pushing, querying and deleteing collections.<br><strong>Keep this key safe</stro
 
 <h1 id="installing-the-sdk">Installing the SDK</h1>
 <p>Getting started is easy - simply install the .NET SDK using NuGet.  For example, from the package manager console:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="ps">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-ps">Install-Package ConnectSdk
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="ps">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-ps">Install-Package ConnectSdk
 </code></pre></div></div></div>
 <h1 id="initializing-the-client">Initializing the client</h1>
 <p>Before you can start <a href="#pushing-events">pushing events</a> or <a href="#querying">executing queries</a>, you must initialize the
 Connect client with your <a href="#projects-and-keys">project ID and API key</a>.</p>
 <p>You can either do this statically (when you don&apos;t wish to manage the client instances):</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample38" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample38"><pre><code class="lang-csharp">Connect.Initialize(new BasicConfiguration(&quot;API_KEY&quot;, &quot;PROJECT_ID&quot;))
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-csharp">Connect.Initialize(new BasicConfiguration(&quot;API_KEY&quot;, &quot;PROJECT_ID&quot;))
 </code></pre></div></div></div>
 <p>Or you can create a specific instance of a client (e.g. to push to/query multiple projects):</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample39" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample39"><pre><code class="lang-csharp">IConnect connect = new ConnectClient(new BasicConfiguration(&quot;API_KEY&quot;, &quot;PROJECT_ID&quot;));
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-csharp">IConnect connect = new ConnectClient(new BasicConfiguration(&quot;API_KEY&quot;, &quot;PROJECT_ID&quot;));
 </code></pre></div></div></div>
 <p>Both these classes confirm to the same API, so which you use is purely personal preference. The static method
 will be used in the remaining examples.</p>
@@ -352,14 +355,14 @@ will be used in the remaining examples.</p>
 <a href="https://msdn.microsoft.com/en-us/library/hh191443.aspx">asynchronous programming with async/await</a>.</p>
 <h2 id="single-event">Single event</h2>
 <p>To push a single event to a collection, you can specify the collection name and the event to push:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample43" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample43"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new {
     product = &quot;Something&quot;,
     cost = 2.01m
 });
 </code></pre></div></div></div>
 <h2 id="multiple-events">Multiple events</h2>
 <p>To push multiple events to a collection, you can specify the collection name and an enumerable of events to push:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-csharp">var events = new[] 
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample44" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample44"><pre><code class="lang-csharp">var events = new[] 
 {
     new { product = &quot;Something&quot;, cost = 2.01m },
     new { product = &quot;Something Else&quot;, cost = 4.02m }
@@ -372,10 +375,10 @@ var result = await Connect.Push(&quot;mycollection&quot;, events);
 the risk of network outages and is best practice.</p>
 <p>This can be achieved in the SDK by &quot;adding&quot; events into collections.</p>
 <h3 id="queueing-a-single-event">Queueing a single event</h3>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-csharp">await Connect.Add(&quot;mycollection&quot;, new { Name = &quot;Something&quot;, Cost = 2.01m });
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-csharp">await Connect.Add(&quot;mycollection&quot;, new { Name = &quot;Something&quot;, Cost = 2.01m });
 </code></pre></div></div></div>
 <h3 id="queueing-multiple-events">Queueing multiple events</h3>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample43" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample43"><pre><code class="lang-csharp">var events = new[] 
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample46" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample46"><pre><code class="lang-csharp">var events = new[] 
 {
     new { product = &quot;Something&quot;, cost = 2.01m },
     new { product = &quot;Something Else&quot;, cost = 4.02m }
@@ -386,7 +389,7 @@ await Connect.Add(&quot;mycollection&quot;, events);
 <h3 id="pushing-pending-events">Pushing pending events</h3>
 <p>Once you have queued events, you must call <code>PushPending()</code> to have those events pushed to Connect.  Ideally, this
 would be done regularly at an approriate time in your application lifecycle.</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample44" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample44"><pre><code class="lang-csharp">var results = await Connect.PushPending();
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample47" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample47"><pre><code class="lang-csharp">var results = await Connect.PushPending();
 </code></pre></div></div></div>
 <h2 id="restrictions">Restrictions</h2>
 <p>While you can post almost any event structure to Connect, there are a few, by-design restrictions:</p>
@@ -405,7 +408,7 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample47" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample47"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new Dictionary&lt;string, object&gt; {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample50" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample50"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new Dictionary&lt;string, object&gt; {
     { &quot;invalid.property&quot;, &quot;value&quot; }
 });
 </code></pre></div></div></div>
@@ -416,7 +419,7 @@ properties.  The following is an example of an invalid event property due to a d
 You should then handle the response from <code>PushPending()</code> to verify that all the events were successfully pushed.</p>
 <p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is
 delivered multiple times). For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new {
     id = &quot;12345&quot;,
     product = &quot;Something&quot;,
     cost = 2.01m
@@ -427,7 +430,7 @@ delivered multiple times). For example:</p>
 the timestamp of the event.</p>
 <p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
 of event times when events are queued.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample50" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample50"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample53" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample53"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new {
     timestamp = DateTime.Now,
     product = &quot;Something&quot;,
     cost = 2.01m

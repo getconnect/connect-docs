@@ -242,6 +242,7 @@ var chart = connect.chart(query, &apos;#chart&apos;, {
 });
 </code></pre></div></div></div>
 
+
 <p>It&apos;s this persistence of state over time that makes event data perfect for analysis.</p>
 <h3 id="events-are-immutable">Events are immutable</h3>
 <p>Events occur at a single point in time and record rich information about the event and state of the &quot;world&quot; at the point in time of that
@@ -256,7 +257,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample22" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample22"><pre><code class="lang-java">HashMap&lt;String, Object&gt; myEvent = new HashMap&lt;String, Object&gt;();
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-java">HashMap&lt;String, Object&gt; myEvent = new HashMap&lt;String, Object&gt;();
 myEvent.put(&quot;type&quot;, &quot;cycling&quot;);
 ...
 
@@ -289,7 +290,7 @@ myEvent.put(&quot;weather&quot;, weather);
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample24"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample25" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample25"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;bike.model&apos;);
   .filter({
@@ -297,13 +298,15 @@ that was built by &quot;Specialized&quot;:</p>
   });
 </code></pre></div></div></div>
 
+
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample26" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample26"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
 </code></pre></div></div></div>
+
 
 <p>As you can see, the richer and more denormalized the event, the more interesting answers can be derived when later querying.</p>
 <h3 id="events-are-schemaless">Events are schemaless</h3>
@@ -339,7 +342,7 @@ pushing, querying and deleteing collections.<br><strong>Keep this key safe</stro
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample34" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample34"><pre><code class="lang-java">ConnectClient client = new JavaConnectClient(&quot;YOUR_PROJECT_ID&quot;, &quot;YOUR_API_KEY&quot;);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-java">ConnectClient client = new JavaConnectClient(&quot;YOUR_PROJECT_ID&quot;, &quot;YOUR_API_KEY&quot;);
 </code></pre></div></div></div>
 
 
@@ -353,7 +356,7 @@ pushing, querying and deleteing collections.<br><strong>Keep this key safe</stro
 <p>Installing the SDK is easy if you&apos;re using either Gradle or Maven.</p>
 <h2 id="gradle">Gradle</h2>
 <p>Add the following to your build.gradle:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="groovy">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-groovy">repositories {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="groovy">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-groovy">repositories {
     mavenCentral()
 }
 dependencies {
@@ -363,7 +366,7 @@ dependencies {
 
 <h2 id="maven">Maven</h2>
 <p>Add the following dependency to your pom.xml:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample39" role="tab" data-toggle="tab" data-lang="xml">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample39"><pre><code class="lang-xml">&lt;dependency&gt;
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="xml">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-xml">&lt;dependency&gt;
   &lt;groupId&gt;io.getconnect&lt;/groupId&gt;
   &lt;artifactId&gt;connect-client-java&lt;/artifactId&gt;
   &lt;version&gt;1.0&lt;/version&gt;
@@ -372,7 +375,7 @@ dependencies {
 
 <h1 id="creating-a-client">Creating a client</h1>
 <p>To start pushing or queueing events for delivery to Connect, you must create a Connect client:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-java">ConnectClient client = new JavaConnectClient(&quot;PROJECT_ID&quot;, &quot;PUSH_API_KEY&quot;);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-java">ConnectClient client = new JavaConnectClient(&quot;PROJECT_ID&quot;, &quot;PUSH_API_KEY&quot;);
 </code></pre></div></div></div>
 
 <p>Each client is bound to a specific project.  If you wish to push to multiple projects, simply construct multiple clients.</p>
@@ -382,7 +385,7 @@ You can also construct your own <code>ConnectClient</code> and provide it with y
 <p>Once you have created a client, you can start pushing events easily.</p>
 <h2 id="single-event">Single event</h2>
 <p>To push a single event synchronously to Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample43" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample43"><pre><code class="lang-java">// Construct the event
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample46" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample46"><pre><code class="lang-java">// Construct the event
 HashMap&lt;String, Object&gt; event = new HashMap&lt;String, Object&gt;();
 event.put(&quot;product&quot;, &quot;banana&quot;);
 event.put(&quot;quantity&quot;, 5);
@@ -396,7 +399,7 @@ client.push(&quot;productsSold&quot;, event);
 <p>You can also queue events for pushing later to Connect.  This is useful if you are collecting many events and wish to push them periodically or on a specific trigger.</p>
 <p>Queueing events simply pushes the event into the configured <code>EventStore</code> (see <a href="#configuring-event-stores">Configuring event stores</a>).</p>
 <p>To queue an event:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample44" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample44"><pre><code class="lang-java">// Construct the event
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample47" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample47"><pre><code class="lang-java">// Construct the event
 HashMap&lt;String, Object&gt; event = new HashMap&lt;String, Object&gt;();
 event.put(&quot;product&quot;, &quot;banana&quot;);
 event.put(&quot;quantity&quot;, 5);
@@ -406,12 +409,12 @@ event.put(&quot;totalCost&quot;, 14.75);
 client.add(&quot;productsSold&quot;, event);
 </code></pre></div></div></div>
 <p>Periodically or on a specific trigger, you must call <code>pushPending()</code> which will synchronously push the queued events in a batch to Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-java">// Push the queued events to Connect
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-java">// Push the queued events to Connect
 client.pushPending();
 </code></pre></div></div></div>
 <h2 id="batches-of-events">Batches of events</h2>
 <p>You can also push multiple events to multiple collections in a single call:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample46" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample46"><pre><code class="lang-java">// Create the batch (collection name is the key)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample49" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample49"><pre><code class="lang-java">// Create the batch (collection name is the key)
 HashMap&lt;String, Map&lt;String, Object&gt;[]&gt; batch = new HashMap&lt;String, Map&lt;String, Object&gt;[]&gt;();
 
 // Construct the events
@@ -443,7 +446,7 @@ client.push(batch);
 <p>To queue events, the SDK uses an <code>EventStore</code> to store and retrieve events for queueing and later pushing, respectively.</p>
 <p>By default, <code>JavaConnectClient</code> uses <code>MemoryEventStore</code> to store events temporarily in memory.  This store is <strong>not</strong> persistent and is destroyed on application termination, therefore you should not use it for guaranteed delivery.</p>
 <p><code>JavaConnectClient</code> can be easily configured to store events in a <code>FileEventStore</code> on the filesystem by specifying an event store directory:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample47" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample47"><pre><code class="lang-java">ConnectClient client = new JavaConnectClient(&quot;PROJECT_ID&quot;, &quot;PUSH_API_KEY&quot;, &quot;/path/to/event/store&quot;);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample50" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample50"><pre><code class="lang-java">ConnectClient client = new JavaConnectClient(&quot;PROJECT_ID&quot;, &quot;PUSH_API_KEY&quot;, &quot;/path/to/event/store&quot;);
 </code></pre></div></div></div>
 <h2 id="restrictions">Restrictions</h2>
 <p>While you can post almost any event structure to Connect, there are a few, by-design restrictions:</p>
@@ -462,7 +465,7 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample49" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample49"><pre><code class="lang-java">event.put(&quot;invalid.property&quot;, &quot;value&quot;);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample52"><pre><code class="lang-java">event.put(&quot;invalid.property&quot;, &quot;value&quot;);
 </code></pre></div></div></div>
 
 
@@ -471,7 +474,7 @@ properties.  The following is an example of an invalid event property due to a d
 You should then handle the response from <code>pushPending()</code> to verify that all the events were successfully pushed.</p>
 <p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is
 delivered multiple times). For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-java">// Construct the event
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-java">// Construct the event
 HashMap&lt;String, Object&gt; event = new HashMap&lt;String, Object&gt;();
 event.put(&quot;product&quot;, &quot;banana&quot;);
 event.put(&quot;quantity&quot;, 5);
@@ -488,7 +491,7 @@ client.push(&quot;productsSold&quot;, event);
 the timestamp of the event.</p>
 <p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
 of event times when events are queued.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample52"><pre><code class="lang-java">// Construct the event
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample55" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample55"><pre><code class="lang-java">// Construct the event
 HashMap&lt;String, Object&gt; event = new HashMap&lt;String, Object&gt;();
 event.put(&quot;product&quot;, &quot;banana&quot;);
 event.put(&quot;quantity&quot;, 5);

@@ -237,6 +237,7 @@ var chart = connect.chart(query, &apos;#chart&apos;, {
 });
 </code></pre></div></div></div>
 
+
 <p>It&apos;s this persistence of state over time that makes event data perfect for analysis.</p>
 <h3 id="events-are-immutable">Events are immutable</h3>
 <p>Events occur at a single point in time and record rich information about the event and state of the &quot;world&quot; at the point in time of that
@@ -251,7 +252,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample17" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample17"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample18" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample18"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     ...
     &quot;user&quot;: {
@@ -281,7 +282,7 @@ activity, complete with their name and age.</p>
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample24"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample25" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample25"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;bike.model&apos;);
   .filter({
@@ -289,13 +290,15 @@ that was built by &quot;Specialized&quot;:</p>
   });
 </code></pre></div></div></div>
 
+
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample26" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample26"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
 </code></pre></div></div></div>
+
 
 <p>As you can see, the richer and more denormalized the event, the more interesting answers can be derived when later querying.</p>
 <h3 id="events-are-schemaless">Events are schemaless</h3>
@@ -331,7 +334,7 @@ pushing, querying and deleteing collections.<br><strong>Keep this key safe</stro
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-js">var Connect = require(&apos;connect-js&apos;);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample31" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample31"><pre><code class="lang-js">var Connect = require(&apos;connect-js&apos;);
 
 var connect = new Connect({
     projectId: &apos;YOUR_PROJECT_ID&apos;,
@@ -351,36 +354,36 @@ var connect = new Connect({
 <h2 id="cdn">CDN</h2>
 <p>You can easily reference the SDK for browser apps by including it from our CDN.  Simple copy and paste the 
 following script into your page:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="html">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-html">&lt;script src=&quot;https://cdn.getconnect.io/connect-js/{x.x.x}/standalone/connect-all.min.js&quot;&gt;&lt;/script&gt;
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="html">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-html">&lt;script src=&quot;https://cdn.getconnect.io/connect-js/{x.x.x}/standalone/connect-all.min.js&quot;&gt;&lt;/script&gt;
 </code></pre></div></div></div>
 <p>To take advantage of the visualizations provided, you must also reference the CSS (this is not required if you
 simply wish to push events using the SDK):</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample38" role="tab" data-toggle="tab" data-lang="html">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample38"><pre><code class="lang-html">&lt;link href=&quot;https://cdn.getconnect.io/connect-js/{x.x.x}/standalone/connect-all.min.css&quot; rel=&quot;stylesheet&quot; /&gt;
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="html">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-html">&lt;link href=&quot;https://cdn.getconnect.io/connect-js/{x.x.x}/standalone/connect-all.min.css&quot; rel=&quot;stylesheet&quot; /&gt;
 </code></pre></div></div></div>
 <p>For more info on visualization, see <a href="#visualizing-data">visualizing data</a>.</p>
 <h2 id="npm">NPM</h2>
 <p>If you are writing a Node.js app, or using NPM packages in the browser with something like <a href="http://browserify.org">Browserify</a>,
 you can install the package from NPM:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample39" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample39"><pre><code class="lang-bash">npm install connect-js
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-bash">npm install connect-js
 </code></pre></div></div></div>
 <p>You would then <code>require</code> the SDK as follows:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-js">var Connect = require(&apos;connect-js&apos;);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample43" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample43"><pre><code class="lang-js">var Connect = require(&apos;connect-js&apos;);
 </code></pre></div></div></div>
 <p>For browser apps, you can also install the visualization package:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-bash">npm install connect-js-viz
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample44" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample44"><pre><code class="lang-bash">npm install connect-js-viz
 </code></pre></div></div></div>
 <p>When using the visualization, you only need to <code>require</code> the viz package and all other functionality is included:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-js">var Connect = require(&apos;connect-js-viz&apos;);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-js">var Connect = require(&apos;connect-js-viz&apos;);
 </code></pre></div></div></div>
 <p>For more info on visualization, see <a href="#visualizing-data">visualizing data</a>.</p>
 <h2 id="bower">Bower</h2>
 <p>You can easily install the SDK from Bower:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample43" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample43"><pre><code class="lang-bash">bower install connect-js
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample46" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample46"><pre><code class="lang-bash">bower install connect-js
 </code></pre></div></div></div>
 <h1 id="creating-the-client">Creating the client</h1>
 <p>Before you can start <a href="#pushing-events">pushing events</a>, <a href="#querying">executing queries</a> or <a href="#visualizing-data">visualizing data</a>,
 you must create a Connect client with your <a href="#projects-and-keys">project ID and API key</a>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample44" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample44"><pre><code class="lang-js">var connect = new Connect({
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample47" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample47"><pre><code class="lang-js">var connect = new Connect({
     projectId: &apos;YOUR_PROJECT_ID&apos;,
     apiKey: &apos;YOUR_API_KEY&apos;
 });
@@ -390,14 +393,14 @@ you must create a Connect client with your <a href="#projects-and-keys">project 
 <p>Once you have created a client, you can start pushing events easily.</p>
 <h2 id="single-event">Single event</h2>
 <p>To push a single event into a collection simply call the push function on the Connect object and pass in the collection name and the event itself.</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-js">connect.push(&apos;purchases&apos;, {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-js">connect.push(&apos;purchases&apos;, {
     name: &apos;Phone&apos;, 
     price: 465.55
 });
 </code></pre></div></div></div>
 <h2 id="multiple-events">Multiple events</h2>
 <p>To push two or more events into a single collection call the push function on the Connect object and pass in the collection name and an array of the events.</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample46" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample46"><pre><code class="lang-js">connect.push(&apos;purchases&apos;, [
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample49" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample49"><pre><code class="lang-js">connect.push(&apos;purchases&apos;, [
     {
         name: &apos;Phone&apos;, 
         price: 465.55
@@ -410,7 +413,7 @@ you must create a Connect client with your <a href="#projects-and-keys">project 
 </code></pre></div></div></div>
 <h2 id="batches-of-events">Batches of events</h2>
 <p>You can also push multiple events to multiple collections in a single call by passing an object with arrays of events keyed by collection name.</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample47" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample47"><pre><code class="lang-js">connect.push({
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample50" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample50"><pre><code class="lang-js">connect.push({
     &apos;purchases&apos;: [
         {
             name: &apos;Phone&apos;,
@@ -446,7 +449,7 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-json">{
     &quot;invalid.property&quot;: &quot;value&quot;
 }
 </code></pre></div></div></div>
@@ -458,7 +461,7 @@ asynchronous operation to push the event.</p>
 <p>In a browser, this means you cannot guarantee the delivery of events successfully.</p>
 <p>In a Node.js app, you may want to consider create queues for your events to ensure they are delivered reliably.</p>
 <p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is delivered multiple times). For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-json">{
     &quot;customer&quot;: {
         &quot;firstName&quot;: &quot;Tom&quot;,
         &quot;lastName&quot;: &quot;Smith&quot;
@@ -474,7 +477,7 @@ the timestamp of the event.</p>
 <p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
 of event times when events are queued.</p>
 <p>The timestamp must be supplied as an ISO-8601 formatted date. For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample52"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample55" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample55"><pre><code class="lang-json">{
     &quot;customer&quot;: {
         &quot;firstName&quot;: &quot;Tom&quot;,
         &quot;lastName&quot;: &quot;Smith&quot;
