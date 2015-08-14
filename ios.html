@@ -284,7 +284,7 @@ limitations on querying which influences how you should structure your events.</
 <p>Refer to <a href="#restrictions">restrictions</a> in the <a href="#modeling-your-events">modeling your events</a> section.</p>
 <h2 id="reliability-of-events">Reliability of events</h2>
 <p>You can ensure delivery of events reliably by <a href="#queuing-events">queuing the events</a>.
-You should then handle the response from <code>PushPending()</code> to verify that all the events were successfully pushed.</p>
+You should then handle the response from <code>pushAllPendingEvents</code> to verify that all the events were successfully pushed.</p>
 <p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is
 delivered multiple times). For example:</p>
 <div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample14" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample14"><pre><code class="lang-objc">NSDictionary *event = @{
