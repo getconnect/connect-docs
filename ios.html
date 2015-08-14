@@ -74,7 +74,47 @@
         
         <ul class="nav left-nav bs-docs-sidenav">
               <li>
-                <a href="#what-is-connect-">What is Connect?</a>
+                <a href="#getting-started">Getting Started</a>
+                
+              </li>    
+              <li>
+                <a href="#installing-the-sdk">Installing the SDK</a>
+                
+              </li>    
+              <li>
+                <a href="#initializing-the-client">Initializing the client</a>
+                
+              </li>    
+              <li>
+                <a href="#pushing-events">Pushing events</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#single-event">Single event</a>
+                      </li>    
+                      <li>
+                        <a href="#batches-of-events">Batches of events</a>
+                      </li>    
+                      <li>
+                        <a href="#queuing-events">Queuing events</a>
+                      </li>    
+                      <li>
+                        <a href="#restrictions-on-pushing">Restrictions on pushing</a>
+                      </li>    
+                      <li>
+                        <a href="#reliability-of-events">Reliability of events</a>
+                      </li>    
+                      <li>
+                        <a href="#overriding-the-timestamp">Overriding the timestamp</a>
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
+                <a href="#querying-events">Querying events</a>
+                
+              </li>    
+              <li>
+                <a href="#projects-and-keys">Projects and keys</a>
                 
               </li>    
               <li>
@@ -85,28 +125,231 @@
                         <a href="#what-is-an-event-">What is an event?</a>
                       </li>    
                       <li>
+                        <a href="#collections">Collections</a>
+                      </li>    
+                      <li>
                         <a href="#structuring-your-events">Structuring your events</a>
                       </li>    
+                      <li>
+                        <a href="#restrictions">Restrictions</a>
+                      </li>    
                   </ul>
-              </li>    
-              <li>
-                <a href="#projects-and-keys">Projects and keys</a>
-                
-              </li>    
-              <li>
-                <a href="#ios-quickstart">iOS Quickstart</a>
-                
               </li>    
           </ul>
         </nav>
     </div>
     <div class="col-sm-9">
-      <h1 id="what-is-connect-">What is Connect?</h1>
-<p>Connect is a SaaS analytics service providing real-time, scalable querying and visualization of your event data.</p>
-<p>Use simple APIs and SDKs to easily push semi-structured events from your app without the need to configure
-schemas or index your data.  Write elegant queries to analyze your data and easily create visualizations for
-both internal users and external customers.</p>
-<p>The following guide will describe how to best model your events, push them to the service and query them in real-time.</p>
+      <h1 id="getting-started">Getting Started</h1>
+<p>The following guide will help you to get started using Connect.  Once you have your <a href="#projects-and-keys">project ID and API key</a> and
+you have decided how to <a href="#modeling-your-events">model your events</a>, you can start <a href="#pushing-events">pushing events</a> and <a href="#querying">executing queries</a>.</p>
+<h1 id="installing-the-sdk">Installing the SDK</h1>
+<p>The quickest and easiest way to install the SDK is via CocoaPods: <a href="http://cocoapods.org/?q=ConnectClient"><img src="http://img.shields.io/cocoapods/v/ConnectClient.svg" alt="Version"></a></p>
+<p>To do this, simply add the following line to your podfile and run <code>pod update</code>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample1" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample1"><pre><code class="lang-ruby">pod &apos;ConnectClient&apos;
+</code></pre></div></div></div>
+<h1 id="initializing-the-client">Initializing the client</h1>
+<p>Before you can start <a href="#pushing-events">pushing events</a>, you must initialize the
+Connect client with your <a href="#projects-and-keys">project ID and API key</a>.</p>
+<p>You can either initialize a shared client (when you don&apos;t want to manage client instances):</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
+
+[TPConnectClient sharedClientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
+                                    apiKey:@&quot;YOUR_API_KEY&quot;];
+</code></pre></div><div class="tab-pane" id="code-sample3"><pre><code class="lang-swift">TPConnectClient.sharedClientWithProjectId(&quot;YOUR_PROJECT_ID&quot;, apiKey: &quot;YOUR_API_KEY&quot;)
+</code></pre></div></div></div>
+
+<p>Or you can create a specific instance of a client (e.g. to push to/query multiple projects):</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
+
+TPConnectClient *client = [TPConnectClient clientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
+                                                        apiKey:@&quot;YOUR_API_KEY&quot;];
+</code></pre></div><div class="tab-pane" id="code-sample5"><pre><code class="lang-swift">let client = TPConnectClient.clientWithProjectId(&quot;YOUR_PROJECT_ID&quot;, apiKey: &quot;YOUR_API_KEY&quot;)
+</code></pre></div></div></div>
+
+<h1 id="pushing-events">Pushing events</h1>
+<p>The SDK supports pushing events directly into collections.</p>
+<h2 id="single-event">Single event</h2>
+<p>To push a single event to a collection, you can specify the collection name and the event to push:</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample7" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-objc">NSDictionary *event = @{
+                        @&quot;product&quot;: @&quot;Something&quot;,
+                        @&quot;cost&quot;: @(2.01)
+                        };
+
+[[TPConnectClient sharedClient] pushEvent:event
+                             toCollection:@&quot;mycollection&quot;
+                        completionHandler:^(BOOL success, NSError *error) {
+
+                        }];
+</code></pre></div><div class="tab-pane" id="code-sample7"><pre><code class="lang-swift">let event = [
+    &quot;product&quot;: &quot;Something&quot;,
+    &quot;cost&quot;: 2.01
+]
+
+TPConnectClient.sharedClient()?.pushEvent(event, toCollection: &quot;mycollection&quot;) {
+    (success, error) in
+
+}
+</code></pre></div></div></div>
+
+<h2 id="batches-of-events">Batches of events</h2>
+<p>To push multiple events to one or more collections, you can create a dictionary of collection names to arrays of events:</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample9" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-objc">NSArray *purchases = @[
+                       @{
+                           @&quot;name&quot;: @&quot;Phone&quot;,
+                           @&quot;price&quot;: @465.55
+                           },
+                       @{
+                           @&quot;name&quot;: @&quot;Case&quot;,
+                           @&quot;price&quot;: @5.55
+                           }
+                       ];
+
+NSDictionary *eftpos = @{
+                            @&quot;type&quot;: @&quot;visa&quot;,
+                            @&quot;total&quot;: @571.10
+                        };
+
+NSDictionary *batch = @{
+                            @&quot;purchases&quot;: purchases,
+                            @&quot;eftpos&quot;: @[eftpos]
+                        };
+
+[[TPConnectClient sharedClient] pushEventBatch:batch
+                             completionHandler:^(NSDictionary * results, NSError * error) {
+
+                             }];
+</code></pre></div><div class="tab-pane" id="code-sample9"><pre><code class="lang-swift">let batch = [
+    &quot;purchases&quot;: [
+        [
+            &quot;name&quot;: &quot;phone&quot;,
+            &quot;price&quot;: 465.55
+        ],
+        [
+            &quot;name&quot;: &quot;case&quot;,
+            &quot;price&quot;: 5.55
+        ]
+    ],
+    &quot;eftpos&quot;: [[
+        &quot;type&quot;: &quot;visa&quot;,
+        &quot;total&quot;: 571.10
+    ]]
+]
+
+TPConnectClient.sharedClient()?.pushEventBatch(batch) {
+    (results, error) in
+
+}
+</code></pre></div></div></div>
+
+<h2 id="queuing-events">Queuing events</h2>
+<p>Events can be stored/cached locally and pushed to Connect later.  This provides a level of reliability to mitigate
+the risk of network outages or device crashes.</p>
+<p>This can be achieved in the SDK by &quot;adding&quot; events into collections:</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample10" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample10"><pre><code class="lang-objc">NSError *error;
+
+[[TPConnectClient sharedClient] addEvent:event
+                            toCollection:@&quot;mycollection&quot;
+                               withError:&amp;error];
+</code></pre></div><div class="tab-pane" id="code-sample11"><pre><code class="lang-swift">var error: NSError?
+
+TPConnectClient.sharedClient()?.addEvent(event, toCollection: &quot;mycollection&quot;, withError: &amp;error)
+</code></pre></div></div></div>
+
+<p>Periodically or on a specific trigger, you must push the pending events in a batch to Connect:</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample13" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample12"><pre><code class="lang-objc">[[TPConnectClient sharedClient] pushAllPendingEventsWithCompletionHandler:^(NSDictionary * results, NSError * error) {
+
+}];
+</code></pre></div><div class="tab-pane" id="code-sample13"><pre><code class="lang-swift">TPConnectClient.sharedClient()?.pushAllPendingEventsWithCompletionHandler {
+    (results, error) in
+
+}
+</code></pre></div></div></div>
+
+<h2 id="restrictions-on-pushing">Restrictions on pushing</h2>
+<p>There are a number of restrictions on the properties you can use in your events and the
+limitations on querying which influences how you should structure your events.</p>
+<p>Refer to <a href="#restrictions">restrictions</a> in the <a href="#modeling-your-events">modeling your events</a> section.</p>
+<h2 id="reliability-of-events">Reliability of events</h2>
+<p>You can ensure delivery of events reliably by <a href="#queuing-events">queuing the events</a>.
+You should then handle the response from <code>PushPending()</code> to verify that all the events were successfully pushed.</p>
+<p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is
+delivered multiple times). For example:</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample14" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample14"><pre><code class="lang-objc">NSDictionary *event = @{
+                        @&quot;id&quot;: &quot;12345678&quot;,
+                        @&quot;product&quot;: @&quot;Something&quot;,
+                        @&quot;cost&quot;: @(2.01)
+                        };
+</code></pre></div><div class="tab-pane" id="code-sample15"><pre><code class="lang-swift">let event = [
+    &quot;id&quot;: &quot;12345678&quot;,
+    &quot;product&quot;: &quot;Something&quot;,
+    &quot;cost&quot;: 2.01
+]
+</code></pre></div></div></div>
+
+<h2 id="overriding-the-timestamp">Overriding the timestamp</h2>
+<p>By default, if no &quot;timestamp&quot; property is sent with the event, the SDK will use the current date and time as
+the timestamp of the event.</p>
+<p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
+of event times when events are queued.  For example:</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample20" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample20"><pre><code class="lang-objc">NSDictionary *event = @{
+                        @&quot;timestamp&quot;: [NSDate date],
+                        @&quot;product&quot;: @&quot;Something&quot;,
+                        @&quot;cost&quot;: @(2.01)
+                        };
+</code></pre></div><div class="tab-pane" id="code-sample21"><pre><code class="lang-swift">let event = [
+    &quot;timestamp&quot;: NSDate(),
+    &quot;product&quot;: &quot;Something&quot;,
+    &quot;cost&quot;: 2.01
+]
+</code></pre></div></div></div>
+
+
+
+
+
+<h1 id="querying-events">Querying events</h1>
+<p>Currently, this SDK does not support querying events.  However, you have the following options to query:</p>
+<ul>
+<li><a href="http.html#querying-events"><strong>HTTP API</strong></a> - send queries and receives results directly via JSON</li>
+<li><a href="js.html#querying-events"><strong>JavaScript SDK</strong></a> - query events and build visualizations client-side in the browser</li>
+<li><a href="net.html#querying-events"><strong>.NET SDK</strong></a> - query events using the fluent .NET query syntax</li>
+</ul>
+<p>We&apos;re really looking forward to supporting querying in all SDKs soon!</p>
+<h1 id="projects-and-keys">Projects and keys</h1>
+<p>Connect allows you to manage multiple projects under a single account so that you can easily segregate
+your collections into logical projects.</p>
+<p>You could use this to separate analytics for entire projects, or to implement separation between different
+environments (e.g. My Project (Prod) and My Project (Dev)).</p>
+<p>To start pushing and querying your event data, you will need both a project ID and an API key.  This information
+is available to you <a href="http://app.getconnect.io/#/projects">via the portal</a> inside each project under the &quot;Keys&quot; tab:</p>
+<p><img src="images/screens/projects-keys.png" alt="Screenshot of project keys in Connect portal"></p>
+<p>By default, you can choose from four different types of keys, each with their own specific use:</p>
+<ul>
+<li><p><code>Push/Query Key</code> - you can use this key to both push events and execute queries.<br>You should only use this key in situations where it is not possible to isolate merely pushing or querying.</p>
+</li>
+<li><p><code>Push Key</code> - you can only use this key to push events.<br>You should use this key in your apps where you are tracking event data, but do not require querying.</p>
+</li>
+<li><p><code>Query Key</code> - you can only use this key to execute queries.<br>You should use this key in your reporting interfaces where you do not wish to track events.</p>
+</li>
+<li><p><code>Master Project Key</code> - you can use this key to execute all types of operations on a project, including
+pushing, querying and deleting collections.<br><strong>Keep this key safe</strong> - it is intended for very limited use and definitely should not be included in your main apps.</p>
+</li>
+</ul>
+<p>You must use your project ID and desired key to begin using Connect:</p>
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
+
+[TPConnectClient sharedClientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
+                                    apiKey:@&quot;YOUR_API_KEY&quot;];
+</code></pre></div><div class="tab-pane" id="code-sample24"><pre><code class="lang-swift">TPConnectClient.sharedClientWithProjectId(&quot;YOUR_PROJECT_ID&quot;, apiKey: &quot;YOUR_API_KEY&quot;)
+</code></pre></div></div></div>
+
+
+
+
+
+
+
+
 <h1 id="modeling-your-events">Modeling your events</h1>
 <p>When using Connect to analyze and visualize your data, it is important to understand how best to model your events.
 The way you structure your events will directly affect your ability to answer questions with your data.  It is therefore
@@ -117,7 +360,7 @@ to contain rich details about what the &quot;world&quot; looked like at that poi
 <p>Put simply, events = action + time + state.</p>
 <p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
 analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-objc">NSDictionary *myEvent = @{
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample34" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample35" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample34"><pre><code class="lang-objc">NSDictionary *myEvent = @{
                             @&quot;type&quot;: @&quot;cycling&quot;,
                             @&quot;timestamp&quot;: [NSDate date],
                             @&quot;duration&quot;: @67,
@@ -131,7 +374,7 @@ analyze their performance over time.  This is an event produced by our hypotheti
                                 @&quot;age&quot;: @35
                             }
                         };
-</code></pre></div><div class="tab-pane" id="code-sample5"><pre><code class="lang-swift">let myEvent = [
+</code></pre></div><div class="tab-pane" id="code-sample35"><pre><code class="lang-swift">let myEvent = [
     &quot;type&quot;: &quot;cycling&quot;,
     &quot;timestamp&quot;: NSDate(),
     &quot;duration&quot;: 67,
@@ -153,8 +396,9 @@ analyze their performance over time.  This is an event produced by our hypotheti
 
 
 <h3 id="action">Action</h3>
-<p>What happened? In the above example, the action is <em>an activity was completed</em>.  We group all events of the same action into
-a single collection.  In this case, we could call our collection <code>activityCompleted</code>, or alternatively, just <code>activity</code>.</p>
+<p>What happened? In the above example, the action is <em>an activity was completed</em>.</p>
+<p>In most circumstances, we <a href="#collections">group all events of the same action into a single collection</a>.
+In this case, we could call our collection <code>activityCompleted</code>, or alternatively, just <code>activity</code>.</p>
 <h3 id="time">Time</h3>
 <p>When did it happen? In the above example, we specified the start time of the activity as the value of the <strong>timestamp</strong> property.
 The top-level <strong>timestamp</strong> property is a special property in Connect.  This is because <em>time</em> is an essential property of event
@@ -162,12 +406,20 @@ data - it&apos;s not optional.</p>
 <p>When an event is pushed to Connect, the current time is assigned to the timestamp property if no value was provided by you.</p>
 <h3 id="state">State</h3>
 <p>What do we know about this action?  What do we know about the entities associated with this action?  What do we know about the &quot;world&quot;
-at this moment in time?  Every property in our event, besides the timestamp and the name of the collection, serves to answer the those
-questions.  This is the most important aspect of our event it&apos;s where all the answers live.</p>
+at this moment in time?  Every property in our event, besides the timestamp and the name of the collection, serves to answer those
+questions.  This is the most important aspect of our event - it&apos;s where all the answers live.</p>
 <p>The richer the data you provide in your event, the more questions you can answer for your users, therefore it&apos;s important to enrich
-your events with as much information as possible.  In stark contast to the relational model where you would store this related
+your events with as much information as possible.  In stark contrast to the relational model where you would store this related
 information in separate tables and join at query time, in the event model this data is denormalized into each event, so as to know
 the state of the &quot;world&quot; at the point in time of the event.</p>
+<h2 id="collections">Collections</h2>
+<p>It is important when modeling your events to consider how you intend to group those events into collections.  This is a careful balance between events being
+broad enough to answer queries for your users, while specific enough to be manageable.</p>
+<p>In our <a href="#what-is-an-event-">activity example</a>, the activity contains different properties based on what the type of activity.  Our cycling activity contains properties associated
+with the bike that was used, while a kayaking activity may contain properties associated with a kayak that is used.</p>
+<p>Because a kayaking event may have different properties to a running event, it might seem logical to put each of them in distinct collections.  However, if we
+had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</code> collections, we would lose the opportunity to query details that are common to all activities.</p>
+<p>As a general rule, consider the common action among your events and decide if the specific variants of that action warrant grouping those events together. </p>
 <h2 id="structuring-your-events">Structuring your events</h2>
 <p>Events have the following core properties:</p>
 <ul>
@@ -179,7 +431,7 @@ the state of the &quot;world&quot; at the point in time of the event.</p>
 <p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
 <h3 id="events-are-denormalized">Events are denormalized</h3>
 <p>Consider our example event again, notice the age property of the user:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample11"><pre><code class="lang-objc">NSDictionary *myEvent = @{
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-objc">NSDictionary *myEvent = @{
                             @&quot;type&quot;: @&quot;cycling&quot;,
                             ...
                             @&quot;user&quot;: @{
@@ -189,7 +441,7 @@ the state of the &quot;world&quot; at the point in time of the event.</p>
                                 @&quot;age&quot;: @35
                             }
                         };
-</code></pre></div><div class="tab-pane" id="code-sample12"><pre><code class="lang-swift">let myEvent = [
+</code></pre></div><div class="tab-pane" id="code-sample42"><pre><code class="lang-swift">let myEvent = [
     &quot;type&quot;: &quot;cycling&quot;,
     ...
     &quot;user&quot;: [
@@ -212,7 +464,7 @@ over time, rather than merely current state.  This helps us answer questions abo
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample15"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;user.age&apos;);
 
@@ -225,11 +477,11 @@ var chart = connect.chart(query, &apos;#chart&apos;, {
 
 <p>It&apos;s this persistence of state over time that makes event data perfect for analysis.</p>
 <h3 id="events-are-immutable">Events are immutable</h3>
-<p>Events occur at a single point in time and record rich information about the event and state of the &quot;world&quot; at the point in time of that
-event.  By their very nature, events cannot change, as they always record state at the point in time of the event.</p>
+<p>By their very nature, events cannot change, as they always record state at the point in time of the event.  This is also the reason to
+record as much rich information about the event and &quot;state of the world&quot; as possible.</p>
 <p>For example, in our example event above, while Bruce Jones may now be many years older, at the time he completed his bike ride, he was
 35 years of age.  By ensuring this event remains immutable, we can correctly analyze bike riding over time by 35-year-olds.</p>
-<p>Consider events as recording history - as much as we&apos;d occassionally like to, we can&apos;t change history!</p>
+<p>Consider events as recording history - as much as we&apos;d occasionally like to, we can&apos;t change history!</p>
 <h3 id="events-are-rich-and-nested">Events are rich and nested</h3>
 <p>Events are rich in that they specify very detailed state.  They specify details about the event itself, the entities involved and the state of
 the &quot;world&quot; at that point in time. </p>
@@ -237,7 +489,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample22" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample21"><pre><code class="lang-objc">NSDictionary *myEvent = @{
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-objc">NSDictionary *myEvent = @{
                             @&quot;type&quot;: @&quot;cycling&quot;,
                             ...
                             @&quot;user&quot;: @{
@@ -257,7 +509,7 @@ activity, complete with their name and age.</p>
                                 @&quot;wind&quot;: @17
                             }
                         };
-</code></pre></div><div class="tab-pane" id="code-sample22"><pre><code class="lang-swift">let myEvent = [
+</code></pre></div><div class="tab-pane" id="code-sample52"><pre><code class="lang-swift">let myEvent = [
     &quot;type&quot;: &quot;cycling&quot;,
     ...
     &quot;user&quot;: [
@@ -287,7 +539,7 @@ activity, complete with their name and age.</p>
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample25" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample25"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample55" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample55"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;bike.model&apos;);
   .filter({
@@ -299,7 +551,7 @@ that was built by &quot;Specialized&quot;:</p>
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample58" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample58"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
 </code></pre></div></div></div>
@@ -310,40 +562,33 @@ following query:</p>
 <p>Events in Connect should be considered semi-structured - that is, they have an inherent structure, but it is not defined.  This means you can, and should,
 push as much detailed information about an event and the state of the &quot;world&quot; as possible.  Moreover, this allows you to improve your schema over time and
 add extra information about new events as that information becomes available.</p>
-<h3 id="grouping-events-into-collections">Grouping events into collections</h3>
-<p>It is important when modeling your events to consider how you intend to group those events into collections.  This is a careful balance between events being
-broad enough to answer queries for your users, while specific enough to be manageable.</p>
-<p>In our activity example, the activity contains different properties based on what the type of activity.  Our cycling activity contains properties associated
-with the bike that was used, while a kayaking activity may contain properties associated with a kayak that is used.</p>
-<p>Because a kayaking event may have different properties to a running event, it might seem logical to put each of them in distinct collections.  However, if we
-had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</code> collections, we would lose the opportunity to query details that are common to all activities.</p>
-<p>As a general rule, consider the common action among your events and decide if the specific variants of that action warrant grouping those events together. </p>
-<h1 id="projects-and-keys">Projects and keys</h1>
-<p>Connect allows you to manage multiple projects under a single account so that you can easily segregate
-your collections into logical projects.</p>
-<p>You could use this to separate analytics for entire projects, or to implement separation between different
-environments (e.g. My Project (Prod) and My Project (Dev)).</p>
-<p>To start pushing and querying your event data, you will need both a project ID and an API key.  This information
-is available to you <a href="http://app.getconnect.io/#/projects">via the portal</a> inside each project under the &quot;Keys&quot; tab:</p>
-<p><img src="images/screens/projects-keys.png" alt="Screenshot of project keys in Connect portal"></p>
-<p>By default, you can choose from four different types of keys, each with their own specific use:</p>
+<h2 id="restrictions">Restrictions</h2>
+<p>While you can post almost any event structure to Connect, there are a few, by-design restrictions.</p>
+<h3 id="property-names">Property names</h3>
 <ul>
-<li><p><code>Push/Query Key</code> - you can use this key to both push events and execute queries.<br>You should only use this key in situations where it is not possible to isolate merely pushing or querying.</p>
+<li><p>You cannot have any property in the root document beginning with &quot;tp_&quot;. This is because we prefix our
+own internal properties with this. Internally, we merge our properties into your events for performance
+at query time.</p>
 </li>
-<li><p><code>Push Key</code> - you can only use this key to push events.<br>You should use this key in your apps where you are tracking event data, but do not require querying.</p>
+<li><p>The property &quot;_id&quot; is reserved and cannot be pushed.</p>
 </li>
-<li><p><code>Query Key</code> - you can only use this key to execute queries.<br>You should use this key in your reporting interfaces where you do not wish to track events.</p>
+<li><p>The properties &quot;id&quot; and &quot;timestamp&quot; have special purposes. These allow consumers to specify a unique ID
+per event and override the event&apos;s timestamp respectively.  Refer to <a href="#reliability-of-events">&quot;reliability of events&quot;</a>
+and <a href="#overriding-the-timestamp">&quot;overriding the timestamp&quot;</a> for information.</p>
 </li>
-<li><p><code>Master Project Key</code> - you can use this key to execute all types of operations on a project, including
-pushing, querying and deleteing collections.<br><strong>Keep this key safe</strong> - it is intended for very limited use and definitely should not be included in your main apps.</p>
+<li><p>The length of property names can&apos;t exceed 255 characters.  If you need property names longer than this, you
+probably <a href="#structuring-your-events">need to reconsider the structure of your event!</a></p>
+</li>
+<li><p>Properties cannot include a dot in their names.  This is because dots are used in querying to access nested
+properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample32" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample33" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample32"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
-
-[TPConnectClient sharedClientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
-                                    apiKey:@&quot;YOUR_API_KEY&quot;];
-</code></pre></div><div class="tab-pane" id="code-sample33"><pre><code class="lang-swift">TPConnectClient.sharedClientWithProjectId(&quot;YOUR_PROJECT_ID&quot;, apiKey: &quot;YOUR_API_KEY&quot;)
+<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample66" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample67" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample66"><pre><code class="lang-objc">NSDictionary *event = @{
+                        @&quot;invalid.property&quot;: @&quot;value&quot;
+                        };
+</code></pre></div><div class="tab-pane" id="code-sample67"><pre><code class="lang-swift">let event = [
+    &quot;invalid.property&quot;: &quot;value&quot;
+]
 </code></pre></div></div></div>
 
 
@@ -351,42 +596,12 @@ pushing, querying and deleteing collections.<br><strong>Keep this key safe</stro
 
 
 
-
-
-<h1 id="ios-quickstart">iOS Quickstart</h1>
-<p>Welcome to <em>ios</em> the docs!</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Swift<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-swift">let connect = TPConnectClient(projectId: &quot;your-project-id&quot;, apiKey: &quot;your-api-key&quot;)
-
-let purchase = [
-  &quot;customer&quot;: [
-    &quot;firstName&quot;: &quot;Tom&quot;,
-    &quot;lastName&quot;: &quot;Smith&quot;
-  ],
-  &quot;product&quot;: &quot;12 red roses&quot;,
-  &quot;purchasePrice&quot;: 34.95
-]
-
-connect.pushEvent(eventProperties, toCollection: &quot;purchases&quot;) {
-  (success, error) in
-}
-</code></pre></div><div class="tab-pane" id="code-sample42"><pre><code class="lang-swift">let connect = TPConnectClient(projectId: &quot;your-project-id&quot;, apiKey: &quot;your-api-key&quot;)
-
-let purchase = [
-  &quot;customer&quot;: [
-    &quot;firstName&quot;: &quot;Tom&quot;,
-    &quot;lastName&quot;: &quot;Smith&quot;
-  ],
-  &quot;product&quot;: &quot;12 red roses&quot;,
-  &quot;purchasePrice&quot;: 34.95
-]
-
-connect.pushEvent(eventProperties, toCollection: &quot;purchases&quot;) {
-  (success, error) in
-}
-</code></pre></div></div></div>
-
-
-
+<h3 id="arrays">Arrays</h3>
+<p>While you can create events with arrays, it is currently not possible to take advantage of these arrays at
+query time.  Therefore, you should avoid using arrays in your events unless you plan to export the raw events.</p>
+<h3 id="distinct-count">Distinct count</h3>
+<p>Distinct count is currently not supported for querying, therefore you should consider how to structure your
+event if your application relies on this.</p>
 
     </div>
   </div>  
