@@ -272,6 +272,9 @@ TPConnectClient.sharedClient()?.addEvent(event, toCollection: &quot;mycollection
 }
 </code></pre></div></div></div>
 
+<p>The <code>results</code> is an <code>NSDictionary</code> keyed by collection name.  The value of the <code>NSDictionary</code> is an <code>NSArray</code> of
+<a href="http://cocoadocs.org/docsets/ConnectClient/0.2.0/Classes/TPEventAPIResponse.html">TPEventAPIResponse</a>
+indicating the response to an individual event.</p>
 <h2 id="bulk-importing-events">Bulk importing events</h2>
 <p>Currently, this SDK does not support bulk importing events.</p>
 <p>However, you can use the <a href="http.html#bulk-importing-events">HTTP API</a> to run bulk imports if you need.</p>

@@ -786,6 +786,8 @@ the desired start and end times in ISO-8601 format.</p>
     &quot;timeframe&quot;: { &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-25T00:00:00Z&quot; }
 }
 </code></pre></div></div></div>
+<p>This will match all events with a <code>timestamp</code> greater than or equal to 2015-02-01 00:00:00 and less than
+2015-02-25 00:00:00 UTC.</p>
 <blockquote>
 <p>You can&apos;t specify a timezone when using absolute timeframes as the timezone information comes from the ISO-8601
 dates specified.  An error will occur if you try to do this.</p>
