@@ -117,13 +117,16 @@
                         <a href="#configuring-event-stores">Configuring event stores</a>
                       </li>    
                       <li>
+                        <a href="#bulk-importing-events">Bulk importing events</a>
+                      </li>    
+                      <li>
                         <a href="#restrictions-on-pushing">Restrictions on pushing</a>
                       </li>    
                       <li>
                         <a href="#reliability-of-events">Reliability of events</a>
                       </li>    
                       <li>
-                        <a href="#overriding-the-timestamp">Overriding the timestamp</a>
+                        <a href="#timestamps">Timestamps</a>
                       </li>    
                   </ul>
               </li>    
@@ -259,6 +262,9 @@ client.push(batch);
 <p>To queue events, the SDK uses an <code>EventStore</code> to store and retrieve events for queuing and later pushing, respectively.</p>
 <p>By default, <code>AndroidConnectClient</code> uses <code>FileEventStore</code> to store events temporarily on the filesystem (in Android&apos;s cache directory).
 This store is persistent and will guarantee delivery even in the event of app/device failure.</p>
+<h2 id="bulk-importing-events">Bulk importing events</h2>
+<p>Currently, this SDK does not support bulk importing events.</p>
+<p>However, you can use the <a href="http.html#bulk-importing-events">HTTP API</a> to run bulk imports if you need.</p>
 <h2 id="restrictions-on-pushing">Restrictions on pushing</h2>
 <p>There are a number of restrictions on the properties you can use in your events and the
 limitations on querying which influences how you should structure your events.</p>
@@ -280,8 +286,16 @@ event.put(&quot;id&quot;, &quot;1849506679&quot;);
 // Push the event synchronously to Connect
 client.push(&quot;productsSold&quot;, event);
 </code></pre></div></div></div>
-<h2 id="overriding-the-timestamp">Overriding the timestamp</h2>
-<p>By default, if no &quot;timestamp&quot; property is sent with the event, the SDK will use the current date and time as
+<h2 id="timestamps">Timestamps</h2>
+<p>All events have a single <code>timestamp</code> property which records when the event being pushed occurred.  Events cannot
+have more than one date/time property.  If you feel you need more than one date/time property, you probably need
+to reconsider how you&apos;re <a href="#modeling-your-events">modeling your events</a>.</p>
+<blockquote>
+<p><strong>Querying</strong></p>
+<p>You can only run time interval queries or timeframe filters on the <code>timestamp</code> property.  No other date/time property
+in an event is supported for querying.</p>
+</blockquote>
+<p>By default, if no <code>timestamp</code> property is sent with the event, the SDK will use the current date and time as
 the timestamp of the event.</p>
 <p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
 of event times when events are queued.  For example:</p>
@@ -292,7 +306,7 @@ event.put(&quot;quantity&quot;, 5);
 event.put(&quot;totalCost&quot;, 14.75);
 
 // Set the event&apos;s timestamp
-event.put(&quot;timestamp&quot;, new Date());
+event.put(`timestamp`, new Date());
 
 // Push the event synchronously to Connect
 client.push(&quot;productsSold&quot;, event);
@@ -302,6 +316,12 @@ client.push(&quot;productsSold&quot;, event);
 
 
 
+<blockquote>
+<p><strong>Timezones</strong></p>
+<p>Timestamps are always recorded in UTC.  If you supply a timestamp in a timezone other than UTC, it will
+be converted to UTC.  When you query your events, you can specify a timezone so things like time intervals
+will be returned in local time.</p>
+</blockquote>
 <h1 id="querying-events">Querying events</h1>
 <p>Currently, this SDK does not support querying events.  However, you have the following options to query:</p>
 <ul>
@@ -525,8 +545,8 @@ at query time.</p>
 <li><p>The property &quot;_id&quot; is reserved and cannot be pushed.</p>
 </li>
 <li><p>The properties &quot;id&quot; and &quot;timestamp&quot; have special purposes. These allow consumers to specify a unique ID
-per event and override the event&apos;s timestamp respectively.  Refer to <a href="#reliability-of-events">&quot;reliability of events&quot;</a>
-and <a href="#overriding-the-timestamp">&quot;overriding the timestamp&quot;</a> for information.</p>
+per event and override the event&apos;s timestamp respectively.  You cannot use the &quot;id&quot; property in queries.
+Refer to <a href="#reliability-of-events">&quot;reliability of events&quot;</a> and <a href="#timestamps">&quot;timestamps&quot;</a> for information.</p>
 </li>
 <li><p>The length of property names can&apos;t exceed 255 characters.  If you need property names longer than this, you
 probably <a href="#structuring-your-events">need to reconsider the structure of your event!</a></p>

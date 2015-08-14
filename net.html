@@ -99,13 +99,16 @@
                         <a href="#queuing-events">Queuing events</a>
                       </li>    
                       <li>
+                        <a href="#bulk-importing-events">Bulk importing events</a>
+                      </li>    
+                      <li>
                         <a href="#restrictions-on-pushing">Restrictions on pushing</a>
                       </li>    
                       <li>
                         <a href="#reliability-of-events">Reliability of events</a>
                       </li>    
                       <li>
-                        <a href="#overriding-the-timestamp">Overriding the timestamp</a>
+                        <a href="#timestamps">Timestamps</a>
                       </li>    
                   </ul>
               </li>    
@@ -130,6 +133,9 @@
                       </li>    
                       <li>
                         <a href="#timezones">Timezones</a>
+                      </li>    
+                      <li>
+                        <a href="#error-handling">Error handling</a>
                       </li>    
                   </ul>
               </li>    
@@ -218,6 +224,9 @@ await Connect.Add(&quot;mycollection&quot;, events);
 would be done regularly at an appropriate time in your application lifecycle.</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-csharp">var results = await Connect.PushPending();
 </code></pre></div></div></div>
+<h2 id="bulk-importing-events">Bulk importing events</h2>
+<p>Currently, this SDK does not support bulk importing events.</p>
+<p>However, you can use the <a href="http.html#bulk-importing-events">HTTP API</a> to run bulk imports if you need.</p>
 <h2 id="restrictions-on-pushing">Restrictions on pushing</h2>
 <p>There are a number of restrictions on the properties you can use in your events and the
 limitations on querying which influences how you should structure your events.</p>
@@ -233,8 +242,16 @@ delivered multiple times). For example:</p>
     cost = 2.01m
 });
 </code></pre></div></div></div>
-<h2 id="overriding-the-timestamp">Overriding the timestamp</h2>
-<p>By default, if no &quot;timestamp&quot; property is sent with the event, the SDK will use the current date and time as
+<h2 id="timestamps">Timestamps</h2>
+<p>All events have a single <code>timestamp</code> property which records when the event being pushed occurred.  Events cannot
+have more than one date/time property.  If you feel you need more than one date/time property, you probably need
+to reconsider how you&apos;re <a href="#modeling-your-events">modeling your events</a>.</p>
+<blockquote>
+<p><strong>Querying</strong></p>
+<p>You can only run time interval queries or timeframe filters on the <code>timestamp</code> property.  No other date/time property
+in an event is supported for querying.</p>
+</blockquote>
+<p>By default, if no <code>timestamp</code> property is sent with the event, the SDK will use the current date and time as
 the timestamp of the event.</p>
 <p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
 of event times when events are queued.  For example:</p>
@@ -249,6 +266,12 @@ of event times when events are queued.  For example:</p>
 
 
 
+<blockquote>
+<p><strong>Timezones</strong></p>
+<p>Timestamps are always recorded in UTC.  If you supply a timestamp in a timezone other than UTC, it will
+be converted to UTC.  When you query your events, you can specify a timezone so things like time intervals
+will be returned in local time.</p>
+</blockquote>
 <h1 id="querying-events">Querying events</h1>
 <p>Querying events in Connect is easy.  Using the SDK, you can construct and execute queries using async/await.</p>
 <p>Once you have <a href="#creating-the-client">created a client</a> with a valid <a href="#projects-and-keys">read key</a>, you can start querying
@@ -278,18 +301,33 @@ result set that is returned.</p>
 <p>For example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample19" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample19"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
-        TotalSales = Aggregations.Sum(&quot;Price&quot;),
-        AveragePrice = Aggregations.Avg(&quot;Price&quot;),
-        MinPrice = Aggregations.Min(&quot;Price&quot;),
-        MaxPrice = Aggregations.Max(&quot;Price&quot;),
-        PurchaseCount = Aggregations.Count()
+        itemsSold = Aggregations.Count(),
+        totalPrice = Aggregations.Sum(&quot;price&quot;),
+        averagePrice = Aggregations.Avg(&quot;price&quot;),
+        minPrice = Aggregations.Min(&quot;price&quot;),
+        maxPrice = Aggregations.Max(&quot;price&quot;)
     })
     .Execute();
 </code></pre></div></div></div>
 
 
+<p>This would return a result like:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample21"><pre><code class="lang-csharp">// no important metadata because no group by, interval or timezone
+var metadata = queryResponse.Metadata;
+
+// no group by, so only a single result
+var singleResult = queryResponse.Results.First();
+
+// get the values from the result
+var itemsSold = (double)singleResult[&quot;itemsSold&quot;];
+var totalPrice = (double)singleResult[&quot;totalPrice&quot;];
+var averagePrice = (double)singleResult[&quot;averagePrice&quot;];
+var minPrice = (double)singleResult[&quot;minPrice&quot;];
+var maxPrice = (double)singleResult[&quot;maxPrice&quot;];
+</code></pre></div></div></div>
+
 <p>You can also use the <code>AggregationOperation</code> enum to specify the aggregation operation:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample20" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample20"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample22" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample22"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
         TotalSales = Aggregations.Use(AggregationOperation.Sum, &quot;Price&quot;),
         AveragePrice = Aggregations.Use(AggregationOperation.Avg, &quot;Price&quot;),
@@ -300,7 +338,7 @@ result set that is returned.</p>
     .Execute();
 </code></pre></div></div></div>
 <p>Or a string:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample21"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
         TotalSales = Aggregations.Use(&quot;Sum&quot;, &quot;Price&quot;),
         AveragePrice = Aggregations.Use(&quot;Avg&quot;, &quot;Price&quot;),
@@ -331,9 +369,9 @@ added - the rest are ignored.</li>
 </ul>
 <h2 id="filters">Filters</h2>
 <p>You can filter the events you wish to include in your queries by specifying one or more filters.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample24"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample26" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample26"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
-        TotalPrice = Aggregations.Sum(&quot;Price&quot;)
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
     })
     .Where(&quot;product&quot;, &quot;12 red roses&quot;)
     .Execute();
@@ -342,9 +380,9 @@ added - the rest are ignored.</li>
 
 <p>The above will filter the query results for only those events that have a <code>product</code> property equalling &quot;12 red roses&quot;.
 The above is also shorthand for the <strong>eq</strong> operator. To illustrate this, the following is identical to the above:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample27" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample27"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample29" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample29"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
-        TotalPrice = Aggregations.Sum(&quot;Price&quot;)
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
     })
     .Where(new {
         product = Filters.Eq(&quot;12 red roses&quot;)
@@ -355,17 +393,17 @@ The above is also shorthand for the <strong>eq</strong> operator. To illustrate 
 
 <p>The following match operators are currently supported:</p>
 <ul>
-<li>eq (equal to)</li>
-<li>neq (not equal to)</li>
-<li>gt (greater than)</li>
-<li>gte (greater than or equal to)</li>
-<li>lt (less than)</li>
-<li>lte (less than or equal to)</li>
-<li><a href="#exists-filter">exists (whether or not a property exists)</a></li>
-<li>startsWith (starts with - string values only)</li>
-<li>endsWidth (ends with - string values only)</li>
-<li>contains (contains - string values only)</li>
-<li><a href="#in-filter">in (property is one of a list of values)</a> </li>
+<li>Filters.Eq (equal to)</li>
+<li>Filters.Neq (not equal to)</li>
+<li>Filters.Gt (greater than)</li>
+<li>Filters.Gte (greater than or equal to)</li>
+<li>Filters.Lt (less than)</li>
+<li>Filters.Lte (less than or equal to)</li>
+<li><a href="#exists-filter">Filters.Exists (whether or not a property exists)</a></li>
+<li>Filters.StartsWith (starts with - string values only)</li>
+<li>Filters.EndsWith (ends with - string values only)</li>
+<li>Filters.Contains (contains - string values only)</li>
+<li><a href="#in-filter">Filters.In (property is one of a list of values)</a> </li>
 </ul>
 <h3 id="exists-filter">Exists filter</h3>
 <p>The exists filter will filter the query results for only events that either have or don&apos;t have the specified property
@@ -378,54 +416,91 @@ plan to change this behavior in the future, you should consider setting a defaul
 properties if you wish to make a distinction.</p>
 </blockquote>
 <p>For example, the following will filter for events that have a property called <code>gender</code>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
-    },
-    &quot;filter&quot;: {
-        &quot;gender&quot;: { &quot;exists&quot;: true }
-    }
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample32" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample32"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        TotalPrice = Aggregations.Sum(&quot;Price&quot;)
+    })
+    .Where(new {
+        gender = Filters.Exists(true)
+    })
+    .Execute();
 </code></pre></div></div></div>
 
+
 <p>Whereas the following will filter for events that <em>do not</em> have a property called <code>gender</code>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample30" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample30"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
-    },
-    &quot;filter&quot;: {
-        &quot;gender&quot;: { &quot;exists&quot;: false }
-    }
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample35" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample35"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new {
+        gender = Filters.Exists(false)
+    })
+    .Execute();
 </code></pre></div></div></div>
+
 
 <h3 id="in-filter">In filter</h3>
 <p>The in filter allows you to specify a list of values for which a field should match.</p>
 <p>For example, the following will filter for events that have a <code>category</code> of either &quot;Bikes&quot;, &quot;Books&quot; or &quot;Magazines&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample32" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample32"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
-    },
-    &quot;filter&quot;: {
-        &quot;category&quot;: { &quot;in&quot;: [&quot;Bikes&quot;, &quot;Books&quot;, &quot;Magazines&quot;] }
-    }
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample36" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample36"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new {
+        category = Filters.In(new[] {&quot;Bikes&quot;, &quot;Books&quot;, &quot;Magazines&quot;})
+    })
+    .Execute();
 </code></pre></div></div></div>
-
+<p>You can also use the shorthand of this:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(&quot;category&quot;, new[] {&quot;Bikes&quot;, &quot;Books&quot;, &quot;Magazines&quot;})
+    .Execute();
+</code></pre></div></div></div>
 <p><strong>Note:</strong> All values in the list must be of the same type (i.e. string, numeric or boolean).  Mixed types are currently not supported.</p>
 <h3 id="combining-filter-expressions">Combining filter expressions</h3>
 <p>You can also combine filter expressions to filter multiple values on the same property.</p>
 <p>For example, the following will filter for events with a <code>price</code> property greater than 5 but less than 10:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample34" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample34"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
-    },
-    &quot;filter&quot;: {
-        &quot;price&quot;: { &quot;gt&quot;: 5, &quot;lt&quot;: 10 }
-    }
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new Dictionary&lt;string, Filter[]&gt;{
+        {&quot;price&quot;, new[]{ Filters.Gt(5), Filters.Lt(10) }}
+    })
+    .Execute();
 </code></pre></div></div></div>
 
+
+<h3 id="chaining-filters">Chaining filters</h3>
+<p>Filters can be chained by calling the <code>Where</code> method multiple times. The query below will query for purchase that are
+in the &quot;Shirts&quot; category <strong>and</strong> have a delivery type of &quot;Standard&quot; or &quot;Express&quot;:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new {
+        category = Filters.Eq(&quot;Shirts&quot;)
+    })
+    .Where(new {    
+        delivery = Filters.In(new [] {&quot;Express&quot;, &quot;Standard&quot;})
+    })
+    .Execute();
+</code></pre></div></div></div>
+<h3 id="filter-dictionaries">Filter dictionaries</h3>
+<p>The SDK also supports specifying filters as dictionaries. This especially useful if you wish to specify a nested property path.
+For example, to filter on <code>product.category</code>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Where(new Dictionary&lt;string, Filter[]&gt;{
+        {&quot;product.category&quot;, Filters.Eq(&quot;Shirts&quot;)}
+    })
+    .Execute();
+</code></pre></div></div></div>
 <h3 id="-or-filters">&quot;Or&quot; filters</h3>
 <p>Currently, &quot;or&quot; filters are not supported.</p>
 <h2 id="timeframes">Timeframes</h2>
@@ -434,13 +509,14 @@ properties if you wish to make a distinction.</p>
 <p>If no timeframe is specified, events will not be filtered by time; the query will match events from all time.</p>
 </blockquote>
 <p>For example, the following query filters for events only for this month:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample36" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample36"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
-    },
-    &quot;timeframe&quot;: &quot;this_month&quot;
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .ThisMonth()
+    .Execute();
 </code></pre></div></div></div>
+
 
 <p>There are two types of timeframes:</p>
 <ul>
@@ -453,51 +529,70 @@ properties if you wish to make a distinction.</p>
 <p><strong>Timezones</strong></p>
 <p>By default, all relative timeframes are <strong>UTC</strong> by default. See the <a href="#timezones">timezone section</a> to specify your own timezone.</p>
 </blockquote>
-<p>The following are supported string timeframes:</p>
+<p>The following are supported timeframes:</p>
 <ul>
-<li>this_minute</li>
-<li>last_minute</li>
-<li>this_hour</li>
-<li>last_hour</li>
-<li>today</li>
-<li>yesterday</li>
-<li>this_week</li>
-<li>last_week</li>
-<li>this_month</li>
-<li>last_month</li>
-<li>this_quarter</li>
-<li>last_quarter</li>
-<li>this_year</li>
-<li>last_year</li>
+<li>ThisMinute()</li>
+<li>LastMinute()</li>
+<li>ThisHour()</li>
+<li>LastHour()</li>
+<li>Today()</li>
+<li>Yesterday()</li>
+<li>ThisWeek()</li>
+<li>LastWeek()</li>
+<li>ThisMonth()</li>
+<li>LastMonth()</li>
+<li>ThisQuarter()</li>
+<li>LastQuarter()</li>
+<li>ThisYear()</li>
+<li>LastYear()</li>
 </ul>
+<p>You can also specify a relative timeframe with an enum:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample46" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample46"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .WithRelativeTimeframe(RelativeTimeWindow.ThisMonth)
+    .Execute();
+</code></pre></div></div></div>
+<p>Or a string:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample47" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample47"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .WithRelativeTimeframe(&quot;this_month&quot;)
+    .Execute();
+</code></pre></div></div></div>
 <p>You can also specify exactly how many current/previous periods you wish to include in the query results.</p>
 <p>For example, if you want to filter by the <strong>today and the last 2 days</strong>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample38" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample38"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
-    },
-    &quot;timeframe&quot;: { &quot;current&quot;: { &quot;days&quot;: 3 } }
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Current(3, TimeType.Days)
+    .Execute();
 </code></pre></div></div></div>
-
 <p>Or, to filter by the <strong>last 2 months, excluding the current month</strong>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
-    },
-    &quot;timeframe&quot;: { &quot;previous&quot;: { &quot;months&quot;: 2 } }
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample49" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample49"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Previous(2, TimeType.Months)
+    .Execute();
 </code></pre></div></div></div>
-
+<blockquote>
+<p>If you are using C# 6.0 or above you may find it useful to statically include the RelativeWindow and TimeType enums.</p>
+<p><code>using static ConnectSdk.Querying.RelativeWindow</code><br><code>using static ConnectSdk.Querying.TimeType</code></p>
+<p>This enables you to use the enums without prefixes.</p>
+</blockquote>
 <p>The following periods are supported for complex, relative timeframes:</p>
 <ul>
-<li>minutes</li>
-<li>hours</li>
-<li>days</li>
-<li>weeks</li>
-<li>months</li>
-<li>quarters</li>
-<li>years</li>
+<li>TimeType.Minutes</li>
+<li>TimeType.Hours</li>
+<li>TimeType.Days</li>
+<li>TimeType.Weeks</li>
+<li>TimeType.Months</li>
+<li>TimeType.Quarters</li>
+<li>TimeType.Years</li>
 </ul>
 <blockquote>
 <p><strong>Weeks</strong></p>
@@ -505,15 +600,25 @@ properties if you wish to make a distinction.</p>
 day of the week you&apos;d like to start your weeks.</p>
 </blockquote>
 <h3 id="absolute-timeframes">Absolute timeframes</h3>
-<p>You can specify an absolute timeframe by constructing an object with the <strong>start</strong> and <strong>end</strong> properties set to
-the desired start and end times in ISO-8601 format.</p>
-<p>For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;totalPrice&quot;: { sum: &quot;price&quot; }
-    },
-    &quot;timeframe&quot;: { &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-25T00:00:00Z&quot; }
-}
+<p>You can specify an absolute timeframe to filter events that occurred between specific dates.  For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample50" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample50"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Between(new DateTime(2015, 01, 01), new DateTime(2015, 01, 06))
+    .Execute()
+</code></pre></div></div></div>
+<blockquote>
+<p>The Connect API only accepts UTC dates for an absolute timeframe, therefore if you specify a DateTime with a kind of
+<code>DateTimeKind.Local</code>, it will be converted to UTC before querying.</p>
+</blockquote>
+<p>You can also use <code>StartingAt</code> or <code>EndingAt</code> to filter events that occurred after or before a specific date, respectively:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .StartingAt(new DateTime(2015, 01, 01))
+    .Execute()
 </code></pre></div></div></div>
 <blockquote>
 <p>You can&apos;t specify a timezone when using absolute timeframes as the timezone information comes from the ISO-8601
@@ -530,119 +635,94 @@ should consider setting a default value as opposed to a null value on properties
 a distinction.</p>
 </blockquote>
 <p>For example, to query gross sales by country:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample43" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample43"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;grossSales&quot;: { &quot;sum&quot;: &quot;revenue&quot; }
-    },
-    &quot;groupBy&quot;: &quot;country&quot;
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;sales&quot;)
+    .Select(new {
+        grossSales = Aggregations.Sum(&quot;revenue&quot;)
+    })
+    .GroupBy(&quot;country&quot;)
+    .Execute();
 </code></pre></div></div></div>
 
+
 <p>This would return a result like:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-json">{
-    &quot;metadata&quot;: {
-        &quot;groups&quot;: [&quot;country&quot;],
-        &quot;interval&quot;: null,
-        &quot;timezone&quot;: null
-    },
-    &quot;results&quot;: [{
-        &quot;country&quot;: &quot;Australia&quot;,
-        &quot;grossSales&quot;: 1000000
-    },
-    {
-        &quot;country&quot;: &quot;Italy&quot;,
-        &quot;grossSales&quot;: 2500000
-    },
-    {
-        &quot;country&quot;: &quot;United States&quot;,
-        &quot;grossSales&quot;: 10000000
-    }]
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample56" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample56"><pre><code class="lang-csharp">var metadata = queryResponse.Metadata;
+// metadata.Groups is new string[] {&quot;country&quot;}
+
+foreach (var result in queryResponse.Results) {
+    Console.WriteLine(string.Format(&quot;{0}: {1}&quot;, result[&quot;country&quot;], result[&quot;grossSales&quot;]));
 }
+
+// output is:
+//
+// Australia: 1000000
+// Italy: 2500000
+// United States: 10000000
 </code></pre></div></div></div>
+
 <h3 id="grouping-by-multiple-properties">Grouping by multiple properties</h3>
-<p>You can also group by multiple properties in your events by providing an array of property names.</p>
+<p>You can also group by multiple properties in your events by providing multiple property names.</p>
 <p>For example, to query gross sales by country and product category:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample46" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample46"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;grossSales&quot;: { &quot;sum&quot;: &quot;revenue&quot; }
-    },
-    &quot;groupBy&quot;: [&quot;country&quot;, &quot;product.category&quot;]
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample59" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample59"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;sales&quot;)
+    .Select(new {
+        grossSales = Aggregations.Sum(&quot;revenue&quot;)
+    })
+    .GroupBy(&quot;country&quot;, &quot;product.category&quot;)
+    .Execute();
 </code></pre></div></div></div>
 
+
 <p>This would return a result like:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-json">{
-    &quot;metadata&quot;: {
-        &quot;groups&quot;: [&quot;country&quot;, &quot;product.category&quot;],
-        &quot;interval&quot;: null,
-        &quot;timezone&quot;: null
-    },
-    &quot;results&quot;: [{
-        &quot;country&quot;: &quot;Australia&quot;,
-        &quot;product.category&quot;: &quot;Bikes&quot;,
-        &quot;grossSales&quot;: 500000
-    },
-    {
-        &quot;country&quot;: &quot;Australia&quot;,
-        &quot;product.category&quot;: &quot;Cars&quot;,
-        &quot;grossSales&quot;: 500000
-    },
-    {
-        &quot;country&quot;: &quot;Italy&quot;,
-        &quot;product.category&quot;: &quot;Scooters&quot;,
-        &quot;grossSales&quot;: 2500000
-    },
-    {
-        &quot;country&quot;: &quot;United States&quot;,
-        &quot;product.category&quot;: &quot;Mobile Phones&quot;,
-        &quot;grossSales&quot;: 8000000
-    },
-    {
-        &quot;country&quot;: &quot;United States&quot;,
-        &quot;product.category&quot;: &quot;Laptops&quot;,
-        &quot;grossSales&quot;: 2000000
-    }] 
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample61" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample61"><pre><code class="lang-csharp">var metadata = queryResponse.Metadata;
+// metadata.Groups is new string[] {&quot;country&quot;, &quot;product.category&quot;}
+
+foreach (var result in queryResponse.Results) {
+    Console.WriteLine(string.Format(&quot;{0} - {1}: {2}&quot;, result[&quot;country&quot;],
+        result[&quot;product.category&quot;], result[&quot;grossSales&quot;]));
 }
+
+// output is:
+//
+// Australia - Bikes: 500000
+// Austrlaia - Cars: 500000
+// Italy - Scooters: 2500000
+// United States - Mobile Phones: 8000000
+// United States - Laptops: 2000000
 </code></pre></div></div></div>
+
 <h2 id="time-intervals">Time intervals</h2>
 <p>Time intervals allow you to group results by a time period, so that you could analyze your events over time.</p>
 <p>For example, to query daily gross sales this month:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample49" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample49"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;grossSales&quot;: { &quot;sum&quot;: &quot;revenue&quot; }
-    },
-    &quot;timeframe&quot;: &quot;this_month&quot;,
-    &quot;interval&quot;: &quot;daily&quot;
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample64" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample64"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;sales&quot;)
+    .Select(new {
+        grossSales = Aggregations.Sum(&quot;revenue&quot;)
+    })
+    .ThisMonth()
+    .Daily()
+    .Execute();
 </code></pre></div></div></div>
 
+
 <p>This would return a result like:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-json">{
-    &quot;metadata&quot;: {
-        &quot;groups&quot;: [],
-        &quot;interval&quot;: &quot;daily&quot;,
-        &quot;timezone&quot;: null
-    },
-    &quot;results&quot;: [{
-        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-02T00:00:00Z&quot; },
-        &quot;results&quot;: [{
-            &quot;grossSales&quot;: 500000
-        }]
-    },
-    {
-        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-02T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-03T00:00:00Z&quot; },
-        &quot;results&quot;: [{
-            &quot;grossSales&quot;: 150000
-        }]
-    },
-    {
-        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-03T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-04T00:00:00Z&quot; },
-        &quot;results&quot;: [{
-            &quot;grossSales&quot;: 25000
-        }]
-    }]
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample66" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample66"><pre><code class="lang-csharp">var metadata = queryResponse.Metadata;
+// metadata.Interval is Interval.Daily
+
+foreach (var intervalResult in queryResponse.Results) {
+    // intervalResult is QueryIntervalResult&lt;IDictionary&lt;string, object&gt;&gt;
+
+    // single result because no group by
+    var result = intervalResult.Results.First();
+
+    Console.WriteLine(string.Format(&quot;{0:d} to {1:d}: {2}&quot;, intervalResult.Start,
+        intervalResult.End, result[&quot;grossSales&quot;]));
 }
+
+// output is (en-US dates):
+//
+// 02/01/2015 to 02/02/2015: 500000
+// 02/02/2015 to 02/03/2015: 150000
+// 02/03/2015 to 02/04/2015: 25000
 </code></pre></div></div></div>
+
 <p>The following time intervals are supported:</p>
 <ul>
 <li>minutely</li>
@@ -656,76 +736,54 @@ a distinction.</p>
 <h3 id="time-interval-with-group-by">Time interval with group by</h3>
 <p>You can also combine a time interval with a group by in your query.</p>
 <p>For example, to query daily gross sales this month by country:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample52"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;grossSales&quot;: { &quot;sum&quot;: &quot;revenue&quot; }
-    },
-    &quot;timeframe&quot;: &quot;this_month&quot;,
-    &quot;interval&quot;: &quot;daily&quot;,
-    &quot;groupBy&quot;: &quot;country&quot;
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample69" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample69"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;sales&quot;)
+    .Select(new {
+        grossSales = Aggregations.Sum(&quot;revenue&quot;)
+    })
+    .ThisMonth()
+    .Daily()
+    .GroupBy(&quot;country&quot;)
+    .Execute();
 </code></pre></div></div></div>
 
+
 <p>This would return a result like:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-json">{
-    &quot;metadata&quot;: {
-        &quot;groups&quot;: [&quot;country&quot;],
-        &quot;interval&quot;: &quot;daily&quot;,
-        &quot;timezone&quot;: null
-    },
-    &quot;results&quot;: [{
-        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-02T00:00:00Z&quot; },
-        &quot;results&quot;: [
-            {
-                &quot;country&quot;: &quot;Australia&quot;,
-                &quot;grossSales&quot;: 100000
-            },
-            {
-                &quot;country&quot;: &quot;Italy&quot;,
-                &quot;grossSales&quot;: 100000
-            },
-            {
-                &quot;country&quot;: &quot;United States&quot;,
-                &quot;grossSales&quot;: 300000
-            }
-        ]
-    },
-    {
-        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-02T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-03T00:00:00Z&quot; },
-        &quot;results&quot;: [
-            {
-                &quot;country&quot;: &quot;Australia&quot;,
-                &quot;grossSales&quot;: 25000
-            },
-            {
-                &quot;country&quot;: &quot;Italy&quot;,
-                &quot;grossSales&quot;: 25000
-            },
-            {
-                &quot;country&quot;: &quot;United States&quot;,
-                &quot;grossSales&quot;: 100000
-            }
-        ]
-    },
-    {
-        &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-03T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-04T00:00:00Z&quot; },
-        &quot;results&quot;: [
-            {
-                &quot;country&quot;: &quot;Australia&quot;,
-                &quot;grossSales&quot;: 5000
-            },
-            {
-                &quot;country&quot;: &quot;Italy&quot;,
-                &quot;grossSales&quot;: 5000
-            },
-            {
-                &quot;country&quot;: &quot;United States&quot;,
-                &quot;grossSales&quot;: 15000
-            }
-        ]
-    }]
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample71" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample71"><pre><code class="lang-csharp">var metadata = queryResponse.Metadata;
+// metadata.Interval is Interval.Daily
+// metadata.Groups is new string[] { &quot;country&quot; }
+
+foreach (var intervalResult in queryResponse.Results) {
+    // intervalResult is QueryIntervalResult&lt;IDictionary&lt;string, object&gt;&gt;
+
+    Console.WriteLine(string.Format(&quot;Totals for {0:d} to {1:d}:&quot;,
+        intervalResult.Start, intervalResult.End));
+
+    foreach (var result in intervalResult.Results) {
+        Console.WriteLine(string.Format(&quot;{0}: {1}&quot;, result[&quot;country&quot;], result[&quot;grossSales&quot;]));
+    }
+
+    Console.WriteLine();
 }
+
+// output is (en-US dates):
+//
+// Totals for 02/01/2015 to 02/02/2015:
+// Australia: 100000
+// Italy: 100000
+// United States: 300000
+//
+// Totals for 02/02/2015 to 02/03/2015:
+// Australia: 25000
+// Italy: 25000
+// United States: 100000
+//
+// Totals for 02/03/2015 to 02/04/2015:
+// Australia: 5000
+// Italy: 5000
+// United States: 15000
+//
 </code></pre></div></div></div>
+
 <h2 id="timezones">Timezones</h2>
 <p>By default, Connect uses <strong>UTC</strong> as the timezone for queries with relative timeframes or time intervals.
 You can override this to be the timezone of your choice by specifying the <strong>timezone</strong> in your query.</p>
@@ -734,24 +792,34 @@ You can override this to be the timezone of your choice by specifying the <stron
 <a href="#relative-timeframes">relative timeframe</a>.  If you try to specify a timezone without one of these
 set, an error will be returned.</p>
 </blockquote>
-<p>You can specify a numeric (float or integer) value for an hours offset of UTC, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample55" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample55"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
-    },
-    &quot;timezone&quot;: 10
-}
+<p>You can specify a numeric (decimal) value for an hours offset of UTC, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample74" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample74"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Timezone(10)
+    .Execute();
 </code></pre></div></div></div>
+
 
 <p>You can also specify a string which contains an <a href="http://www.iana.org/time-zones">IANA time zone identifier</a>, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample57" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample57"><pre><code class="lang-json">{
-    &quot;select&quot;: {
-        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
-    },
-    &quot;timezone&quot;: &quot;Australia/Brisbane&quot;
-}
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample77" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample77"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
+    .Select(new {
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
+    })
+    .Timezone(&quot;Australia/Brisbane&quot;)
+    .Execute();
 </code></pre></div></div></div>
 
+
+<h2 id="error-handling">Error handling</h2>
+<p>When you <code>Execute()</code> a query, you will receive a <code>QueryResponse</code> in response to the query.
+You should check the <code>Status</code> of this response to ensure it is successful and, if not, handle the error
+gracefully.</p>
+<p>If the result is not successful, you will be able to find a general error message in <code>ErrorMessage</code>
+as well as field specific errors (if applicable) in <code>FieldErrors</code>.</p>
+<p>Exceptions are only thrown when a valid response is not received from the Connect API.  These would
+capture issues like network connectivity. </p>
 <h1 id="projects-and-keys">Projects and keys</h1>
 <p>Connect allows you to manage multiple projects under a single account so that you can easily segregate
 your collections into logical projects.</p>
@@ -773,7 +841,7 @@ pushing, querying and deleting collections.<br><strong>Keep this key safe</stron
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample67" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample67"><pre><code class="lang-csharp">Connect.Initialize(new BasicConfiguration(&quot;YOUR_API_KEY&quot;, &quot;YOUR_PROJECT_ID&quot;));
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample86" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample86"><pre><code class="lang-csharp">Connect.Initialize(new BasicConfiguration(&quot;YOUR_API_KEY&quot;, &quot;YOUR_PROJECT_ID&quot;));
 </code></pre></div></div></div>
 
 
@@ -793,7 +861,7 @@ to contain rich details about what the &quot;world&quot; looked like at that poi
 <p>Put simply, events = action + time + state.</p>
 <p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
 analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample69" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample69"><pre><code class="lang-csharp">var myEvent = new {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample88" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample88"><pre><code class="lang-csharp">var myEvent = new {
     type = &quot;cycling&quot;,
     timestamp = DateTime.UtcNow,
     duration = 67,
@@ -850,7 +918,7 @@ had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</cod
 <p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
 <h3 id="events-are-denormalized">Events are denormalized</h3>
 <p>Consider our example event again, notice the age property of the user:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample76" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample76"><pre><code class="lang-csharp">var myEvent = new {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample95" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample95"><pre><code class="lang-csharp">var myEvent = new {
     type = &quot;cycling&quot;,
     ...
     user = new {
@@ -873,7 +941,7 @@ over time, rather than merely current state.  This helps us answer questions abo
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample83" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample83"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample102" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample102"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
   .Select(new {
     AverageDistance = Aggregations.Avg(&quot;distance&quot;)
   })
@@ -896,7 +964,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample86" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample86"><pre><code class="lang-csharp">var myEvent = new {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample105" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample105"><pre><code class="lang-csharp">var myEvent = new {
     type = &quot;cycling&quot;,
     ...
     user = new {
@@ -926,7 +994,7 @@ activity, complete with their name and age.</p>
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample93" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample93"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample112" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample112"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
   .Select(new {
     AverageDistance = Aggregations.Avg(&quot;distance&quot;)
   })
@@ -939,7 +1007,7 @@ that was built by &quot;Specialized&quot;:</p>
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample96" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample96"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample115" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample115"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;activity&quot;)
   .Select(new {
     AverageDistance = Aggregations.Avg(&quot;distance&quot;)
   })
@@ -964,8 +1032,8 @@ at query time.</p>
 <li><p>The property &quot;_id&quot; is reserved and cannot be pushed.</p>
 </li>
 <li><p>The properties &quot;id&quot; and &quot;timestamp&quot; have special purposes. These allow consumers to specify a unique ID
-per event and override the event&apos;s timestamp respectively.  Refer to <a href="#reliability-of-events">&quot;reliability of events&quot;</a>
-and <a href="#overriding-the-timestamp">&quot;overriding the timestamp&quot;</a> for information.</p>
+per event and override the event&apos;s timestamp respectively.  You cannot use the &quot;id&quot; property in queries.
+Refer to <a href="#reliability-of-events">&quot;reliability of events&quot;</a> and <a href="#timestamps">&quot;timestamps&quot;</a> for information.</p>
 </li>
 <li><p>The length of property names can&apos;t exceed 255 characters.  If you need property names longer than this, you
 probably <a href="#structuring-your-events">need to reconsider the structure of your event!</a></p>
@@ -974,7 +1042,7 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample100" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample100"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new Dictionary&lt;string, object&gt; {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample119" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample119"><pre><code class="lang-csharp">var result = await Connect.Push(&quot;mycollection&quot;, new Dictionary&lt;string, object&gt; {
     { &quot;invalid.property&quot;, &quot;value&quot; }
 });
 </code></pre></div></div></div>

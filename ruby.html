@@ -92,6 +92,17 @@
               <li>
                 <a href="#initializing-the-client">Initializing the client</a>
                 
+                  <ul class="nav">
+                      <li>
+                        <a href="#reliability-of-events">Reliability of events</a>
+                      </li>    
+                      <li>
+                        <a href="#bulk-importing-events">Bulk importing events</a>
+                      </li>    
+                      <li>
+                        <a href="#restrictions-on-pushing">Restrictions on pushing</a>
+                      </li>    
+                  </ul>
               </li>    
               <li>
                 <a href="#pushing-events">Pushing events</a>
@@ -107,13 +118,7 @@
                         <a href="#pushing-events-with-synchrony">Pushing events with synchrony</a>
                       </li>    
                       <li>
-                        <a href="#restrictions-on-pushing">Restrictions on pushing</a>
-                      </li>    
-                      <li>
-                        <a href="#reliability-of-events">Reliability of events</a>
-                      </li>    
-                      <li>
-                        <a href="#overriding-the-timestamp">Overriding the timestamp</a>
+                        <a href="#timestamps">Timestamps</a>
                       </li>    
                   </ul>
               </li>    
@@ -172,6 +177,24 @@ ConnectClient.configure do |config|
 end
 </code></pre></div></div></div>
 <p>Whether or not to set <code>async</code> to <code>true</code> or <code>false</code> is detailed in <a href="#pushing-events">pushing events</a>.</p>
+<h2 id="reliability-of-events">Reliability of events</h2>
+<p>Currently, it is not possible to persist/queue events for delivery in the Ruby SDK.  Pushing events either performs a synchronous or asynchronous operation.
+If that push fails, it is not persisted in a queue of any sort.</p>
+<p>We recommend that you consider using a queuing mechanism to ensure reliability of the events if your application relies on the delivery of all events.</p>
+<p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is delivered multiple times). For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-ruby">myEvent = {
+    :name =&gt; &quot;Something&quot;,
+    :id =&gt; &quot;12345678&quot;,
+    :cost =&gt; 2.01
+}
+</code></pre></div></div></div>
+<h2 id="bulk-importing-events">Bulk importing events</h2>
+<p>Currently, this SDK does not support bulk importing events.</p>
+<p>However, you can use the <a href="http.html#bulk-importing-events">HTTP API</a> to run bulk imports if you need.</p>
+<h2 id="restrictions-on-pushing">Restrictions on pushing</h2>
+<p>There are a number of restrictions on the properties you can use in your events and the
+limitations on querying which influences how you should structure your events.</p>
+<p>Refer to <a href="#restrictions">restrictions</a> in the <a href="#modeling-your-events">modeling your events</a> section.</p>
 <h1 id="pushing-events">Pushing events</h1>
 <p>The SDK offers a number of ways to push events to Connect either synchronously or asynchronously.</p>
 <h2 id="pushing-events-synchronously">Pushing events synchronously</h2>
@@ -179,7 +202,7 @@ end
 we recommend <a href="#pushing-events-asynchronously">pushing events asynchronously</a> or
 <a href="#pushing-events-with-synchrony">pushing events with synchrony</a>.</p>
 <p>To push events synchronously, ensure that <code>async</code> is set to <code>false</code> as follows:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-ruby">require &apos;connect_client&apos;
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-ruby">require &apos;connect_client&apos;
 
 ConnectClient.configure do |config|
   config.project_id = &apos;YOUR_PROJECT_ID&apos;
@@ -189,18 +212,18 @@ end
 </code></pre></div></div></div>
 <h3 id="single-event">Single event</h3>
 <p>To push a single event into a collection, call the <code>push</code> function on <code>ConnectClient</code> and pass in the collection name and a <code>Hash</code> keyed with symbols:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-ruby">response = ConnectClient.push :my_collection, { :product =&gt; &quot;Something&quot;, :cost =&gt; 2.01 }
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-ruby">response = ConnectClient.push :my_collection, { :product =&gt; &quot;Something&quot;, :cost =&gt; 2.01 }
 </code></pre></div></div></div>
 <h3 id="multiple-events">Multiple events</h3>
 <p>To push multiple events into a single collection, call the <code>push</code> function on <code>ConnectClient</code> and pass in the collection name and an array of <code>Hash</code> keyed with symbols:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-ruby">response = ConnectClient.push(:my_collection, [
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample7" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample7"><pre><code class="lang-ruby">response = ConnectClient.push(:my_collection, [
   { :name =&gt; &quot;Something 1&quot;, :cost =&gt; 2.01 },
   { :name =&gt; &quot;Something 2&quot;, :cost =&gt; 4.02 }
 ])
 </code></pre></div></div></div>
 <h3 id="batches-of-events">Batches of events</h3>
 <p>To push multiple events into multiple collections, call the <code>push</code> function on <code>ConnectClient</code> and pass a <code>Hash</code> keyed with collection names:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample7" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample7"><pre><code class="lang-ruby">response = ConnectClient.push({ :my_collection =&gt; [
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-ruby">response = ConnectClient.push({ :my_collection =&gt; [
   { :name =&gt; &quot;Something 1&quot;, :cost =&gt; 2.01 },
   { :name =&gt; &quot;Something 2&quot;, :cost =&gt; 4.02 }
 ], :my_other_collection =&gt; [
@@ -212,7 +235,7 @@ end
 <p>The SDK also offers the ability to push events asynchronously by using <code>EventMachine</code>.  This is the recommended
 way to push events in most apps.</p>
 <p>To push events asynchronously, ensure that <code>async</code> is set to <code>true</code> and require <code>eventmachine</code> as follows:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-ruby">require &apos;eventmachine&apos;
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample9" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample9"><pre><code class="lang-ruby">require &apos;eventmachine&apos;
 require &apos;connect_client&apos;
 
 ConnectClient.configure do |config|
@@ -226,7 +249,7 @@ end
 <p><strong>Note:</strong> The <code>em-http-request</code> gem is <em>not</em> installed as a dependency when installing the <code>connect_client</code> gem because asynchronous push requires
 you to &quot;opt in.&quot;  You must manually install this gem for asynchronous push to function.</p>
 <p>To push an event asynchronously you can invoke push using <code>EventMachine.run</code>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample9" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample9"><pre><code class="lang-ruby">EM.run do
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample10" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample10"><pre><code class="lang-ruby">EM.run do
   ConnectClient.push(:my_collection, { :name =&gt; &quot;Something&quot;, :cost =&gt; 2.01 }).response_received { |response|
     puts response
     EM.stop
@@ -240,7 +263,7 @@ end
 <p>The SDK supports asynchronously pushing events into collection(s) with <code>em-synchrony</code>.  This allows the code to remain appearing synchronous while
 actually running asynchronously.</p>
 <p>To push events with synchrony, ensure that <code>async</code> is set to <code>false</code> and require the relevant <code>eventmachine</code> and <code>em-synchrony</code> gems as follows:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample10" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample10"><pre><code class="lang-ruby">require &apos;eventmachine&apos;
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample11"><pre><code class="lang-ruby">require &apos;eventmachine&apos;
 require &apos;em-synchrony&apos;
 require &apos;em-synchrony/em-http&apos;
 require &apos;connect_client&apos;
@@ -256,28 +279,21 @@ run using <code>em-http-request</code> and <code>em-synchrony</code>.</p>
 <p><strong>Note:</strong> The <code>em-http-request</code> and <code>em-synchrony</code> gems are <em>not</em> installed as a dependency when installing the <code>connect_client</code> gem because
 asynchronous push with synchrony requires you to &quot;opt in.&quot;  You must manually install these gems for this to function.</p>
 <p>To push an event asynchronously with synchrony you can invoke push using <code>EM.synchrony</code>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample11"><pre><code class="lang-ruby">EM.synchrony do
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample12"><pre><code class="lang-ruby">EM.synchrony do
   response = ConnectClient.push(:my_collection, { :name =&gt; &quot;Something&quot;, :cost =&gt; 2.01 })
   EM.stop
 end
 </code></pre></div></div></div>
-<h2 id="restrictions-on-pushing">Restrictions on pushing</h2>
-<p>There are a number of restrictions on the properties you can use in your events and the
-limitations on querying which influences how you should structure your events.</p>
-<p>Refer to <a href="#restrictions">restrictions</a> in the <a href="#modeling-your-events">modeling your events</a> section.</p>
-<h2 id="reliability-of-events">Reliability of events</h2>
-<p>Currently, it is not possible to persist/queue events for delivery in the Ruby SDK.  Pushing events either performs a synchronous or asynchronous operation.
-If that push fails, it is not persisted in a queue of any sort.</p>
-<p>We recommend that you consider using a queuing mechanism to ensure reliability of the events if your application relies on the delivery of all events.</p>
-<p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is delivered multiple times). For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample12"><pre><code class="lang-ruby">myEvent = {
-    :name =&gt; &quot;Something&quot;,
-    :id =&gt; &quot;12345678&quot;,
-    :cost =&gt; 2.01
-}
-</code></pre></div></div></div>
-<h2 id="overriding-the-timestamp">Overriding the timestamp</h2>
-<p>By default, if no &quot;timestamp&quot; property is sent with the event, the SDK will use the current date and time as
+<h2 id="timestamps">Timestamps</h2>
+<p>All events have a single <code>timestamp</code> property which records when the event being pushed occurred.  Events cannot
+have more than one date/time property.  If you feel you need more than one date/time property, you probably need
+to reconsider how you&apos;re <a href="#modeling-your-events">modeling your events</a>.</p>
+<blockquote>
+<p><strong>Querying</strong></p>
+<p>You can only run time interval queries or timeframe filters on the <code>timestamp</code> property.  No other date/time property
+in an event is supported for querying.</p>
+</blockquote>
+<p>By default, if no <code>timestamp</code> property is sent with the event, the SDK will use the current date and time as
 the timestamp of the event.</p>
 <p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
 of event times when events are queued.  For example:</p>
@@ -292,6 +308,12 @@ of event times when events are queued.  For example:</p>
 
 
 
+<blockquote>
+<p><strong>Timezones</strong></p>
+<p>Timestamps are always recorded in UTC.  If you supply a timestamp in a timezone other than UTC, it will
+be converted to UTC.  When you query your events, you can specify a timezone so things like time intervals
+will be returned in local time.</p>
+</blockquote>
 <h1 id="querying-events">Querying events</h1>
 <p>Currently, this SDK does not support querying events.  However, you have the following options to query:</p>
 <ul>
@@ -516,8 +538,8 @@ at query time.</p>
 <li><p>The property &quot;_id&quot; is reserved and cannot be pushed.</p>
 </li>
 <li><p>The properties &quot;id&quot; and &quot;timestamp&quot; have special purposes. These allow consumers to specify a unique ID
-per event and override the event&apos;s timestamp respectively.  Refer to <a href="#reliability-of-events">&quot;reliability of events&quot;</a>
-and <a href="#overriding-the-timestamp">&quot;overriding the timestamp&quot;</a> for information.</p>
+per event and override the event&apos;s timestamp respectively.  You cannot use the &quot;id&quot; property in queries.
+Refer to <a href="#reliability-of-events">&quot;reliability of events&quot;</a> and <a href="#timestamps">&quot;timestamps&quot;</a> for information.</p>
 </li>
 <li><p>The length of property names can&apos;t exceed 255 characters.  If you need property names longer than this, you
 probably <a href="#structuring-your-events">need to reconsider the structure of your event!</a></p>
