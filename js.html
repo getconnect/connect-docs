@@ -413,8 +413,7 @@ be converted to UTC.  When you query your events, you can specify a timezone so 
 will be returned in local time.</p>
 </blockquote>
 <h1 id="querying-events">Querying events</h1>
-<p>Querying events in Connect is easy.  Using the SDK, you can construct and execute queries client-side and receive a promise
-to the results.</p>
+<p>Using the SDK, you can construct and execute queries client-side and receive a promise to the results.</p>
 <p>Once you have <a href="#creating-the-client">created a client</a> with a valid <a href="#projects-and-keys">read key</a>, you can start querying
 your collections immediately. </p>
 <p>For example, to get the sum of the <code>price</code> property in a collection called <code>purchases</code>, you would execute the following query:</p>
@@ -422,7 +421,7 @@ your collections immediately. </p>
     .select({ &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; } })
     .execute()
     .then(function(result) {
-      // Handle the result
+        // Handle the result
     }, function(error) {
       // Handle an error
     });
@@ -441,16 +440,20 @@ and the <a href="#timezones">timezone</a>, if specified, for the query.</p>
 you can take advantage of the metadata as hints on how to render the results.</p>
 <h2 id="aggregations">Aggregations</h2>
 <p>You can perform various aggregations over events you have pushed.  Simply specify in the query&apos;s select which
-fields you wish to aggregate and which aggregation you wish to use.  You also must specify an &quot;alias&quot; for the
+properties you wish to aggregate and which aggregation you wish to use.  You also must specify an &quot;alias&quot; for the
 result set that is returned.</p>
-<p>For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<p>For example, to query the <code>purchases</code> collection and perform aggregations on the <code>price</code> event property::</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;itemsSold&quot;: &quot;count&quot;,
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; },
         &quot;averagePrice&quot;: { &quot;avg&quot;: &quot;price&quot; },
         &quot;minPrice&quot;: { &quot;min&quot;: &quot;price&quot; },
         &quot;maxPrice&quot;: { &quot;max&quot;: &quot;price&quot; }
+    })
+    .execute()
+    .then(function(result) {
+        // Handle the result
     });
 </code></pre></div></div></div>
 
@@ -482,30 +485,38 @@ result set that is returned.</p>
 </ul>
 <h3 id="limitations">Limitations</h3>
 <ul>
-<li>Aggregations only work on numeric fields.  If you try to aggregate a string field, you will receive a null result.
-If you try to aggregate a field with multiple types (e.g. some strings, some numbers), only the numeric values will be
+<li>Aggregations only work on numeric properties.  If you try to aggregate a string property, you will receive a null result.
+If you try to aggregate a property with multiple types (e.g. some strings, some numbers), only the numeric values will be
 added - the rest are ignored.</li>
 </ul>
 <h2 id="filters">Filters</h2>
 <p>You can filter the events you wish to include in your queries by specifying one or more filters.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .filter({
         &quot;product&quot;: &quot;12 red roses&quot;
+    })
+    .execute()
+    .then(function(result) {
+        // Handle the result
     });
 </code></pre></div></div></div>
 
 
 <p>The above will filter the query results for only those events that have a <code>product</code> property equalling &quot;12 red roses&quot;.
 The above is also shorthand for the <strong>eq</strong> operator. To illustrate this, the following is identical to the above:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample31" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample31"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample31" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample31"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .filter({
         &quot;product&quot;: { &quot;eq&quot;: &quot;12 red roses&quot; }
+    })
+    .execute()
+    .then(function(result) {
+        // Handle the result
     });
 </code></pre></div></div></div>
 
@@ -535,36 +546,48 @@ plan to change this behavior in the future, you should consider setting a defaul
 properties if you wish to make a distinction.</p>
 </blockquote>
 <p>For example, the following will filter for events that have a property called <code>gender</code>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample34" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample34"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample34" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample34"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .filter({
         &quot;gender&quot;: { &quot;exists&quot;: true }
+    })
+    .execute()
+    .then(function(result) {
+        // Handle the result
     });
 </code></pre></div></div></div>
 
 
 <p>Whereas the following will filter for events that <em>do not</em> have a property called <code>gender</code>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .filter({
         &quot;gender&quot;: { &quot;exists&quot;: false }
+    })
+    .execute()
+    .then(function(result) {
+        // Handle the result
     });
 </code></pre></div></div></div>
 
 
 <h3 id="in-filter">In filter</h3>
-<p>The in filter allows you to specify a list of values for which a field should match.</p>
+<p>The in filter allows you to specify a list of values for which a property should match.</p>
 <p>For example, the following will filter for events that have a <code>category</code> of either &quot;Bikes&quot;, &quot;Books&quot; or &quot;Magazines&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample40" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample40"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .filter({
         &quot;category&quot;: { &quot;in&quot;: [&quot;Bikes&quot;, &quot;Books&quot;, &quot;Magazines&quot;] }
+    })
+    .execute()
+    .then(function(result) {
+        // Handle the result
     });
 </code></pre></div></div></div>
 
@@ -572,12 +595,16 @@ properties if you wish to make a distinction.</p>
 <h3 id="combining-filter-expressions">Combining filter expressions</h3>
 <p>You can also combine filter expressions to filter multiple values on the same property.</p>
 <p>For example, the following will filter for events with a <code>price</code> property greater than 5 but less than 10:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .filter({
         &quot;price&quot;: { &quot;gt&quot;: 5, &quot;lt&quot;: 10 }
+    })
+    .execute()
+    .then(function(result) {
+        // Handle the result
     });
 </code></pre></div></div></div>
 
@@ -590,11 +617,15 @@ properties if you wish to make a distinction.</p>
 <p>If no timeframe is specified, events will not be filtered by time; the query will match events from all time.</p>
 </blockquote>
 <p>For example, the following query filters for events only for this month:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
-    .timeframe(&quot;this_month&quot;);
+    .timeframe(&quot;this_month&quot;)
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 
 
@@ -628,19 +659,27 @@ properties if you wish to make a distinction.</p>
 </ul>
 <p>You can also specify exactly how many current/previous periods you wish to include in the query results.</p>
 <p>For example, if you want to filter by the <strong>today and the last 2 days</strong>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
-    .timeframe({ &quot;current&quot;: { &quot;days&quot;: 3 } });
+    .timeframe({ &quot;current&quot;: { &quot;days&quot;: 3 } })
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 
 <p>Or, to filter by the <strong>last 2 months, excluding the current month</strong>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample50" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample50"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample50" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample50"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
-    .timeframe({ &quot;previous&quot;: { &quot;months&quot;: 2 } });
+    .timeframe({ &quot;previous&quot;: { &quot;months&quot;: 2 } })
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 
 <p>The following periods are supported for complex, relative timeframes:</p>
@@ -662,18 +701,26 @@ day of the week you&apos;d like to start your weeks.</p>
 <p>You can specify an absolute timeframe by constructing an object with the <strong>start</strong> and <strong>end</strong> properties set to
 the desired start and end times in ISO-8601 format.</p>
 <p>For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
-    .timeframe({ &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-25T00:00:00Z&quot; });
+    .timeframe({ &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-25T00:00:00Z&quot; })
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 <p>You can also set the <strong>start</strong> end <strong>end</strong> properties to Date objects, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample52"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample52"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
-    .timeframe({ &quot;start&quot;: new Date(2015, 2, 1), &quot;end&quot;: new Date(2015, 2, 25) });
+    .timeframe({ &quot;start&quot;: new Date(2015, 2, 1), &quot;end&quot;: new Date(2015, 2, 25) })
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 <blockquote>
 <p>You can&apos;t specify a timezone when using absolute timeframes as the timezone information comes from the ISO-8601
@@ -690,11 +737,15 @@ should consider setting a default value as opposed to a null value on properties
 a distinction.</p>
 </blockquote>
 <p>For example, to query total sales by country:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
-    .groupBy(&quot;country&quot;);
+    .groupBy(&quot;country&quot;)
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 
 
@@ -723,11 +774,15 @@ a distinction.</p>
 <h3 id="grouping-by-multiple-properties">Grouping by multiple properties</h3>
 <p>You can also group by multiple properties in your events by providing multiple property names.</p>
 <p>For example, to query total sales by country and product category:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample59" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample59"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample59" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample59"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
-    .groupBy([&quot;country&quot;, &quot;product.category&quot;]);
+    .groupBy([&quot;country&quot;, &quot;product.category&quot;])
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 
 
@@ -769,12 +824,16 @@ a distinction.</p>
 <h2 id="time-intervals">Time intervals</h2>
 <p>Time intervals allow you to group results by a time period, so that you could analyze your events over time.</p>
 <p>For example, to query daily total sales this month:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample64" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample64"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample64" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample64"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .timeframe(&quot;this_month&quot;)
-    .interval(&quot;daily&quot;);
+    .interval(&quot;daily&quot;)
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 
 
@@ -819,13 +878,17 @@ a distinction.</p>
 <h3 id="time-interval-with-group-by">Time interval with group by</h3>
 <p>You can also combine a time interval with a group by in your query.</p>
 <p>For example, to query daily total sales this month by country:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample69" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample69"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample69" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample69"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .timeframe(&quot;this_month&quot;)
     .interval(&quot;daily&quot;)
-    .groupBy(&quot;country&quot;);
+    .groupBy(&quot;country&quot;)
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 
 
@@ -899,20 +962,28 @@ You can override this to be the timezone of your choice by specifying the <stron
 set, an error will be returned.</p>
 </blockquote>
 <p>You can specify a numeric (decimal) value for an hours offset of UTC, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample74" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample74"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample74" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample74"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
-    .timezone(10);
+    .timezone(10)
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 
 
 <p>You can also specify a string which contains an <a href="http://www.iana.org/time-zones">IANA time zone identifier</a>, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample77" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample77"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample77" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample77"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
-    .timezone(&quot;Australia/Brisbane&quot;);
+    .timezone(&quot;Australia/Brisbane&quot;)
+    .execute()
+    .then(function(result) {
+        // Handle the result
+    });
 </code></pre></div></div></div>
 
 
