@@ -198,7 +198,7 @@ dependencies {
 <p>By default, the client has default implementations for JSON serialization, an HTTP client and event storage.
 You can also construct your own <code>ConnectClient</code> and provide it with your own implementations of these interfaces.</p>
 <h1 id="pushing-events">Pushing events</h1>
-<p>Once you have created a client, you can start pushing events easily.</p>
+<p>Once you have created a client, you can start pushing events.</p>
 <h2 id="single-event">Single event</h2>
 <p>To push a single event synchronously to Connect:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-java">// Construct the event
@@ -226,7 +226,24 @@ client.add(&quot;productsSold&quot;, event);
 </code></pre></div></div></div>
 <p>Periodically or on a specific trigger, you must call <code>pushPending()</code> which will synchronously push the queued events in a batch to Connect:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample10" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample10"><pre><code class="lang-java">// Push the queued events to Connect
-client.pushPending();
+EventBatchPushResponse response = client.pushPending();
+
+int statusCode = response.getStatusCode(); // HTTP status code
+String errorMessage = response.getErrorMessage(); // Error message if applicable
+
+// Loop through each collection that was pushed
+for (Map.Entry&lt;String, Iterable&lt;EventPushResponse&gt;&gt; collectionResponse : response.getResponses().entrySet()) {
+    String collection = collectionResponse.getKey();
+    Iterable&lt;EventPushResponse&gt; responses = collectionResponse.getValue();
+
+    // Loop through the response to each individual event
+    for (EventPushResponse response : responses) {
+        Map&lt;String, Object&gt; originalEvent = response.getEvent(); // Get the original event
+        Boolean isSuccessful = response.isSuccessful(); // Was the event pushed successfully?
+        Boolean isDuplicate = response.isDuplicate(); // Did the event fail because it is a duplicate?
+        String message = response.getMessage(); // Get a related error/duplicate message
+    }
+}
 </code></pre></div></div></div>
 <h2 id="batches-of-events">Batches of events</h2>
 <p>You can also push multiple events to multiple collections in a single call:</p>
@@ -253,10 +270,10 @@ client.push(batch);
 <p>When pushing events, exceptions are thrown, so you should either ignore or handle those exceptions gracefully.</p>
 <p>Specifically, the following exceptions can be thrown when pushing events synchronously:</p>
 <ul>
-<li>DuplicateEventException - the event being pushed already exists</li>
-<li>InvalidEventException - the event being pushed is invalid (e.g. invalid event properties)</li>
-<li>ServerException - a server-side exception occurred in Connect&apos;s API</li>
-<li>IOException - an exception occurred sending or receiving the request or response, respectively (e.g. a network failure)</li>
+<li><code>DuplicateEventException</code> - the event being pushed already exists</li>
+<li><code>InvalidEventException</code> - the event being pushed is invalid (e.g. invalid event properties)</li>
+<li><code>ServerException</code> - a server-side exception occurred in Connect&apos;s API</li>
+<li><code>IOException</code> - an exception occurred sending or receiving the request or response, respectively (e.g. a network failure)</li>
 </ul>
 <h2 id="configuring-event-stores">Configuring event stores</h2>
 <p>To queue events, the SDK uses an <code>EventStore</code> to store and retrieve events for queuing and later pushing, respectively.</p>

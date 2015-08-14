@@ -222,7 +222,24 @@ await Connect.Add(&quot;mycollection&quot;, events);
 <h3 id="pushing-pending-events">Pushing pending events</h3>
 <p>Once you have queued events, you must call <code>PushPending()</code> to have those events pushed to Connect.  Ideally, this
 would be done regularly at an appropriate time in your application lifecycle.</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-csharp">var results = await Connect.PushPending();
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-csharp">var response = await Connect.PushPending();
+
+var status = response.Status; // status of the batch push (EventPushResponseStatus)
+var httpStatusCode = response.HttpStatusCode; // HTTP status code
+var errorMessage = response.ErrorMessage; // error message if applicable
+
+// loop through the collections
+foreach (var collectionResult in response.ResponsesByCollection) {
+    var collectionName = collectionResult.Key;
+
+    // loop through the results of individual events
+    foreach (var result in collectionResult.Value) {
+        var originalEvent = result.Event; // original event pushed
+        var status = result.Status; // status of the individual event
+        var errorMessage = result.ErrorMessage; // error message if applicable
+        var fieldErrors = result.FieldErrors; // Dictionary of field to error message
+    }
+}
 </code></pre></div></div></div>
 <h2 id="bulk-importing-events">Bulk importing events</h2>
 <p>Currently, this SDK does not support bulk importing events.</p>
@@ -279,19 +296,19 @@ your collections immediately.</p>
 <p>For example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample16" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample16"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
-        TotalSales = Aggregations.Sum(&quot;Price&quot;),
-        AveragePrice = Aggregations.Avg(&quot;Price&quot;),
-        MinPrice = Aggregations.Min(&quot;Price&quot;),
-        MaxPrice = Aggregations.Max(&quot;Price&quot;),
-        PurchaseCount = Aggregations.Count()
+        totalPrice = Aggregations.Sum(&quot;price&quot;),
+        averagePrice = Aggregations.Avg(&quot;price&quot;),
+        minPrice = Aggregations.Min(&quot;price&quot;),
+        maxPrice = Aggregations.Max(&quot;price&quot;),
+        purchaseCount = Aggregations.Count()
     })
     .Where(new {
-        Price = Filters.Gt(100)
+        product = Filters.Eq(&quot;12 red roses&quot;)
     })
     .Daily()
     .ThisMonth()
-    .GroupBy(&quot;Category&quot;)
-    .Timezone(&quot;Antarctica/Troll&quot;)
+    .GroupBy(&quot;country&quot;)
+    .Timezone(&quot;Australia/Brisbane&quot;)
     .Execute();
 </code></pre></div></div></div>
 <h2 id="aggregations">Aggregations</h2>
@@ -329,22 +346,22 @@ var maxPrice = (double)singleResult[&quot;maxPrice&quot;];
 <p>You can also use the <code>AggregationOperation</code> enum to specify the aggregation operation:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample22" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample22"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
-        TotalSales = Aggregations.Use(AggregationOperation.Sum, &quot;Price&quot;),
-        AveragePrice = Aggregations.Use(AggregationOperation.Avg, &quot;Price&quot;),
-        MinPrice = Aggregations.Use(AggregationOperation.Min, &quot;Price&quot;),
-        MaxPrice = Aggregations.Use(AggregationOperation.Max, &quot;Price&quot;),
-        PurchaseCount = Aggregations.Use(AggregationOperation.Count)
+        totalPrice = Aggregations.Use(AggregationOperation.Sum, &quot;price&quot;),
+        averagePrice = Aggregations.Use(AggregationOperation.Avg, &quot;price&quot;),
+        minPrice = Aggregations.Use(AggregationOperation.Min, &quot;price&quot;),
+        maxPrice = Aggregations.Use(AggregationOperation.Max, &quot;price&quot;),
+        purchaseCount = Aggregations.Use(AggregationOperation.Count)
     })
     .Execute();
 </code></pre></div></div></div>
 <p>Or a string:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
-        TotalSales = Aggregations.Use(&quot;Sum&quot;, &quot;Price&quot;),
-        AveragePrice = Aggregations.Use(&quot;Avg&quot;, &quot;Price&quot;),
-        MinPrice = Aggregations.Use(&quot;Min&quot;, &quot;Price&quot;),
-        MaxPrice = Aggregations.Use(&quot;Max&quot;, &quot;Price&quot;),
-        PurchaseCount = Aggregations.Use(&quot;Count&quot;)
+        totalPrice = Aggregations.Use(&quot;Sum&quot;, &quot;price&quot;),
+        averagePrice = Aggregations.Use(&quot;Avg&quot;, &quot;price&quot;),
+        minPrice = Aggregations.Use(&quot;Min&quot;, &quot;price&quot;),
+        maxPrice = Aggregations.Use(&quot;Max&quot;, &quot;price&quot;),
+        purchaseCount = Aggregations.Use(&quot;Count&quot;)
     })
     .Execute();
 </code></pre></div></div></div>
@@ -634,10 +651,10 @@ be grouped into the &quot;null&quot; value for that query.  While we plan to cha
 should consider setting a default value as opposed to a null value on properties if you wish to make
 a distinction.</p>
 </blockquote>
-<p>For example, to query gross sales by country:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;sales&quot;)
+<p>For example, to query total sales by country:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
-        grossSales = Aggregations.Sum(&quot;revenue&quot;)
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
     })
     .GroupBy(&quot;country&quot;)
     .Execute();
@@ -649,7 +666,7 @@ a distinction.</p>
 // metadata.Groups is new string[] {&quot;country&quot;}
 
 foreach (var result in queryResponse.Results) {
-    Console.WriteLine(string.Format(&quot;{0}: {1}&quot;, result[&quot;country&quot;], result[&quot;grossSales&quot;]));
+    Console.WriteLine(string.Format(&quot;{0}: {1}&quot;, result[&quot;country&quot;], result[&quot;totalPrice&quot;]));
 }
 
 // output is:
@@ -661,10 +678,10 @@ foreach (var result in queryResponse.Results) {
 
 <h3 id="grouping-by-multiple-properties">Grouping by multiple properties</h3>
 <p>You can also group by multiple properties in your events by providing multiple property names.</p>
-<p>For example, to query gross sales by country and product category:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample59" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample59"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;sales&quot;)
+<p>For example, to query total sales by country and product category:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample59" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample59"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
-        grossSales = Aggregations.Sum(&quot;revenue&quot;)
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
     })
     .GroupBy(&quot;country&quot;, &quot;product.category&quot;)
     .Execute();
@@ -677,7 +694,7 @@ foreach (var result in queryResponse.Results) {
 
 foreach (var result in queryResponse.Results) {
     Console.WriteLine(string.Format(&quot;{0} - {1}: {2}&quot;, result[&quot;country&quot;],
-        result[&quot;product.category&quot;], result[&quot;grossSales&quot;]));
+        result[&quot;product.category&quot;], result[&quot;totalPrice&quot;]));
 }
 
 // output is:
@@ -691,10 +708,10 @@ foreach (var result in queryResponse.Results) {
 
 <h2 id="time-intervals">Time intervals</h2>
 <p>Time intervals allow you to group results by a time period, so that you could analyze your events over time.</p>
-<p>For example, to query daily gross sales this month:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample64" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample64"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;sales&quot;)
+<p>For example, to query daily total sales this month:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample64" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample64"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
-        grossSales = Aggregations.Sum(&quot;revenue&quot;)
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
     })
     .ThisMonth()
     .Daily()
@@ -713,7 +730,7 @@ foreach (var intervalResult in queryResponse.Results) {
     var result = intervalResult.Results.First();
 
     Console.WriteLine(string.Format(&quot;{0:d} to {1:d}: {2}&quot;, intervalResult.Start,
-        intervalResult.End, result[&quot;grossSales&quot;]));
+        intervalResult.End, result[&quot;totalPrice&quot;]));
 }
 
 // output is (en-US dates):
@@ -735,10 +752,10 @@ foreach (var intervalResult in queryResponse.Results) {
 </ul>
 <h3 id="time-interval-with-group-by">Time interval with group by</h3>
 <p>You can also combine a time interval with a group by in your query.</p>
-<p>For example, to query daily gross sales this month by country:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample69" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample69"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;sales&quot;)
+<p>For example, to query daily total sales this month by country:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample69" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample69"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)
     .Select(new {
-        grossSales = Aggregations.Sum(&quot;revenue&quot;)
+        totalPrice = Aggregations.Sum(&quot;price&quot;)
     })
     .ThisMonth()
     .Daily()
@@ -759,7 +776,7 @@ foreach (var intervalResult in queryResponse.Results) {
         intervalResult.Start, intervalResult.End));
 
     foreach (var result in intervalResult.Results) {
-        Console.WriteLine(string.Format(&quot;{0}: {1}&quot;, result[&quot;country&quot;], result[&quot;grossSales&quot;]));
+        Console.WriteLine(string.Format(&quot;{0}: {1}&quot;, result[&quot;country&quot;], result[&quot;totalPrice&quot;]));
     }
 
     Console.WriteLine();

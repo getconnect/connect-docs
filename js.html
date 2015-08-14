@@ -197,13 +197,13 @@ simply wish to push events using the SDK):</p>
 <h2 id="npm">NPM</h2>
 <p>If you are writing a Node.js app, or using NPM packages in the browser with something like <a href="http://browserify.org">Browserify</a>,
 you can install the package from NPM:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample3"><pre><code class="lang-bash">npm install connect-js
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="bash">cURL</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample3"><pre><code class="lang-bash">npm install connect-js
 </code></pre></div></div></div>
 <p>You would then <code>require</code> the SDK as follows:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-js">var Connect = require(&apos;connect-js&apos;);
 </code></pre></div></div></div>
 <p>For browser apps, you can also install the visualization package:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-bash">npm install connect-js-viz
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="bash">cURL</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-bash">npm install connect-js-viz
 </code></pre></div></div></div>
 <p>When using the visualization, you only need to <code>require</code> the viz package and all other functionality is included:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-js">var Connect = require(&apos;connect-js-viz&apos;);
@@ -211,7 +211,7 @@ you can install the package from NPM:</p>
 <p>For more info on visualization, see <a href="#visualizing-data">visualizing data</a>.</p>
 <h2 id="bower">Bower</h2>
 <p>You can easily install the SDK from Bower:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample7" role="tab" data-toggle="tab" data-lang="bash">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample7"><pre><code class="lang-bash">bower install connect-js
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample7" role="tab" data-toggle="tab" data-lang="bash">cURL</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample7"><pre><code class="lang-bash">bower install connect-js
 </code></pre></div></div></div>
 <h1 id="creating-the-client">Creating the client</h1>
 <p>Before you can start <a href="#pushing-events">pushing events</a>, <a href="#querying">executing queries</a> or <a href="#visualizing-data">visualizing data</a>,
@@ -685,10 +685,10 @@ be grouped into the &quot;null&quot; value for that query.  While we plan to cha
 should consider setting a default value as opposed to a null value on properties if you wish to make
 a distinction.</p>
 </blockquote>
-<p>For example, to query gross sales by country:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-js">var query = connect.query(&quot;sales&quot;)
+<p>For example, to query total sales by country:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
     .select({
-        &quot;grossSales&quot;: { &quot;sum&quot;: &quot;revenue&quot; }
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .groupBy(&quot;country&quot;);
 </code></pre></div></div></div>
@@ -703,25 +703,25 @@ a distinction.</p>
     },
     &quot;results&quot;: [{
         &quot;country&quot;: &quot;Australia&quot;,
-        &quot;grossSales&quot;: 1000000
+        &quot;totalPrice&quot;: 1000000
     },
     {
         &quot;country&quot;: &quot;Italy&quot;,
-        &quot;grossSales&quot;: 2500000
+        &quot;totalPrice&quot;: 2500000
     },
     {
         &quot;country&quot;: &quot;United States&quot;,
-        &quot;grossSales&quot;: 10000000
+        &quot;totalPrice&quot;: 10000000
     }]
 }
 </code></pre></div></div></div>
 
 <h3 id="grouping-by-multiple-properties">Grouping by multiple properties</h3>
 <p>You can also group by multiple properties in your events by providing multiple property names.</p>
-<p>For example, to query gross sales by country and product category:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample59" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample59"><pre><code class="lang-js">var query = connect.query(&quot;sales&quot;)
+<p>For example, to query total sales by country and product category:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample59" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample59"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
     .select({
-        &quot;grossSales&quot;: { &quot;sum&quot;: &quot;revenue&quot; }
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .groupBy([&quot;country&quot;, &quot;product.category&quot;]);
 </code></pre></div></div></div>
@@ -737,37 +737,37 @@ a distinction.</p>
     &quot;results&quot;: [{
         &quot;country&quot;: &quot;Australia&quot;,
         &quot;product.category&quot;: &quot;Bikes&quot;,
-        &quot;grossSales&quot;: 500000
+        &quot;totalPrice&quot;: 500000
     },
     {
         &quot;country&quot;: &quot;Australia&quot;,
         &quot;product.category&quot;: &quot;Cars&quot;,
-        &quot;grossSales&quot;: 500000
+        &quot;totalPrice&quot;: 500000
     },
     {
         &quot;country&quot;: &quot;Italy&quot;,
         &quot;product.category&quot;: &quot;Scooters&quot;,
-        &quot;grossSales&quot;: 2500000
+        &quot;totalPrice&quot;: 2500000
     },
     {
         &quot;country&quot;: &quot;United States&quot;,
         &quot;product.category&quot;: &quot;Mobile Phones&quot;,
-        &quot;grossSales&quot;: 8000000
+        &quot;totalPrice&quot;: 8000000
     },
     {
         &quot;country&quot;: &quot;United States&quot;,
         &quot;product.category&quot;: &quot;Laptops&quot;,
-        &quot;grossSales&quot;: 2000000
+        &quot;totalPrice&quot;: 2000000
     }] 
 }
 </code></pre></div></div></div>
 
 <h2 id="time-intervals">Time intervals</h2>
 <p>Time intervals allow you to group results by a time period, so that you could analyze your events over time.</p>
-<p>For example, to query daily gross sales this month:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample64" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample64"><pre><code class="lang-js">var query = connect.query(&quot;sales&quot;)
+<p>For example, to query daily total sales this month:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample64" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample64"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
     .select({
-        &quot;grossSales&quot;: { &quot;sum&quot;: &quot;revenue&quot; }
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .timeframe(&quot;this_month&quot;)
     .interval(&quot;daily&quot;);
@@ -784,19 +784,19 @@ a distinction.</p>
     &quot;results&quot;: [{
         &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-02T00:00:00Z&quot; },
         &quot;results&quot;: [{
-            &quot;grossSales&quot;: 500000
+            &quot;totalPrice&quot;: 500000
         }]
     },
     {
         &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-02T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-03T00:00:00Z&quot; },
         &quot;results&quot;: [{
-            &quot;grossSales&quot;: 150000
+            &quot;totalPrice&quot;: 150000
         }]
     },
     {
         &quot;interval&quot;: { &quot;start&quot;: &quot;2015-02-03T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-04T00:00:00Z&quot; },
         &quot;results&quot;: [{
-            &quot;grossSales&quot;: 25000
+            &quot;totalPrice&quot;: 25000
         }]
     }]
 }
@@ -814,10 +814,10 @@ a distinction.</p>
 </ul>
 <h3 id="time-interval-with-group-by">Time interval with group by</h3>
 <p>You can also combine a time interval with a group by in your query.</p>
-<p>For example, to query daily gross sales this month by country:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample69" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample69"><pre><code class="lang-js">var query = connect.query(&quot;sales&quot;)
+<p>For example, to query daily total sales this month by country:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample69" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample69"><pre><code class="lang-js">var query = connect.query(&quot;purchases&quot;)
     .select({
-        &quot;grossSales&quot;: { &quot;sum&quot;: &quot;revenue&quot; }
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
     .timeframe(&quot;this_month&quot;)
     .interval(&quot;daily&quot;)
@@ -837,15 +837,15 @@ a distinction.</p>
         &quot;results&quot;: [
             {
                 &quot;country&quot;: &quot;Australia&quot;,
-                &quot;grossSales&quot;: 100000
+                &quot;totalPrice&quot;: 100000
             },
             {
                 &quot;country&quot;: &quot;Italy&quot;,
-                &quot;grossSales&quot;: 100000
+                &quot;totalPrice&quot;: 100000
             },
             {
                 &quot;country&quot;: &quot;United States&quot;,
-                &quot;grossSales&quot;: 300000
+                &quot;totalPrice&quot;: 300000
             }
         ]
     },
@@ -854,15 +854,15 @@ a distinction.</p>
         &quot;results&quot;: [
             {
                 &quot;country&quot;: &quot;Australia&quot;,
-                &quot;grossSales&quot;: 25000
+                &quot;totalPrice&quot;: 25000
             },
             {
                 &quot;country&quot;: &quot;Italy&quot;,
-                &quot;grossSales&quot;: 25000
+                &quot;totalPrice&quot;: 25000
             },
             {
                 &quot;country&quot;: &quot;United States&quot;,
-                &quot;grossSales&quot;: 100000
+                &quot;totalPrice&quot;: 100000
             }
         ]
     },
@@ -871,15 +871,15 @@ a distinction.</p>
         &quot;results&quot;: [
             {
                 &quot;country&quot;: &quot;Australia&quot;,
-                &quot;grossSales&quot;: 5000
+                &quot;totalPrice&quot;: 5000
             },
             {
                 &quot;country&quot;: &quot;Italy&quot;,
-                &quot;grossSales&quot;: 5000
+                &quot;totalPrice&quot;: 5000
             },
             {
                 &quot;country&quot;: &quot;United States&quot;,
-                &quot;grossSales&quot;: 15000
+                &quot;totalPrice&quot;: 15000
             }
         ]
     }]
@@ -923,7 +923,7 @@ of the original promise are not modified.  The SDK provides a simple clone funct
 <div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample79" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample79"><pre><code class="lang-js">var resultsPromise = connect.query(&quot;purchases&quot;)
     .select({
         totalSales: { &quot;sum&quot;: &quot;price&quot; },
-        totalCost: { &quot;sum&quot;: &quot;totalCost&quot; }
+        totalCost: { &quot;sum&quot;: &quot;cost&quot; }
     })
     .timezone(&apos;Australia/Brisbane&apos;)
     .execute();
