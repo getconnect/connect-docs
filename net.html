@@ -28,7 +28,7 @@
           </div>
           <ul class="nav navbar-nav navbar-right">
             <li>
-              <a class="return" href="https://app.getconnect.io"><i class="ion-arrow-return-left"></i> Return to portal</a>
+              <a class="return" href="https://app.getconnect.io"><i class="ion-arrow-return-left"></i> Return to admin console</a>
             </li>
           </ul>
         </div>
@@ -138,6 +138,10 @@
                         <a href="#error-handling">Error handling</a>
                       </li>    
                   </ul>
+              </li>    
+              <li>
+                <a href="#deleting-collections">Deleting collections</a>
+                
               </li>    
               <li>
                 <a href="#projects-and-keys">Projects and keys</a>
@@ -837,14 +841,21 @@ gracefully.</p>
 as well as field specific errors (if applicable) in <code>FieldErrors</code>.</p>
 <p>Exceptions are only thrown when a valid response is not received from the Connect API.  These would
 capture issues like network connectivity. </p>
+<h1 id="deleting-collections">Deleting collections</h1>
+<p>Currently, this SDK does not support deleting collections.</p>
+<p>However, you can use the one of the following methods to delete collections if required:</p>
+<ul>
+<li><a href="https://app.getconnect.io/">Via the admin console</a></li>
+<li><a href="http.html#deleting-collections">With the HTTP API</a></li>
+</ul>
 <h1 id="projects-and-keys">Projects and keys</h1>
 <p>Connect allows you to manage multiple projects under a single account so that you can easily segregate
 your collections into logical projects.</p>
 <p>You could use this to separate analytics for entire projects, or to implement separation between different
 environments (e.g. My Project (Prod) and My Project (Dev)).</p>
 <p>To start pushing and querying your event data, you will need both a project ID and an API key.  This information
-is available to you <a href="http://app.getconnect.io/#/projects">via the portal</a> inside each project under the &quot;Keys&quot; tab:</p>
-<p><img src="images/screens/projects-keys.png" alt="Screenshot of project keys in Connect portal"></p>
+is available to you <a href="http://app.getconnect.io/#/projects">via the admin console</a> inside each project under the &quot;Keys&quot; tab:</p>
+<p><img src="images/screens/projects-keys.png" alt="Screenshot of project keys in Connect admin console"></p>
 <p>By default, you can choose from four different types of keys, each with their own specific use:</p>
 <ul>
 <li><p><code>Push/Query Key</code> - you can use this key to both push events and execute queries.<br>You should only use this key in situations where it is not possible to isolate merely pushing or querying.</p>
