@@ -152,13 +152,13 @@ you have decided how to <a href="#modeling-your-events">model your events</a>, y
 <h1 id="installing-the-sdk">Installing the SDK</h1>
 <p>The quickest and easiest way to install the SDK is via CocoaPods: <a href="http://cocoapods.org/?q=ConnectClient"><img src="http://img.shields.io/cocoapods/v/ConnectClient.svg" alt="Version"></a></p>
 <p>To do this, simply add the following line to your podfile and run <code>pod update</code>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample1" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample1"><pre><code class="lang-ruby">pod &apos;ConnectClient&apos;
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample1" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample1"><pre><code class="lang-ruby">pod &apos;ConnectClient&apos;
 </code></pre></div></div></div>
 <h1 id="initializing-the-client">Initializing the client</h1>
 <p>Before you can start <a href="#pushing-events">pushing events</a>, you must initialize the
 Connect client with your <a href="#projects-and-keys">project ID and API key</a>.</p>
 <p>You can either initialize a shared client (when you don&apos;t want to manage client instances):</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
 
 [TPConnectClient sharedClientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
                                     apiKey:@&quot;YOUR_API_KEY&quot;];
@@ -166,7 +166,7 @@ Connect client with your <a href="#projects-and-keys">project ID and API key</a>
 </code></pre></div></div></div>
 
 <p>Or you can create a specific instance of a client (e.g. to push to/query multiple projects):</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
 
 TPConnectClient *client = [TPConnectClient clientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
                                                         apiKey:@&quot;YOUR_API_KEY&quot;];
@@ -177,7 +177,7 @@ TPConnectClient *client = [TPConnectClient clientWithProjectId:@&quot;YOUR_PROJE
 <p>The SDK supports pushing events directly into collections.</p>
 <h2 id="single-event">Single event</h2>
 <p>To push a single event to a collection, you can specify the collection name and the event to push:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample7" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-objc">NSDictionary *event = @{
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample7" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-objc">NSDictionary *event = @{
                         @&quot;product&quot;: @&quot;Something&quot;,
                         @&quot;cost&quot;: @(2.01)
                         };
@@ -200,7 +200,7 @@ TPConnectClient.sharedClient()?.pushEvent(event, toCollection: &quot;mycollectio
 
 <h2 id="batches-of-events">Batches of events</h2>
 <p>To push multiple events to one or more collections, you can create a dictionary of collection names to arrays of events:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample9" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-objc">NSArray *purchases = @[
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample9" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-objc">NSArray *purchases = @[
                        @{
                            @&quot;name&quot;: @&quot;Phone&quot;,
                            @&quot;price&quot;: @465.55
@@ -252,7 +252,7 @@ TPConnectClient.sharedClient()?.pushEventBatch(batch) {
 <p>Events can be stored/cached locally and pushed to Connect later.  This provides a level of reliability to mitigate
 the risk of network outages or device crashes.</p>
 <p>This can be achieved in the SDK by &quot;adding&quot; events into collections:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample10" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample10"><pre><code class="lang-objc">NSError *error;
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample10" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample10"><pre><code class="lang-objc">NSError *error;
 
 [[TPConnectClient sharedClient] addEvent:event
                             toCollection:@&quot;mycollection&quot;
@@ -263,7 +263,7 @@ TPConnectClient.sharedClient()?.addEvent(event, toCollection: &quot;mycollection
 </code></pre></div></div></div>
 
 <p>Periodically or on a specific trigger, you must push the pending events in a batch to Connect:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample13" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample12"><pre><code class="lang-objc">[[TPConnectClient sharedClient] pushAllPendingEventsWithCompletionHandler:^(NSDictionary * results, NSError * error) {
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample13" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample12"><pre><code class="lang-objc">[[TPConnectClient sharedClient] pushAllPendingEventsWithCompletionHandler:^(NSDictionary * results, NSError * error) {
 
 }];
 </code></pre></div><div class="tab-pane" id="code-sample13"><pre><code class="lang-swift">TPConnectClient.sharedClient()?.pushAllPendingEventsWithCompletionHandler {
@@ -287,7 +287,7 @@ limitations on querying which influences how you should structure your events.</
 You should then handle the response from <code>pushAllPendingEvents</code> to verify that all the events were successfully pushed.</p>
 <p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is
 delivered multiple times). For example:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample14" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample14"><pre><code class="lang-objc">NSDictionary *event = @{
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample14" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample14"><pre><code class="lang-objc">NSDictionary *event = @{
                         @&quot;id&quot;: &quot;12345678&quot;,
                         @&quot;product&quot;: @&quot;Something&quot;,
                         @&quot;cost&quot;: @(2.01)
@@ -312,7 +312,7 @@ in an event is supported for querying.</p>
 the timestamp of the event.</p>
 <p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
 of event times when events are queued.  For example:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample20" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample20"><pre><code class="lang-objc">NSDictionary *event = @{
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample20" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample20"><pre><code class="lang-objc">NSDictionary *event = @{
                         @`timestamp`: [NSDate date],
                         @&quot;product&quot;: @&quot;Something&quot;,
                         @&quot;cost&quot;: @(2.01)
@@ -370,7 +370,7 @@ pushing, querying and deleting collections.<br><strong>Keep this key safe</stron
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
 
 [TPConnectClient sharedClientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
                                     apiKey:@&quot;YOUR_API_KEY&quot;];
@@ -394,7 +394,7 @@ to contain rich details about what the &quot;world&quot; looked like at that poi
 <p>Put simply, events = action + time + state.</p>
 <p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
 analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample34" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample35" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample34"><pre><code class="lang-objc">NSDictionary *myEvent = @{
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample34" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample35" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample34"><pre><code class="lang-objc">NSDictionary *myEvent = @{
                             @&quot;type&quot;: @&quot;cycling&quot;,
                             @&quot;timestamp&quot;: [NSDate date],
                             @&quot;duration&quot;: @67,
@@ -465,7 +465,7 @@ had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</cod
 <p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
 <h3 id="events-are-denormalized">Events are denormalized</h3>
 <p>Consider our example event again, notice the age property of the user:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-objc">NSDictionary *myEvent = @{
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample41" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample41"><pre><code class="lang-objc">NSDictionary *myEvent = @{
                             @&quot;type&quot;: @&quot;cycling&quot;,
                             ...
                             @&quot;user&quot;: @{
@@ -498,7 +498,7 @@ over time, rather than merely current state.  This helps us answer questions abo
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;user.age&apos;);
 
@@ -523,7 +523,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-objc">NSDictionary *myEvent = @{
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample51" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample51"><pre><code class="lang-objc">NSDictionary *myEvent = @{
                             @&quot;type&quot;: @&quot;cycling&quot;,
                             ...
                             @&quot;user&quot;: @{
@@ -573,7 +573,7 @@ activity, complete with their name and age.</p>
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample55" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample55"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample55" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample55"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;bike.model&apos;);
   .filter({
@@ -585,7 +585,7 @@ that was built by &quot;Specialized&quot;:</p>
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li><a href="#code-sample58" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample58"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample58" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample58"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
 </code></pre></div></div></div>
@@ -617,7 +617,7 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav"><li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#code-sample66" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample67" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample66"><pre><code class="lang-objc">NSDictionary *event = @{
+<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample66" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample67" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample66"><pre><code class="lang-objc">NSDictionary *event = @{
                         @&quot;invalid.property&quot;: @&quot;value&quot;
                         };
 </code></pre></div><div class="tab-pane" id="code-sample67"><pre><code class="lang-swift">let event = [
