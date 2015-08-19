@@ -1731,7 +1731,7 @@ with <a href="#group-by">groups</a> or <a href="#time-intervals">time intervals<
 &quot;query not supported&quot; error.</p>
 <p>You can include your own logic as to whether your custom widget can support the specified <code>queryResults</code>.  By default,
 if no function is provided, all types of query results are assumed to be supported.</p>
-<p>`destroy()`` <em>(optional)</em></p>
+<p><code>destroy()</code> <em>(optional)</em></p>
 <p>This function is called when the widget is being <a href="#destroying-widgets">destroyed</a>.  Any DOM elements will be removed
 automatically; however, you should define this function if any extra &quot;clean up&quot; is required (e.g. removing listeners,
 freeing objects, etc.)</p>
@@ -1744,7 +1744,7 @@ used if a widget has been initially rendered when its container is not visible.<
     return {
         options: options,
         renderDom: function(targetElement, resultsElement) {
-            targetHTMLElement.classList.add(&apos;grow-results&apos;);
+            targetElement.classList.add(&apos;grow-results&apos;);
             this.resultsElement = resultsElement;
             //...
         },
