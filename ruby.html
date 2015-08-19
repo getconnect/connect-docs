@@ -83,9 +83,11 @@
                   <ul class="nav">
                       <li>
                         <a href="#bundler">Bundler</a>
+                        
                       </li>    
                       <li>
                         <a href="#rubygems">RubyGems</a>
+                        
                       </li>    
                   </ul>
               </li>    
@@ -99,24 +101,42 @@
                   <ul class="nav">
                       <li>
                         <a href="#pushing-events-synchronously">Pushing events synchronously</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#single-event">Single event</a>
+                              </li>    
+                              <li>
+                                <a href="#multiple-events">Multiple events</a>
+                              </li>    
+                              <li>
+                                <a href="#batches-of-events">Batches of events</a>
+                              </li>    
+                          </ul>
                       </li>    
                       <li>
                         <a href="#pushing-events-asynchronously">Pushing events asynchronously</a>
+                        
                       </li>    
                       <li>
                         <a href="#pushing-events-with-synchrony">Pushing events with synchrony</a>
+                        
                       </li>    
                       <li>
                         <a href="#bulk-importing-events">Bulk importing events</a>
+                        
                       </li>    
                       <li>
                         <a href="#restrictions-on-pushing">Restrictions on pushing</a>
+                        
                       </li>    
                       <li>
                         <a href="#reliability-of-events">Reliability of events</a>
+                        
                       </li>    
                       <li>
                         <a href="#timestamps">Timestamps</a>
+                        
                       </li>    
                   </ul>
               </li>    
@@ -138,15 +158,55 @@
                   <ul class="nav">
                       <li>
                         <a href="#what-is-an-event-">What is an event?</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#action">Action</a>
+                              </li>    
+                              <li>
+                                <a href="#time">Time</a>
+                              </li>    
+                              <li>
+                                <a href="#state">State</a>
+                              </li>    
+                          </ul>
                       </li>    
                       <li>
                         <a href="#collections">Collections</a>
+                        
                       </li>    
                       <li>
                         <a href="#structuring-your-events">Structuring your events</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#events-are-denormalized">Events are denormalized</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-immutable">Events are immutable</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-rich-and-nested">Events are rich and nested</a>
+                              </li>    
+                              <li>
+                                <a href="#events-are-schemaless">Events are schemaless</a>
+                              </li>    
+                          </ul>
                       </li>    
                       <li>
                         <a href="#restrictions">Restrictions</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#property-names">Property names</a>
+                              </li>    
+                              <li>
+                                <a href="#arrays">Arrays</a>
+                              </li>    
+                              <li>
+                                <a href="#distinct-count">Distinct count</a>
+                              </li>    
+                          </ul>
                       </li>    
                   </ul>
               </li>    
@@ -156,7 +216,7 @@
     <div class="col-sm-9">
       <h1 id="getting-started">Getting Started</h1>
 <p>The following guide will help you to get started using Connect.  Once you have your <a href="#projects-and-keys">project ID and API key</a> and
-you have decided how to <a href="#modeling-your-events">model your events</a>, you can start <a href="#pushing-events">pushing events</a> and <a href="#querying">executing queries</a>.</p>
+you have decided how to <a href="#modeling-your-events">model your events</a>, you can start <a href="#pushing-events">pushing events</a> and <a href="#querying-events">executing queries</a>.</p>
 <h1 id="installing-the-sdk">Installing the SDK</h1>
 <p>The simplest way to get started is to install the <code>connect_client</code> Ruby Gem.</p>
 <h2 id="bundler">Bundler</h2>
@@ -621,24 +681,5 @@ event if your application relies on this.</p>
     <script src="scripts/bootstrap.min.js"></script>
     <script src="scripts/svg-injector.min.js"></script>
     <script src="scripts/docs.min.js"></script>
-
-  	<script>
-      var svgs = document.querySelectorAll('img.inject-me');
-      SVGInjector(svgs);
-  		
-      var sp = new StatusPage({ pageId: '3ynj22l3r4d8'});
-  		sp.getStatus({
-  		  success: function(data) {
-  		    $('.color-description').text(data.status.description);
-  		    $('.color-dot').addClass(data.status.indicator);
-  		  }
-  		});
-      
-      $(function() {
-  			$('pre code').each(function(i, block) {
-  		  	hljs.highlightBlock(block);
-  		  });  
-  		});
-  	</script>
   </body>
 </html>

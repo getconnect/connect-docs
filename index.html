@@ -144,24 +144,5 @@
     <script src="scripts/bootstrap.min.js"></script>
     <script src="scripts/svg-injector.min.js"></script>
     <script src="scripts/docs.min.js"></script>
-
-  	<script>
-      var svgs = document.querySelectorAll('img.inject-me');
-      SVGInjector(svgs);
-  		
-      var sp = new StatusPage({ pageId: '3ynj22l3r4d8'});
-  		sp.getStatus({
-  		  success: function(data) {
-  		    $('.color-description').text(data.status.description);
-  		    $('.color-dot').addClass(data.status.indicator);
-  		  }
-  		});
-      
-      $(function() {
-  			$('pre code').each(function(i, block) {
-  		  	hljs.highlightBlock(block);
-  		  });  
-  		});
-  	</script>
   </body>
 </html>
