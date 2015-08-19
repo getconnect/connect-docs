@@ -218,19 +218,19 @@
                 
                   <ul class="nav">
                       <li>
-                        <a href="#basic-widgets">Basic widgets</a>
+                        <a href="#basic-visualizations">Basic visualizations</a>
                         
                           <ul class="nav">
                               <li>
-                                <a href="#table-widget">Table widget</a>
+                                <a href="#table-viz">Table viz</a>
                               </li>    
                               <li>
-                                <a href="#text-widget">Text widget</a>
+                                <a href="#text-viz">Text viz</a>
                               </li>    
                           </ul>
                       </li>    
                       <li>
-                        <a href="#chart-widgets">Chart widgets</a>
+                        <a href="#chart-visualizations">Chart visualizations</a>
                         
                           <ul class="nav">
                               <li>
@@ -263,7 +263,7 @@
                           </ul>
                       </li>    
                       <li>
-                        <a href="#gauge-widget">Gauge widget</a>
+                        <a href="#gauge-viz">Gauge viz</a>
                         
                           <ul class="nav">
                               <li>
@@ -284,22 +284,22 @@
                         
                       </li>    
                       <li>
-                        <a href="#widget-lifecycle">Widget lifecycle</a>
+                        <a href="#viz-lifecycle">Viz lifecycle</a>
                         
                           <ul class="nav">
                               <li>
-                                <a href="#refreshing-widgets">Refreshing widgets</a>
+                                <a href="#refreshing-visualizations">Refreshing visualizations</a>
                               </li>    
                               <li>
-                                <a href="#updating-widgets">Updating widgets</a>
+                                <a href="#updating-visualizations">Updating visualizations</a>
                               </li>    
                               <li>
-                                <a href="#destroying-widgets">Destroying widgets</a>
+                                <a href="#destroying-visualizations">Destroying visualizations</a>
                               </li>    
                           </ul>
                       </li>    
                       <li>
-                        <a href="#custom-widgets">Custom widgets</a>
+                        <a href="#custom-visualizations">Custom visualizations</a>
                         
                       </li>    
                   </ul>
@@ -1209,16 +1209,21 @@ result set with <code>metadata</code> and <code>results</code>.</p>
 <p>This means you can combine multiple queries, augment results with data from other services or perform complex
 calculations client-side. </p>
 <h1 id="visualizing-data">Visualizing data</h1>
-<p>To start visualizing data with our widgets, you must ensure you have first included the visualization library.</p>
+<p>To start visualizing data with our visualizations, you must ensure you have first included the viz library.</p>
 <p>If you are <a href="#cdn">using the CDN</a> or <a href="#bower">Bower</a>, make sure you&apos;ve referenced the library and CSS file.</p>
 <p>For <a href="#npm">NPM</a>, make sure you&apos;ve installed the <code>connect-js-viz</code> package and referenced the library and the CSS
 (via Browserify or through other means).</p>
-<p>Once this is correctly installed, you can start creating widgets, for example:</p>
-<p data-height="300" data-theme-id="17963" data-slug-hash="WvBGEO" data-default-tab="results" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/WvBGEO/">Connect Text Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p>Once this is correctly installed, you can start creating visualizations, for example:</p>
+<p data-height="300" data-theme-id="17963" data-slug-hash="WvBGEO" data-default-tab="results" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/WvBGEO/">Connect Text viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
-<p>To create a visualization, you must specify either a <strong>query</strong> or a <strong>function</strong> that returns a promise, as well as
-the <strong>element</strong> to which to draw the visualization (either a <strong>string selector</strong> or an <strong>HTMLElement</strong>).</p>
-<p>Passing a query:</p>
+<p>To create a viz, you must specify a <strong>query</strong>, <strong>container</strong> and <strong>options</strong>:</p>
+<p><code>connect.vizType(query, container, options);</code></p>
+<p><strong>query</strong></p>
+<p>You can specify either a <a href="#querying-events">query</a> generated by <code>connect.query</code> or a <strong>function</strong> that returns a promise
+(of a valid result set).</p>
+<p>Specifying a <strong>function</strong> that returns a promise can be useful if you want to
+<a href="#manipulating-results-client-side">chain promises and run your own custom calculations</a> on the result set or combine it
+with other services&apos; data.  For example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample80" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample80"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
     .select({
         totalSales: { sum: &apos;price&apos; }
@@ -1226,34 +1231,40 @@ the <strong>element</strong> to which to draw the visualization (either a <stron
     .groupBy(&apos;product&apos;)
     .interval(&apos;monthly&apos;);
 
-var chart = connect.chart(query, &apos;#chart&apos;);
-</code></pre></div></div></div>
-<p>Passing a function that returns a promise:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample81" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample81"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
-    .select({
-        totalSales: { sum: &apos;price&apos; }
-    })
-    .groupBy(&apos;product&apos;)
-    .interval(&apos;monthly&apos;);
-
 var resultsFactory = function(){
-  return query.execute();
+  return query.execute()
+    .then(function (results) {
+        var newResults = results.clone();
+        // modify the new results
+        return newResults;
+    });
 }
 
-var chart = connect.chart(resutlsFactory, &apos;#chart&apos;);
+var chart = connect.chart(resultsFactory, &apos;#chart&apos;);
 </code></pre></div></div></div>
-<p>This allows you to <a href="#manipulating-results-client-side">chain promises and run your own custom calculations</a> on the resultset or combine it with other services&apos; data.</p>
-<p>You should also be mindful of the <a href="#widget-lifecycle">widget lifecycle</a> so you can <a href="#refreshing-widgets">refresh</a>,
-<a href="#updating-widgets">update</a> or <a href="#destroying-widgets">destroy</a> widgets as required.</p>
-<h2 id="basic-widgets">Basic widgets</h2>
-<p>Connect offers a range of pre-built basic widgets which you can use to visualize data.  You can also <a href="#custom-widgets">build your own</a>.</p>
-<p>All widgets support the setting of <a href="#field-options">field options</a> and <a href="#interval-options">interval options</a> (if applicable).</p>
-<h3 id="table-widget">Table widget</h3>
-<p data-height="320" data-theme-id="17963" data-slug-hash="XbwjVx" data-default-tab="results" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/XbwjVx/">Connect Table Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p><strong>container</strong></p>
+<p>The container can either be a <strong>string</strong> or <strong>HTMLElement</strong> where you want to render the viz.</p>
+<p><strong>options</strong></p>
+<p>The options for a viz contains <a href="#field-options">field options</a>, <a href="#interval-options">interval options</a> (if applicable)
+and any viz specific options.  For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample81" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample81"><pre><code class="lang-js">{
+    &quot;fields&quot;: { /* field options */ },
+    &quot;intervals&quot;: { /* interval options */ },
+    &quot;chart&quot;: { /* chart specific options */ },
+    &quot;gauge&quot;: { /* gauge specific topions */ }
+}
+</code></pre></div></div></div>
+<p>You should also be mindful of the <a href="#viz-lifecycle">viz lifecycle</a> so you can <a href="#refreshing-visualizations">refresh</a>,
+<a href="#updating-visualizations">update</a> or <a href="#destroying-visualizations">destroy</a> visualizations as required.</p>
+<h2 id="basic-visualizations">Basic visualizations</h2>
+<p>Connect offers a range of pre-built basic visualizations which you can use to visualize data.  You can also <a href="#custom-visualizations">build your own</a>.</p>
+<p>All visualizations support the setting of <a href="#field-options">field options</a> and <a href="#interval-options">interval options</a> (if applicable).</p>
+<h3 id="table-viz">Table viz</h3>
+<p data-height="320" data-theme-id="17963" data-slug-hash="XbwjVx" data-default-tab="results" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/XbwjVx/">Connect Table viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
-<p>The table widget will display your results in a tabular fashion.  This is best used with <a href="#group-by">grouped</a> or <a href="#time-intervals">time interval</a> queries,
+<p>The table viz will display your results in a tabular fashion.  This is best used with <a href="#group-by">grouped</a> or <a href="#time-intervals">time interval</a> queries,
 which get displayed as multiple rows. </p>
-<p>You can also apply the following CSS classes to your widget&apos;s container to change the styling and/or behavior of the table:</p>
+<p>You can also apply the following CSS classes to your viz&apos;s container to change the styling and/or behavior of the table:</p>
 <ul>
 <li><code>connect-table-fixed-header</code> - enable scrolling of the table and ensure that the header remains fixed (using pure CSS).</li>
 <li><code>connect-table-striped</code> - enable &quot;zebra striped&quot; styling of the table.</li>
@@ -1261,43 +1272,43 @@ which get displayed as multiple rows. </p>
 <li><code>connect-table-solid-header</code> - display the table header with a solid background color.</li>
 </ul>
 <p>The actual styling/colors used can be overridden using CSS, or you can <a href="#less-variables">specify custom LESS variables</a> and build the SDK yourself.</p>
-<h3 id="text-widget">Text widget</h3>
-<p data-height="300" data-theme-id="17963" data-slug-hash="WvBGEO" data-default-tab="results" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/WvBGEO/">Connect Text Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<h3 id="text-viz">Text viz</h3>
+<p data-height="300" data-theme-id="17963" data-slug-hash="WvBGEO" data-default-tab="results" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/WvBGEO/">Connect Text viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
-<p>The text widget will display a single result in simple text.  You can add a title and specify the format via the <a href="#chart-options">options</a>.</p>
-<h2 id="chart-widgets">Chart widgets</h2>
-<p>Connect offers a range of pre-built chart widgets which you can use to visualize data.  You can also <a href="#custom-widgets">build your own</a>.</p>
-<p>See <a href="#chart-options">chart options</a> for information on how to customize these charts.  All widgets also support the setting of
+<p>The text viz will display a single result in simple text.  You can add a title and specify the format via the <a href="#chart-options">options</a>.</p>
+<h2 id="chart-visualizations">Chart visualizations</h2>
+<p>Connect offers a range of pre-built chart visualizations which you can use to visualize data.  You can also <a href="#custom-visualizations">build your own</a>.</p>
+<p>See <a href="#chart-options">chart options</a> for information on how to customize these charts.  All visualizations also support the setting of
 <a href="#field-options">field options</a> and <a href="#interval-options">interval options</a> (if applicable).</p>
 <h3 id="bar-chart">Bar chart</h3>
-<p data-height="300" data-theme-id="17963" data-slug-hash="PqvORv" data-default-tab="results" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/PqvORv/">Connect Bar Chart Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p data-height="300" data-theme-id="17963" data-slug-hash="PqvORv" data-default-tab="results" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/PqvORv/">Connect Bar Chart viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
 <p>You can generate a bar chart for <a href="#group-by">grouped</a> or <a href="#time-intervals">time interval</a> queries by specifying <code>type: &apos;bar&apos;</code> on the options for <code>chart()</code>.</p>
 <p>You can also see in the above example the use of colors/palettes to provide differing colors for the bar chart.</p>
 <h3 id="line-chart">Line chart</h3>
-<p data-height="300" data-theme-id="17963" data-slug-hash="gpJXzy" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/gpJXzy/">Connect Line Chart Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p data-height="300" data-theme-id="17963" data-slug-hash="gpJXzy" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/gpJXzy/">Connect Line Chart viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
 <p>You can generate a line chart for <a href="#group-by">grouped</a> or <a href="#time-intervals">time interval</a> queries by specifying <code>type: &apos;line&apos;</code> on the options for <code>chart()</code>.</p>
 <h3 id="area-chart">Area chart</h3>
-<p data-height="300" data-theme-id="17963" data-slug-hash="yNWPEa" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/yNWPEa/">Connect Area Chart Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p data-height="300" data-theme-id="17963" data-slug-hash="yNWPEa" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/yNWPEa/">Connect Area Chart viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
 <p>You can generate an area chart for <a href="#group-by">grouped</a> or <a href="#time-intervals">time interval</a> queries by specifying <code>type: &apos;area&apos;</code> on the options for <code>chart()</code>.</p>
 <p>You can also see in the above example the use of <code>stack: true</code> in the <a href="#chart-options">options</a> to provide a stacked area chart.</p>
 <h3 id="spline-chart">Spline chart</h3>
-<p data-height="300" data-theme-id="17963" data-slug-hash="wabPxv" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/wabPxv/">Connect Spline Chart Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p data-height="300" data-theme-id="17963" data-slug-hash="wabPxv" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/wabPxv/">Connect Spline Chart viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
 <p>You can generate a spline chart for <a href="#group-by">grouped</a> or <a href="#time-intervals">time interval</a> queries by specifying <code>type: &apos;spline&apos;</code> on the options for <code>chart()</code>.</p>
 <h3 id="area-spline-chart">Area spline chart</h3>
-<p data-height="300" data-theme-id="17963" data-slug-hash="MwdOBJ" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/MwdOBJ/">Connect Area Spline Chart Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p data-height="300" data-theme-id="17963" data-slug-hash="MwdOBJ" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/MwdOBJ/">Connect Area Spline Chart viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
 <p>You can generate an area spline chart for <a href="#group-by">grouped</a> or <a href="#time-intervals">time interval</a> queries by specifying <code>type: &apos;area-spline&apos;</code> on the options for <code>chart()</code>.</p>
 <p>You can also see in the above example the use of <code>stack: true</code> in the <a href="#chart-options">options</a> to provide a stacked area spline chart.</p>
 <h3 id="step-chart">Step chart</h3>
-<p data-height="300" data-theme-id="17963" data-slug-hash="RPmjBv" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/RPmjBv/">Connect Step Chart Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p data-height="300" data-theme-id="17963" data-slug-hash="RPmjBv" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/RPmjBv/">Connect Step Chart viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
 <p>You can generate a step chart for <a href="#group-by">grouped</a> or <a href="#time-intervals">time interval</a> queries by specifying <code>type: &apos;step&apos;</code> on the options for <code>chart()</code>.</p>
 <h3 id="area-step-chart">Area step chart</h3>
-<p data-height="300" data-theme-id="17963" data-slug-hash="KpLyxM" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/KpLyxM/">Connect Area Step Chart Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p data-height="300" data-theme-id="17963" data-slug-hash="KpLyxM" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/KpLyxM/">Connect Area Step Chart viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
 <p>You can generate an area step chart for <a href="#group-by">grouped</a> or <a href="#time-intervals">time interval</a> queries by specifying <code>type: &apos;area-step&apos;</code> on the options for <code>chart()</code>.</p>
 <p>You can also see in the above example the use of <code>stack: true</code> in the <a href="#chart-options">options</a> to provide a stacked area step chart.</p>
@@ -1460,12 +1471,12 @@ interval (if applicable) and the actual value of the data point.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="gauge-widget">Gauge widget</h2>
-<p data-height="300" data-theme-id="17963" data-slug-hash="LVoOJr" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/LVoOJr/">Connect Gauge Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<h2 id="gauge-viz">Gauge viz</h2>
+<p data-height="300" data-theme-id="17963" data-slug-hash="LVoOJr" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/LVoOJr/">Connect Gauge viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
-<p>Gauge widgets can be generated for basic queries.</p>
+<p>Gauge visualizations can be generated for basic queries.</p>
 <h3 id="gauge-options">Gauge options</h3>
-<p>As well as the setting of <a href="#field-options">field options</a> (which all widgets support), you must specify gauge options to configure the widget:</p>
+<p>As well as the setting of <a href="#field-options">field options</a> (which all visualizations support), you must specify gauge options to configure the viz:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample84" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample84"><pre><code class="lang-js">var gauge = connect.gauge(query, &apos;#gauge&apos;, {
     gauge: {
         min: 0,
@@ -1520,7 +1531,7 @@ interval (if applicable) and the actual value of the data point.</p>
 </tbody>
 </table>
 <h2 id="formatters">Formatters</h2>
-<p>Many of the widget types allow you to pass functions that format a number to its string representation.  This allows you to use your preferred
+<p>Many of the viz types allow you to pass functions that format a number to its string representation.  This allows you to use your preferred
 number formatting library or custom implementation to represent numbers to your user.</p>
 <p>Connect also wraps the <a href="https://github.com/mbostock/d3/wiki/Formatting">d3 formatter</a> which allows you to use any of these d3 formats out of the
 box without referencing any other libraries.  To use this, simply pass the desired format string to the <code>Connect.Viz.format</code> function and it will
@@ -1546,8 +1557,8 @@ var fieldOptions = {
 };
 </code></pre></div></div></div>
 <h2 id="field-options">Field options</h2>
-<p>All widgets allow specifying field options which describe the way in which aggregated values and grouped fields are displayed in the widget.
-While all widgets support field options, not all options may be relevant for each type of widget.</p>
+<p>All visualizations allow specifying field options which describe the way in which aggregated values and grouped fields are displayed in the viz.
+While all visualizations support field options, not all options may be relevant for each type of viz.</p>
 <p>Field options are keyed by select or grouped field, for example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample87" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample87"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
     .select({
@@ -1585,7 +1596,7 @@ var chart = connect.chart(query, &apos;#chart&apos;, {
 <tr>
 <td><code>label</code></td>
 <td><code>string</code></td>
-<td>A &quot;friendly&quot; label for the select or grouped field.  This may be displayed in a legend, tooltip, etc. depending on the widget type.</td>
+<td>A &quot;friendly&quot; label for the select or grouped field.  This may be displayed in a legend, tooltip, etc. depending on the viz type.</td>
 </tr>
 <tr>
 <td><code>valueFormatter</code></td>
@@ -1595,8 +1606,8 @@ var chart = connect.chart(query, &apos;#chart&apos;, {
 </tbody>
 </table>
 <h2 id="interval-options">Interval options</h2>
-<p>Certain widgets allow specifying interval options when executing a query with <a href="#time-intervals">time intervals</a>.  This controls the formatting
-of title labels (i.e. in the <a href="#table-widget">table widget</a> and labels for the interval values themselves.</p>
+<p>Certain visualizations allow specifying interval options when executing a query with <a href="#time-intervals">time intervals</a>.  This controls the formatting
+of title labels (i.e. in the <a href="#table-viz">table viz</a> and labels for the interval values themselves.</p>
 <table>
 <thead>
 <tr>
@@ -1609,7 +1620,7 @@ of title labels (i.e. in the <a href="#table-widget">table widget</a> and labels
 <tr>
 <td><code>label</code></td>
 <td><code>string</code></td>
-<td>A &quot;friendly&quot; label or title for the interval.  This only applies to the <a href="#table-widget">table widget</a> (for the column heading).</td>
+<td>A &quot;friendly&quot; label or title for the interval.  This only applies to the <a href="#table-viz">table viz</a> (for the column heading).</td>
 </tr>
 <tr>
 <td><code>formats</code></td>
@@ -1660,43 +1671,43 @@ var table = connect.table(query, &apos;#table&apos;, {
     }
 }
 </code></pre></div></div></div>
-<h2 id="widget-lifecycle">Widget lifecycle</h2>
-<p>After you have created a widget, you should manage its lifecycle in your app, including <a href="#refreshing-widgets">refreshing the data</a>,
-<a href="#updating-widgets">updating</a> or <a href="#destroying-widgets">destroying</a> it.</p>
-<h3 id="refreshing-widgets">Refreshing widgets</h3>
-<p>If you wish to refresh the data in a widget (i.e. execute the query again for fresh data), you can call the <code>refresh()</code> function
-on the created widget.  For example:</p>
+<h2 id="viz-lifecycle">Viz lifecycle</h2>
+<p>After you have created a viz, you should manage its lifecycle in your app, including <a href="#refreshing-visualizations">refreshing the data</a>,
+<a href="#updating-visualizations">updating</a> or <a href="#destroying-visualizations">destroying</a> it.</p>
+<h3 id="refreshing-visualizations">Refreshing visualizations</h3>
+<p>If you wish to refresh the data in a viz (i.e. execute the query again for fresh data), you can call the <code>refresh()</code> function
+on the created viz.  For example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample90" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample90"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {...});
 //...
 chart.refresh();
 </code></pre></div></div></div>
-<p>Many widgets support smooth transitions/animations when data is refreshed.  You may also wish to refresh widgets on a timer to
+<p>Many visualizations support smooth transitions/animations when data is refreshed.  You may also wish to refresh visualizations on a timer to
 simulate streaming, real-time data.</p>
-<p>The loading animation will <strong>not</strong> be shown when refreshing widgets.  You should <a href="#updating-widgets">update the widget</a> if you wish
+<p>The loading animation will <strong>not</strong> be shown when refreshing visualizations.  You should <a href="#updating-visualizations">update the viz</a> if you wish
 this to display.</p>
-<h3 id="updating-widgets">Updating widgets</h3>
-<p>You can also update widgets with a new <strong>query</strong> or <strong>function returning a promise</strong> by calling the <code>update()</code> function on the created
-widget.  This is useful in scenarios, for example, where an end user changes a filter.  For example:</p>
+<h3 id="updating-visualizations">Updating visualizations</h3>
+<p>You can also update visualizations with a new <strong>query</strong> or <strong>function returning a promise</strong> by calling the <code>update()</code> function on the created
+viz.  This is useful in scenarios, for example, where an end user changes a filter.  For example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample91" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample91"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {...});
 //...
 chart.update(newQuery);
 </code></pre></div></div></div>
-<p>The loading animation <strong>will</strong> be shown when updating widgets and any pending queries for the widget will be cancelled/overridden by
+<p>The loading animation <strong>will</strong> be shown when updating visualizations and any pending queries for the viz will be cancelled/overridden by
 this action.</p>
-<h3 id="destroying-widgets">Destroying widgets</h3>
-<p>If a widget is no longer needed in your app, or it needs to be completely replaced with a newly created one, it is important that
-you clean up the widget.</p>
-<p>Simply removing the widget from the DOM is <strong>not sufficient</strong> and may cause memory leaks in your app.</p>
-<p>To destroy a widget, simply call the <code>destroy()</code> function on the created widget.  For example:</p>
+<h3 id="destroying-visualizations">Destroying visualizations</h3>
+<p>If a viz is no longer needed in your app, or it needs to be completely replaced with a newly created one, it is important that
+you clean up the viz.</p>
+<p>Simply removing the viz from the DOM is <strong>not sufficient</strong> and may cause memory leaks in your app.</p>
+<p>To destroy a viz, simply call the <code>destroy()</code> function on the created viz.  For example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample92" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample92"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {
     //...
 });
 
 chart.destroy();
 </code></pre></div></div></div>
-<h2 id="custom-widgets">Custom widgets</h2>
-<p>You can register your own custom widgets to take advantage of the regular widget lifecycle which the included widgets use.
-This means your widget will automatically handle:</p>
+<h2 id="custom-visualizations">Custom visualizations</h2>
+<p>You can register your own custom visualizations to take advantage of the regular viz lifecycle which the included visualizations use.
+This means your viz will automatically handle:</p>
 <ul>
 <li>Loading animations</li>
 <li>Handle queries or functions that return promises</li>
@@ -1706,40 +1717,40 @@ This means your widget will automatically handle:</p>
 <li>Error handling</li>
 </ul>
 <p>For example:</p>
-<p data-height="300" data-theme-id="17963" data-slug-hash="MwdRoO" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/MwdRoO/">Connect Custom Widget</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p data-height="300" data-theme-id="17963" data-slug-hash="MwdRoO" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/MwdRoO/">Connect Custom viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
-<p>A custom widget must supply an implementation for the following contract:</p>
+<p>A custom viz must supply an implementation for the following contract:</p>
 <p><code>renderDom(targetElement, resultsElement)</code>  </p>
 <p>This function is only called during initialization and should implement any initial DOM rendering before the query results
 have been received.  Any changes to the DOM during this method will appear even while the loading animation is displayed over
 the top.</p>
-<p>The <code>targetElement</code> parameter is the container that was passed to the widget as the target.  Under normal circumstances, you
+<p>The <code>targetElement</code> parameter is the container that was passed to the viz as the target.  Under normal circumstances, you
 would not make significant changes to this element.  There are a few useful CSS classes you can add to this container to
-change the styling behavior of the widget:</p>
+change the styling behavior of the viz:</p>
 <ul>
-<li><code>grow-results</code> - grow the widget&apos;s height to fill the entire available height.</li>
-<li><code>center-results</code> - center the widget&apos;s results vertically.</li>
+<li><code>grow-results</code> - grow the viz&apos;s height to fill the entire available height.</li>
+<li><code>center-results</code> - center the viz&apos;s results vertically.</li>
 </ul>
 <p><code>displayResults(queryResults, isQueryUpdate)</code></p>
-<p>This function is called whenever a new result set is available.  The bulk of the widget rendering logic should be in this
+<p>This function is called whenever a new result set is available.  The bulk of the viz rendering logic should be in this
 function.  <code>queryResults</code> contains the standard result set returned from a query (including <a href="#metadata">metadata</a>).
 <code>isQueryUpdate</code> will indicate whether or not this is a mere refresh or whether the entire result set has changed
 (e.g. due to a completely different query).</p>
 <p><code>isResultSetSupported(queryResults)</code> <em>(optional)</em></p>
-<p>Not all widgets can handle all types of result sets.  For example, the <a href="#text-widget">text widget</a>, cannot handle query results
-with <a href="#group-by">groups</a> or <a href="#time-intervals">time intervals</a>.  In these cases, the widget will gracefully display a
+<p>Not all visualizations can handle all types of result sets.  For example, the <a href="#text-viz">text viz</a>, cannot handle query results
+with <a href="#group-by">groups</a> or <a href="#time-intervals">time intervals</a>.  In these cases, the viz will gracefully display a
 &quot;query not supported&quot; error.</p>
-<p>You can include your own logic as to whether your custom widget can support the specified <code>queryResults</code>.  By default,
+<p>You can include your own logic as to whether your custom viz can support the specified <code>queryResults</code>.  By default,
 if no function is provided, all types of query results are assumed to be supported.</p>
 <p><code>destroy()</code> <em>(optional)</em></p>
-<p>This function is called when the widget is being <a href="#destroying-widgets">destroyed</a>.  Any DOM elements will be removed
+<p>This function is called when the viz is being <a href="#destroying-visualizations">destroyed</a>.  Any DOM elements will be removed
 automatically; however, you should define this function if any extra &quot;clean up&quot; is required (e.g. removing listeners,
 freeing objects, etc.)</p>
 <p><code>recalculateSize()</code> <em>(optional)</em></p>
-<p>This function is called when the <code>recalculateSize</code> function is manually called on a widget.  This should be defined if the
-widget must manually respond to changes in the size of the widget container.  The <code>recalculateSize</code> function is commonly
-used if a widget has been initially rendered when its container is not visible.</p>
-<p>Once you have implemented the contract, you register the custom widget using <code>Connect.registerViz</code>, for example:</p>
+<p>This function is called when the <code>recalculateSize</code> function is manually called on a viz.  This should be defined if the
+viz must manually respond to changes in the size of the viz container.  The <code>recalculateSize</code> function is commonly
+used if a viz has been initially rendered when its container is not visible.</p>
+<p>Once you have implemented the contract, you register the custom viz using <code>Connect.registerViz</code>, for example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample93" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample93"><pre><code class="lang-js">Connect.registerViz(&apos;myViz&apos;, function(options) {
     return {
         options: options,
