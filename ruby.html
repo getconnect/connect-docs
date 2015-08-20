@@ -153,6 +153,41 @@
                 
               </li>    
               <li>
+                <a href="#security">Security</a>
+                
+                  <ul class="nav">
+                      <li>
+                        <a href="#api-keys">API Keys</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#keeping-api-keys-secure">Keeping API Keys Secure</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#pushing-events-securely">Pushing events securely</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#querying-events-securely">Querying events securely</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#resetting-the-master-key">Resetting the master key</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#filtered-keys">Filtered keys</a>
+                        
+                          <ul class="nav">
+                              <li>
+                                <a href="#generating-a-filtered-key">Generating a filtered key</a>
+                              </li>    
+                          </ul>
+                      </li>    
+                  </ul>
+              </li>    
+              <li>
                 <a href="#modeling-your-events">Modeling your events</a>
                 
                   <ul class="nav">
@@ -428,6 +463,107 @@ end
 
 
 
+<h1 id="security">Security</h1>
+<p>Security is a vital component to the Connect service and we take it very seriously.  It is important to consider
+how to ensure your data remains secure.</p>
+<h2 id="api-keys">API Keys</h2>
+<p>API keys are the core security mechanisms by which you can <a href="#pushing-events">push</a> and <a href="#querying-events">query</a>
+your data.  It is important to keep these keys safe by controlling where these keys exist and who has access to them.</p>
+<p>Each key can either push, query or both.  The most important key is the <code>Project Master Key</code> which can perform all of
+these actions, as well as administrative functions such as deleting data.  Read more about the keys <a href="#projects-and-keys">here</a>.</p>
+<h2 id="keeping-api-keys-secure">Keeping API Keys Secure</h2>
+<p>You should carefully consider when and which API keys to expose to users.</p>
+<p>Crucially, you should <strong>never</strong> expose your <code>Project Master Key</code> to users or embed it in client applications.
+If this key does get compromised, you can <a href="#resetting-the-master-key">reset it</a>.</p>
+<p>If you embed API keys in client applications, you should consider these keys as fully accessible to anyone having access
+to that client application.  This includes both mobile and web applications.</p>
+<h2 id="pushing-events-securely">Pushing events securely</h2>
+<p>While you can use a <code>Push Key</code> to prevent clients from querying events, you cannot restrict the collections or events
+clients can push to the API.  Unfortunately, this is the nature of tracking events directly client-side and opens the
+door to malicious users potentially sending bad data.</p>
+<p>In many circumstances, this is not an issue as users can already generate bad data simply by using your application in
+an incorrect way, generating events with bad or invalid data.  In circumstances where you absolutely cannot withstand
+bad event data, you should consider pushing the events server-side from a service under your control.</p>
+<p>Finally, if a <code>Push Key</code> is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<h2 id="querying-events-securely">Querying events securely</h2>
+<p>To query events, you must use an API key that has query permissions.  By default, a <code>Query Key</code> has full access to all
+events in all collections in your project.  If this key is exposed, a client could execute any type of query on your
+collections.</p>
+<p>You have a number of options on querying events securely:</p>
+<ol>
+<li><p>For internal querying or dashboard, you may consider it acceptable to expose the normal <code>Query Key</code> in client applications.
+Keep in mind that this key can execute any query on any collection in the project.</p>
+</li>
+<li><p>Generate a <a href="#filtered-keys">filtered key</a>, which applies a specific set of filters to all queries executed by clients
+with the key.</p>
+</li>
+<li><p>Only allow clients to execute queries via a service you control, which in turn executes queries via the Connect API server-side.</p>
+</li>
+</ol>
+<p>Finally, if a <code>Query Key</code> is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<h2 id="resetting-the-master-key">Resetting the master key</h2>
+<p>Resetting the <code>Project Master Key</code> will invalidate the previous key and generate a new, random key.  This action will also
+reset all other keys for the project (including the push, query and any <a href="#filtered-keys">filter keys</a> generated).</p>
+<p>Doing this is <strong>irreversible</strong> and would prevent all applications with existing keys from pushing to or querying the project.</p>
+<p>You can only reset the master key in the projects section of the <a href="http://app.getconnect.io">admin console</a>.</p>
+<h2 id="filtered-keys">Filtered keys</h2>
+<p>Filtered keys allows you to create an API key that can either push or query, and in the case of querying,
+apply one or more <a href="#filters">filters</a> to all queries executed with the key.</p>
+<p>This allows you to have finer control over security and what data clients can access, especially in multi-tenant
+environments.</p>
+<blockquote>
+<p><strong>Filters are only applied to queries</strong></p>
+<p>Any filters specified in your filtered key only apply to querying.  We currently do not support applying
+filters to restrict the pushing of events.</p>
+</blockquote>
+<p>Filtered keys can only push or query (as you specify), <em>never</em> administrative functions or deleting data.  </p>
+<h3 id="generating-a-filtered-key">Generating a filtered key</h3>
+<p>Filtered keys are generated and encrypted with the <code>Project Master Key</code>.  You do not have to register the
+filtered key with the Connect service.</p>
+<p>To generate a filtered key, you must supply the master key, key settings and <a href="http.html#filters">filters</a>.
+The structure of the filters should match the structure of <a href="http.html#filters">JSON filters in the HTTP API</a>.
+For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-ruby">require &apos;json&apos;
+require &apos;connect_client&apos;
+
+key_definition = {
+  :canPush =&gt; true,
+  :canQuery =&gt; true,
+  :filters =&gt; {
+    :&quot;customer.firstName&quot; =&gt; {
+      :eq =&gt; &apos;Tom&apos;
+    }
+  }
+}
+
+filtered_key = ConnectClient.generate_filtered_key(key_definition.to_json, &apos;YOUR_MASTER_KEY&apos;)
+
+puts filtered_key
+</code></pre></div></div></div>
+<table>
+    <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>filters</code></td>
+        <td><code>object</code></td>
+        <td>The filters to apply all queries executed when using the key.  These filters should be generated with the same structure as <a href="http.html#filters">filters</a> from the HTTP API.</td>
+    </tr>
+    <tr>
+        <td><code>canQuery</code></td>
+        <td><code>boolean</code></td>
+        <td>Whether or not the key can be used to execute queries.  If <code>false</code>, the <code>filters</code> property is ignored (as it does not applying to pushing).</td>
+    </tr>
+    <tr>
+        <td><code>canPush</code></td>
+        <td><code>boolean</code></td>
+        <td>Whether or not the key can be used to push events.</td>
+    </tr>
+</table>
+
+<p>You would use the resulting key to provide to client applications (e.g. in a browser using the <a href="js.html">JavaScript SDK</a>).</p>
 <h1 id="modeling-your-events">Modeling your events</h1>
 <p>When using Connect to analyze and visualize your data, it is important to understand how best to model your events.
 The way you structure your events will directly affect your ability to answer questions with your data.  It is therefore
@@ -438,7 +574,7 @@ to contain rich details about what the &quot;world&quot; looked like at that poi
 <p>Put simply, events = action + time + state.</p>
 <p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
 analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample30" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample30"><pre><code class="lang-ruby">myEvent = {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample31" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample31"><pre><code class="lang-ruby">myEvent = {
     :type =&gt; &quot;cycling&quot;,
     :timestamp =&gt; Time.now.utc,
     :duration =&gt; 67,
@@ -495,7 +631,7 @@ had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</cod
 <p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
 <h3 id="events-are-denormalized">Events are denormalized</h3>
 <p>Consider our example event again, notice the age property of the user:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-ruby">myEvent = {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample38" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample38"><pre><code class="lang-ruby">myEvent = {
     :type =&gt; &quot;cycling&quot;,
     ...
     :user =&gt; {
@@ -518,7 +654,7 @@ over time, rather than merely current state.  This helps us answer questions abo
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample43" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample43"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;user.age&apos;);
 
@@ -543,7 +679,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample47" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample47"><pre><code class="lang-ruby">myEvent = {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample48" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample48"><pre><code class="lang-ruby">myEvent = {
     :type =&gt; &quot;cycling&quot;,
     ...
     :user =&gt; {
@@ -573,7 +709,7 @@ activity, complete with their name and age.</p>
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample52"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample53" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample53"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;bike.model&apos;);
   .filter({
@@ -585,7 +721,7 @@ that was built by &quot;Specialized&quot;:</p>
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample55" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample55"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample56" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample56"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
 </code></pre></div></div></div>
@@ -617,7 +753,7 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample61" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample61"><pre><code class="lang-ruby">myEvent = {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample62" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample62"><pre><code class="lang-ruby">myEvent = {
     &quot;invalid.property&quot; =&gt; &quot;value&quot;
 }
 </code></pre></div></div></div>
