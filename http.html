@@ -563,8 +563,8 @@ status of the batch import.</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample12"><pre><code class="lang-json">{
     &quot;collection&quot;: &quot;purchases&quot;,
     &quot;status&quot;: &quot;running&quot;,
-    &quot;created&quot;: &quot;2015-04-01T00:32:45Z&quot;,
-    &quot;started&quot;: &quot;2015-04-01T00:33:03Z&quot;,
+    &quot;created&quot;: &quot;2015-04-01T00:32:45.000Z&quot;,
+    &quot;started&quot;: &quot;2015-04-01T00:33:03.000Z&quot;,
     &quot;finished&quot;: null,
     &quot;importedEvents&quot;: 5130985,
     &quot;duplicateEvents&quot;: 0,
@@ -918,7 +918,7 @@ the desired start and end times in ISO-8601 format.</p>
     &quot;select&quot;: {
         &quot;totalPrice&quot;: { sum: &quot;price&quot; }
     },
-    &quot;timeframe&quot;: { &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-25T00:00:00Z&quot; }
+    &quot;timeframe&quot;: { &quot;start&quot;: &quot;2015-02-01T00:00:00.000Z&quot;, &quot;end&quot;: &quot;2015-02-25T00:00:00.000Z&quot; }
 }
 </code></pre></div></div></div>
 <p>This will match all events with a <code>timestamp</code> greater than or equal to 2015-02-01 00:00:00 and less than
@@ -1333,7 +1333,7 @@ key should look something like this:</p>
 </ol>
 <p>You can now use this API key to either <a href="#pushing-events">push events</a> or <a href="#querying-events">execute queries</a> depending on the <code>canPush</code>
 and <code>canQuery</code> properties, respectively.</p>
-<p>Finally, if a <code>Filtered Key</code> is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<p>Finally, if a filtered key is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
 <h1 id="modeling-your-events">Modeling your events</h1>
 <p>When using Connect to analyze and visualize your data, it is important to understand how best to model your events.
 The way you structure your events will directly affect your ability to answer questions with your data.  It is therefore

@@ -920,7 +920,7 @@ the desired start and end times in ISO-8601 format.</p>
     .select({
         &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
     })
-    .timeframe({ &quot;start&quot;: &quot;2015-02-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2015-02-25T00:00:00Z&quot; })
+    .timeframe({ &quot;start&quot;: &quot;2015-02-01T00:00:00.000Z&quot;, &quot;end&quot;: &quot;2015-02-25T00:00:00.000Z&quot; })
     .execute()
     .then(function(result) {
         // Handle the result
@@ -1305,6 +1305,8 @@ which get displayed as multiple rows. </p>
 <p data-height="300" data-theme-id="17963" data-slug-hash="WvBGEO" data-default-tab="results" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/WvBGEO/">Connect Text viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
 <p>The text viz will display a single result in simple text.  You can add a title and specify the format via the <a href="#chart-options">options</a>.</p>
+<p>You cannot create a text viz for queries with <a href="#group-by">groups</a> or <a href="#time-intervals">time intervals</a> - doing so will display an &quot;unsupported query&quot;
+error on the visualization.</p>
 <h2 id="chart-visualizations">Chart visualizations</h2>
 <p>Connect offers a range of pre-built chart visualizations which you can use to visualize data.  You can also <a href="#custom-visualizations">build your own</a>.</p>
 <p>See <a href="#chart-options">chart options</a> for information on how to customize these charts.  All visualizations also support the setting of
@@ -1327,7 +1329,8 @@ queries with a bar chart, it is highly recommended to use <a href="#line-charts"
 <li><code>step</code></li>
 <li><code>area-step</code></li>
 </ul>
-<p>In the above example, all area charts specify <code>stack: true</code> in the <a href="#chart-options">options</a> to provide a stacked area chart.</p>
+<p>In the above example, all area charts specify <code>stack: true</code> in the <a href="#chart-options">options</a> to provide a stacked area chart.  Also, the switch between the various chart types
+makes use of the <code>destroy()</code> method to clean up (documented <a href="#destroying-visualizations">here</a>).</p>
 <h3 id="chart-options">Chart options</h3>
 <p>All charts allow you to specify various options to customize their appearance and behavior:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample82" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample82"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {
@@ -1499,7 +1502,8 @@ interval (if applicable) and the actual value of the data point.</p>
 <h2 id="gauge-visualization">Gauge visualization</h2>
 <p data-height="300" data-theme-id="17963" data-slug-hash="LVoOJr" data-default-tab="result" data-user="getconnect" class="codepen">See the Pen <a href="http://codepen.io/getconnect/pen/LVoOJr/">Connect Gauge viz</a> by Connect (<a href="http://codepen.io/getconnect">@getconnect</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
-<p>Gauge visualizations can be generated for basic queries.</p>
+<p>Gauge visualizations can be generated for basic queries.  You cannot create a gauge viz for queries with <a href="#group-by">groups</a> or
+<a href="#time-intervals">time intervals</a> - doing so will display an &quot;unsupported query&quot; error on the visualization.</p>
 <h3 id="gauge-options">Gauge options</h3>
 <p>As well as the setting of <a href="#field-options">field options</a> (which all visualizations support), you must specify gauge options to configure the viz:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample85" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample85"><pre><code class="lang-js">var gauge = connect.gauge(query, &apos;#gauge&apos;, {
@@ -1582,8 +1586,7 @@ var fieldOptions = {
 };
 </code></pre></div></div></div>
 <h2 id="field-options">Field options</h2>
-<p>All visualizations allow specifying field options which describe the way in which aggregated values and grouped fields are displayed in the viz.
-While all visualizations support field options, not all options may be relevant for each type of viz.</p>
+<p>All visualizations allow specifying field options which describe the way in which aggregated values and grouped fields are displayed in the viz.</p>
 <p>Field options are keyed by select or grouped field, for example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample88" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample88"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
     .select({
@@ -1601,7 +1604,7 @@ var chart = connect.chart(query, &apos;#chart&apos;, {
             valueFormatter: Connect.Viz.format(&quot;$,.2f&quot;)
         },
         product: {
-            label: &apos;Products&apos;
+            label: &apos;Products&apos;,
             valueFormatter: function(value){
                 return value === &apos;Some product name&apos; ? &apos;Ours&apos; : value;
             }
@@ -1631,8 +1634,8 @@ var chart = connect.chart(query, &apos;#chart&apos;, {
 </tbody>
 </table>
 <h2 id="interval-options">Interval options</h2>
-<p>Certain visualizations allow specifying interval options when executing a query with <a href="#time-intervals">time intervals</a>.  This controls the formatting
-of title labels (i.e. in the <a href="#table-viz">table viz</a> and labels for the interval values themselves.</p>
+<p>All visualizations allow specifying interval options when executing a query with <a href="#time-intervals">time intervals</a>.  This controls the formatting
+of title labels (i.e. in the <a href="#table-viz">table viz</a>) and labels for the interval values themselves.</p>
 <table>
 <thead>
 <tr>
@@ -1941,7 +1944,7 @@ key should look something like this:</p>
 </ol>
 <p>You can now use this API key to either <a href="#pushing-events">push events</a> or <a href="#querying-events">execute queries</a> depending on the <code>canPush</code>
 and <code>canQuery</code> properties, respectively.</p>
-<p>Finally, if a <code>Filtered Key</code> is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<p>Finally, if a filtered key is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
 <h1 id="modeling-your-events">Modeling your events</h1>
 <p>When using Connect to analyze and visualize your data, it is important to understand how best to model your events.
 The way you structure your events will directly affect your ability to answer questions with your data.  It is therefore
