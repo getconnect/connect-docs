@@ -564,10 +564,10 @@ server-side service.</p>
 </li>
 <li><p>Generate a random 128-bit initialization vector (IV).</p>
 </li>
-<li><p>Encrypt the JSON string using AES256-CBC with PKCS7 padding using the 128-bit random IV we generated in the previous step
+<li><p>Encrypt the JSON string using AES256-CBC with PKCS7 padding (128-bit block size) using the 128-bit random IV we generated in the previous step
 and the <code>Project Master Key</code> as the encryption key.</p>
 </li>
-<li><p>Convert the IV and cipher text to a hex string and combine the two hex strings, separating them with a hyphen (-). The resulting
+<li><p>Convert the IV and cipher text to hex strings and combine them (IV first, followed by the cipher text), separating them with a hyphen (-). The resulting
 key should look something like this:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample29" role="tab" data-toggle="tab" data-lang="">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample29"><pre><code class="nohighlight">5D07A77D87D5B20FA5508303F748A43B-DDFA284A9341068A704A846E83ACF49069D960632C4F74A44B5EE330073F79A8324ADC91023F88F63AAE4507F3D119B5C7F31A2D7D9616408E9665EC6C1DEBE3
 </code></pre></div></div></div></li>
