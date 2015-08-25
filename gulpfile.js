@@ -147,6 +147,11 @@ gulp.task('build:styles', function() {
 		.pipe(gulp.dest(dest.dist + 'styles'));
 });
 
+gulp.task('build:other', function() {
+	gulp.src('./assets/CNAME')
+		.pipe(gulp.dest(dest.dist));
+});
+
 gulp.task('build:scripts', function() {
 	var scripts = [
 		source.scripts + 'docs.js',
@@ -227,7 +232,7 @@ gulp.task('reload:images', ['build:images'], function() {
 });
 
 gulp.task('build:all', function(cb) {
-	runSequence('clean', ['build:images', 'build:fonts', 'build:styles', 'build:scripts', 'spellcheck'], ['build:docs'], cb);
+	runSequence('clean', ['build:images', 'build:fonts', 'build:styles', 'build:scripts', 'build:other', 'spellcheck'], ['build:docs'], cb);
 });
 
 gulp.task('deploy', ['build:all'], function() {
