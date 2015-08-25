@@ -190,6 +190,10 @@
                         <a href="#timezones">Timezones</a>
                         
                       </li>    
+                      <li>
+                        <a href="#error-handling">Error handling</a>
+                        
+                      </li>    
                   </ul>
               </li>    
               <li>
@@ -1189,6 +1193,25 @@ set, an error will be returned.</p>
 </code></pre></div></div></div>
 
 
+<h2 id="error-handling">Error handling</h2>
+<p>The following error responses may be returned from the API:</p>
+<p><strong>422 Unprocessable Entity</strong></p>
+<p>The query was not in the correct format.  The message body will contain a list of errors, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample74" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample74"><pre><code class="lang-json">{
+    &quot;errors&quot;: [
+        {
+            &quot;field&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;The query JSON supplied is not valid.&quot;
+        }
+    ]
+}
+</code></pre></div></div></div>
+<p><strong>413 Too Many Results</strong></p>
+<p>Queries result sets are limited to 10,000 results.  If you exceed this threshold, you will receive this error.</p>
+<p>Ideally, queries should return a small number of results, even if they are aggregating a large number of events.
+You should reconsider the way in which you are querying if you are hitting this limit.</p>
+<p><strong>500 Internal Server Error</strong></p>
+<p>An internal server error occurred in the Connect API. </p>
 <h1 id="exporting-events">Exporting events</h1>
 <p>Connect allows you to export the raw events that were <a href="#pushing-events">pushed</a> to a collection.</p>
 <p>You can <a href="#small-exports">export up to 10,000 events</a> and receive an immediate response, or
@@ -1219,7 +1242,7 @@ set, an error will be returned.</p>
 raw events.</p>
 <p>The query specified only supports <a href="#filtering">filters</a> and <a href="#timeframes">timeframes</a> with the same format
 as the normal query language, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample74" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample74"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample75" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample75"><pre><code class="lang-json">{
     &quot;filter&quot;: {
         &quot;product&quot;: &quot;apple&quot;
     },
@@ -1229,7 +1252,7 @@ as the normal query language, for example:</p>
 <p>The following responses may occur:</p>
 <p><strong>200 OK</strong></p>
 <p>The export was successful.  The body of the response contains the raw events, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample75" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample75"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample76" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample76"><pre><code class="lang-json">{
   &quot;results&quot;: [
     {
       &quot;id&quot;: &quot;9eb91561-1964-468a-b6bf-c16034b6757c&quot;,
@@ -1288,7 +1311,7 @@ you can <a href="#exporting-to-amazon-s3">export to Amazon S3</a> (up to 1,000,0
 <p>You can export up to 1,000,000 events to Amazon S3.  The results of the export will be uploaded to the
 S3 path you specify, using the credentials specified.</p>
 <p>You must POST these options in JSON format to the above URL, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample76" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample76"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample77" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample77"><pre><code class="lang-json">{
 &quot;query&quot;: {
 &quot;timeframe&quot;: &quot;today&quot;
 },
@@ -1335,7 +1358,7 @@ as the filename for the export (<em>unique_id</em>.json).  The exported file wil
 the export.</p>
 <p>This allows you to check the status and progress of an export, as well as any errors that may occur during the export process.</p>
 <p>For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample77" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample77"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample78" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample78"><pre><code class="lang-json">{
     &quot;filename&quot;: &quot;55b80dd4eb6742481c62c05e.json&quot;,
     &quot;collection&quot;: &quot;testing&quot;,
     &quot;status&quot;: &quot;Pending&quot;,
@@ -1447,7 +1470,7 @@ pushing, querying and deleting collections.<br><strong>Keep this key safe</stron
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample81" role="tab" data-toggle="tab" data-lang="bash">cURL</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample81"><pre><code class="lang-bash">curl -X POST \
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample82" role="tab" data-toggle="tab" data-lang="bash">cURL</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample82"><pre><code class="lang-bash">curl -X POST \
   -H &quot;X-Project-Id: YOUR_PROJECT_ID&quot; \
   -H &quot;X-API-Key: YOUR_API_KEY&quot; \
   -H &quot;Content-Type: application/json&quot; \
@@ -1523,7 +1546,7 @@ filtered key with the Connect service.</p>
 server-side service.</p>
 <ol>
 <li><p>Create a JSON object describing the access allowed by the key, including any <a href="#filters">filters</a>, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample87" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample87"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample88" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample88"><pre><code class="lang-json">{
     &quot;filters&quot;: {
         &quot;customerId&quot;: 1234
     },
@@ -1563,7 +1586,7 @@ and the <code>Project Master Key</code> as the encryption key.</p>
 </li>
 <li><p>Convert the IV and cipher text to hex strings and combine them (IV first, followed by the cipher text), separating them with a hyphen (-). The resulting
 key should look something like this:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample88" role="tab" data-toggle="tab" data-lang="">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample88"><pre><code class="nohighlight">5D07A77D87D5B20FA5508303F748A43B-DDFA284A9341068A704A846E83ACF49069D960632C4F74A44B5EE330073F79A8324ADC91023F88F63AAE4507F3D119B5C7F31A2D7D9616408E9665EC6C1DEBE3
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample89" role="tab" data-toggle="tab" data-lang="">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample89"><pre><code class="nohighlight">5D07A77D87D5B20FA5508303F748A43B-DDFA284A9341068A704A846E83ACF49069D960632C4F74A44B5EE330073F79A8324ADC91023F88F63AAE4507F3D119B5C7F31A2D7D9616408E9665EC6C1DEBE3
 </code></pre></div></div></div></li>
 </ol>
 <p>You can now use this API key to either <a href="#pushing-events">push events</a> or <a href="#querying-events">execute queries</a> depending on the <code>canPush</code>
@@ -1579,7 +1602,7 @@ to contain rich details about what the &quot;world&quot; looked like at that poi
 <p>Put simply, events = action + time + state.</p>
 <p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
 analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample89" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample89"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample90" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample90"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     &quot;timestamp&quot;: &quot;2015-06-23T16:31:56.587Z&quot;,
     &quot;duration&quot;: 67,
@@ -1636,7 +1659,7 @@ had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</cod
 <p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
 <h3 id="events-are-denormalized">Events are denormalized</h3>
 <p>Consider our example event again, notice the age property of the user:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample96" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample96"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample97" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample97"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     ...
     &quot;user&quot;: {
@@ -1659,7 +1682,7 @@ over time, rather than merely current state.  This helps us answer questions abo
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample105" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample105"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample106" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample106"><pre><code class="lang-json">{
     &quot;select&quot;: { &quot;averageDistance&quot;: { &quot;avg&quot;: &quot;distance&quot; } },
     &quot;groupBy&quot;: &quot;user.age&quot;
 }
@@ -1680,7 +1703,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample106" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample106"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample107" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample107"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     ...
     &quot;user&quot;: {
@@ -1710,7 +1733,7 @@ activity, complete with their name and age.</p>
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample115" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample115"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample116" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample116"><pre><code class="lang-json">{
     &quot;select&quot;: { &quot;averageDistance&quot;: { &quot;avg&quot;: &quot;distance&quot; } },
     &quot;groupBy&quot;: &quot;bike.model&quot;,
     &quot;filter&quot;: { &quot;bike.brand&quot;: &quot;Specialized&quot; }
@@ -1721,7 +1744,7 @@ that was built by &quot;Specialized&quot;:</p>
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample118" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample118"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample119" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample119"><pre><code class="lang-json">{
     &quot;select&quot;: { &quot;averageDistance&quot;: { &quot;avg&quot;: &quot;distance&quot; } },
     &quot;groupBy&quot;: [&quot;user.age&quot;, &quot;weather.condition&quot;]
 }
@@ -1754,7 +1777,7 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample119" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample119"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample120" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample120"><pre><code class="lang-json">{
     &quot;invalid.property&quot;: &quot;value&quot;
 }
 </code></pre></div></div></div>

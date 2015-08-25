@@ -208,6 +208,10 @@
                         
                       </li>    
                       <li>
+                        <a href="#error-handling">Error handling</a>
+                        
+                      </li>    
+                      <li>
                         <a href="#manipulating-results-client-side">Manipulating results client-side</a>
                         
                       </li>    
@@ -452,10 +456,14 @@ you must create a Connect client with your <a href="#projects-and-keys">project 
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample9" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample9"><pre><code class="lang-js">connect.push(&apos;purchases&apos;, {
     name: &apos;Phone&apos;, 
     price: 465.55
-}).then(function () {
+})
+.then(function () {
     // Handle the response
-}, function (error) {
+
+})
+.catch(function (error) {
     // Handle the error
+
 });
 </code></pre></div></div></div>
 <h3 id="responses">Responses</h3>
@@ -498,10 +506,14 @@ you must create a Connect client with your <a href="#projects-and-keys">project 
         name: &apos;Case&apos;, 
         price: 5.55
     }
-]).then(function (response) {
+])
+.then(function (response) {
     // Handle the response
-}, function (error) {
+
+})
+.catch(function (error) {
     // Handle the error
+
 });
 </code></pre></div></div></div>
 <p>A possible response to the above example could be:</p>
@@ -552,10 +564,14 @@ you must create a Connect client with your <a href="#projects-and-keys">project 
             &quot;purchasePrice&quot;: -34.95
         }
     ]
-}).then(function (response) {
+})
+.then(function (response) {
     // Handle the response
-}, function (error) {
+
+})
+.catch(function (error) {
     // Handle the error
+
 });
 </code></pre></div></div></div>
 <p>A possible response to the above example could be:</p>
@@ -1206,6 +1222,43 @@ set, an error will be returned.</p>
 </code></pre></div></div></div>
 
 
+<h2 id="error-handling">Error handling</h2>
+<p>Executing a query (via the <code>execute()</code> function) returns a promise (we use <a href="https://github.com/kriskowal/q">Q</a> for our promises).</p>
+<p>This means you should handle the failure of that promise if you wish to catch any errors.  For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample79" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample79"><pre><code class="lang-js">connect.query(&quot;purchases&quot;)
+    .select({
+        &quot;itemsSold&quot;: &quot;count&quot;,
+        &quot;totalPrice&quot;: { &quot;sum&quot;: &quot;price&quot; }
+    })
+    .execute()
+    .then(function(result) {
+        // Handle the successful result
+
+    })
+    .catch(function(err) {
+        // Handle the error
+
+        console.log(&quot;HTTP status: &quot; + err.status);
+    });
+</code></pre></div></div></div>
+<p>The following error responses may be returned from the API:</p>
+<p><strong>422 Unprocessable Entity</strong></p>
+<p>The query was not in the correct format.  The message body will contain a list of errors, for example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample80" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample80"><pre><code class="lang-json">{
+    &quot;errors&quot;: [
+        {
+            &quot;field&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;The query JSON supplied is not valid.&quot;
+        }
+    ]
+}
+</code></pre></div></div></div>
+<p><strong>413 Too Many Results</strong></p>
+<p>Queries result sets are limited to 10,000 results.  If you exceed this threshold, you will receive this error.</p>
+<p>Ideally, queries should return a small number of results, even if they are aggregating a large number of events.
+You should reconsider the way in which you are querying if you are hitting this limit.</p>
+<p><strong>500 Internal Server Error</strong></p>
+<p>An internal server error occurred in the Connect API. </p>
 <h2 id="manipulating-results-client-side">Manipulating results client-side</h2>
 <p>You can manipulate the result set client-side after executing one or more queries to perform calculations
 or join multiple queries together.</p>
@@ -1214,7 +1267,7 @@ will easily plug into the <a href="#visualizing-data">visualization library</a>.
 <p><strong>Note:</strong> Before you modify a result set, it is important to clone the result set first to ensure other forks
 of the original promise are not modified.  The SDK provides a simple clone function to assist with this. </p>
 <p>For example, perhaps you want to calculate the gross profit of your sales:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample79" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample79"><pre><code class="lang-js">var resultsPromise = connect.query(&quot;purchases&quot;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample81" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample81"><pre><code class="lang-js">var resultsPromise = connect.query(&quot;purchases&quot;)
     .select({
         totalSales: { &quot;sum&quot;: &quot;price&quot; },
         totalCost: { &quot;sum&quot;: &quot;cost&quot; }
@@ -1259,7 +1312,7 @@ For example, <a href="#chart-visualizations">chart visualizations</a> will autom
 <p>Specifying a <strong>function</strong> that returns a promise can be useful if you want to
 <a href="#manipulating-results-client-side">chain promises and run your own custom calculations</a> on the result set or combine it
 with other services&apos; data.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample80" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample80"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample82" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample82"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
     .select({
         totalSales: { sum: &apos;price&apos; }
     })
@@ -1283,7 +1336,7 @@ var chart = connect.chart(resultsFactory, &apos;#chart&apos;);
 <p><strong>options</strong></p>
 <p>The options for a viz contains <a href="#field-options">field options</a>, <a href="#interval-options">interval options</a> (if applicable)
 and any viz specific options.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample81" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample81"><pre><code class="lang-js">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample83" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample83"><pre><code class="lang-js">{
     &quot;fields&quot;: { /* field options */ },
     &quot;intervals&quot;: { /* interval options */ },
     &quot;chart&quot;: { /* chart specific options */ },
@@ -1340,7 +1393,7 @@ queries with a bar chart, it is highly recommended to use <a href="#line-charts"
 makes use of the <code>destroy()</code> method to clean up (documented <a href="#destroying-visualizations">here</a>).</p>
 <h3 id="chart-options">Chart options</h3>
 <p>All charts allow you to specify various options to customize their appearance and behavior:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample82" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample82"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample84" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample84"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {
     chart: {
         type: &apos;bar&apos;,  
         colors: [&apos;#3498db&apos;, &apos;#34495e&apos;, &apos;#e74c3c&apos;],
@@ -1430,7 +1483,7 @@ makes use of the <code>destroy()</code> method to clean up (documented <a href="
 <a href="https://github.com/getconnect/connect-js/blob/master/lib/viz/palette.ts">default palette</a> is used.</p>
 <p>You can override the palette by setting the <code>colors</code> property on the <a href="#chart-options">chart options</a>.  This will simply pick a new color,
 in order, from the palette as needed by the specific chart, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample83" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample83"><pre><code class="lang-js">connect.chart(query, &apos;#sales-area&apos;, {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample85" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample85"><pre><code class="lang-js">connect.chart(query, &apos;#sales-area&apos;, {
     title: &apos;Electric Car Sales 2018 (Units)&apos;,
     chart: {
         type: &apos;area&apos;,    
@@ -1441,7 +1494,7 @@ in order, from the palette as needed by the specific chart, for example:</p>
 </code></pre></div></div></div>
 <p>Furthermore, you can provide a custom function to override the palette to completely control the coloring on the chart.  For example, you may
 want specific groups in your data to be the same color across multiple charts to allow users to correlate data by color:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample84" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample84"><pre><code class="lang-js">var paletteCache = {};
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample86" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample86"><pre><code class="lang-js">var paletteCache = {};
 var cachingColorModifier = function(originalColor, chartDataContext) {
     var groupByValue = chartDataContext.groupByValues[0];
 
@@ -1513,7 +1566,7 @@ interval (if applicable) and the actual value of the data point.</p>
 <a href="#time-intervals">time intervals</a> - doing so will display an &quot;unsupported query&quot; error on the visualization.</p>
 <h3 id="gauge-options">Gauge options</h3>
 <p>As well as the setting of <a href="#field-options">field options</a> (which all visualizations support), you must specify gauge options to configure the viz:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample85" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample85"><pre><code class="lang-js">var gauge = connect.gauge(query, &apos;#gauge&apos;, {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample87" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample87"><pre><code class="lang-js">var gauge = connect.gauge(query, &apos;#gauge&apos;, {
     gauge: {
         min: 0,
         max: &apos;total&apos;
@@ -1572,7 +1625,7 @@ number formatting library or custom implementation to represent numbers to your 
 <p>Connect also wraps the <a href="https://github.com/mbostock/d3/wiki/Formatting">d3 formatter</a> which allows you to use any of these d3 formats out of the
 box without referencing any other libraries.  To use this, simply pass the desired format string to the <code>Connect.Viz.format</code> function and it will
 return a function that can be used as a formatter.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample86" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample86"><pre><code class="lang-js">var fieldOptions = {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample88" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample88"><pre><code class="lang-js">var fieldOptions = {
     totalSales: {
         //...
         valueFormatter: Connect.Viz.format(&quot;$,.2f&quot;)
@@ -1581,7 +1634,7 @@ return a function that can be used as a formatter.  For example:</p>
 </code></pre></div></div></div>
 <p>If you wish to have complete control over the formatting, you can use your own implementation.  For example, to format currency values using
 <a href="http://numeraljs.com/">Numeral.js</a>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample87" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample87"><pre><code class="lang-js">var currencyFormatter = function (value){
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample89" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample89"><pre><code class="lang-js">var currencyFormatter = function (value){
     return numeral(value).format(&apos;$0.0a&apos;);
 };
 
@@ -1595,7 +1648,7 @@ var fieldOptions = {
 <h2 id="field-options">Field options</h2>
 <p>All visualizations allow specifying field options which describe the way in which aggregated values and grouped fields are displayed in the viz.</p>
 <p>Field options are keyed by select or grouped field, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample88" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample88"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample90" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample90"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
     .select({
         totalSales: { sum: &apos;price&apos; }
     })
@@ -1671,7 +1724,7 @@ of title labels (i.e. in the <a href="#table-viz">table viz</a>) and labels for 
 </table>
 <p>If you wish to use the out of the box <a href="http://momentjs.com/docs/#/displaying/format/">moment.js format strings</a> provided in the SDK, you can simply
 specify the <code>formats</code> property.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample89" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample89"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample91" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample91"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
     .select({
         totalSales: { sum: &apos;price&apos; }
     })
@@ -1689,7 +1742,7 @@ var table = connect.table(query, &apos;#table&apos;, {
 }
 </code></pre></div></div></div>
 <p>If you wish to specify a custom formatter, provide a function for <code>valueFormatter</code>.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample90" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample90"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample92" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample92"><pre><code class="lang-js">var query = connect.query(&apos;purchases&apos;)
     .select({
         totalSales: { sum: &apos;price&apos; }
     })
@@ -1712,7 +1765,7 @@ var table = connect.table(query, &apos;#table&apos;, {
 <h3 id="refreshing-visualizations">Refreshing visualizations</h3>
 <p>If you wish to refresh the data in a viz (i.e. execute the query again for fresh data), you can call the <code>refresh()</code> function
 on the created viz.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample91" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample91"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {...});
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample93" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample93"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {...});
 //...
 chart.refresh();
 </code></pre></div></div></div>
@@ -1723,7 +1776,7 @@ this to display.</p>
 <h3 id="updating-visualizations">Updating visualizations</h3>
 <p>You can also update visualizations with a new <strong>query</strong> or <strong>function returning a promise</strong> by calling the <code>update()</code> function on the created
 viz.  This is useful in scenarios, for example, where an end user changes a filter.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample92" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample92"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {...});
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample94" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample94"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {...});
 //...
 chart.update(newQuery);
 </code></pre></div></div></div>
@@ -1734,7 +1787,7 @@ this action.</p>
 you clean up the viz.</p>
 <p>Simply removing the viz from the DOM is <strong>not sufficient</strong> and may cause memory leaks in your app.</p>
 <p>To destroy a viz, simply call the <code>destroy()</code> function on the created viz.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample93" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample93"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample95" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample95"><pre><code class="lang-js">var chart = connect.chart(query, &apos;#chart&apos;, {
     //...
 });
 
@@ -1786,7 +1839,7 @@ freeing objects, etc.)</p>
 viz must manually respond to changes in the size of the viz container.  The <code>recalculateSize</code> function is commonly
 used if a viz has been initially rendered when its container is not visible.</p>
 <p>Once you have implemented the contract, you register the custom viz using <code>Connect.registerViz</code>, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample94" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample94"><pre><code class="lang-js">Connect.registerViz(&apos;myViz&apos;, function(options) {
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample96" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample96"><pre><code class="lang-js">Connect.registerViz(&apos;myViz&apos;, function(options) {
     return {
         options: options,
         renderDom: function(targetElement, resultsElement) {
@@ -1830,7 +1883,7 @@ pushing, querying and deleting collections.<br><strong>Keep this key safe</stron
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample95" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample95"><pre><code class="lang-js">var Connect = require(&apos;connect-js&apos;);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample97" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample97"><pre><code class="lang-js">var Connect = require(&apos;connect-js&apos;);
 
 var connect = new Connect({
     projectId: &apos;YOUR_PROJECT_ID&apos;,
@@ -1906,7 +1959,7 @@ filtered key with the Connect service.</p>
 server-side service.</p>
 <ol>
 <li><p>Create a JSON object describing the access allowed by the key, including any <a href="#filters">filters</a>, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample104" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample104"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample106" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample106"><pre><code class="lang-json">{
     &quot;filters&quot;: {
         &quot;customerId&quot;: 1234
     },
@@ -1946,7 +1999,7 @@ and the <code>Project Master Key</code> as the encryption key.</p>
 </li>
 <li><p>Convert the IV and cipher text to hex strings and combine them (IV first, followed by the cipher text), separating them with a hyphen (-). The resulting
 key should look something like this:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample105" role="tab" data-toggle="tab" data-lang="">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample105"><pre><code class="nohighlight">5D07A77D87D5B20FA5508303F748A43B-DDFA284A9341068A704A846E83ACF49069D960632C4F74A44B5EE330073F79A8324ADC91023F88F63AAE4507F3D119B5C7F31A2D7D9616408E9665EC6C1DEBE3
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample107" role="tab" data-toggle="tab" data-lang="">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample107"><pre><code class="nohighlight">5D07A77D87D5B20FA5508303F748A43B-DDFA284A9341068A704A846E83ACF49069D960632C4F74A44B5EE330073F79A8324ADC91023F88F63AAE4507F3D119B5C7F31A2D7D9616408E9665EC6C1DEBE3
 </code></pre></div></div></div></li>
 </ol>
 <p>You can now use this API key to either <a href="#pushing-events">push events</a> or <a href="#querying-events">execute queries</a> depending on the <code>canPush</code>
@@ -1962,7 +2015,7 @@ to contain rich details about what the &quot;world&quot; looked like at that poi
 <p>Put simply, events = action + time + state.</p>
 <p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
 analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample106" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample106"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample108" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample108"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     &quot;timestamp&quot;: &quot;2015-06-23T16:31:56.587Z&quot;,
     &quot;duration&quot;: 67,
@@ -2019,7 +2072,7 @@ had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</cod
 <p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
 <h3 id="events-are-denormalized">Events are denormalized</h3>
 <p>Consider our example event again, notice the age property of the user:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample113" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample113"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample115" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample115"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     ...
     &quot;user&quot;: {
@@ -2042,7 +2095,7 @@ over time, rather than merely current state.  This helps us answer questions abo
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample120" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample120"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample122" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample122"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;user.age&apos;);
 
@@ -2067,7 +2120,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample123" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample123"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample125" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample125"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     ...
     &quot;user&quot;: {
@@ -2097,7 +2150,7 @@ activity, complete with their name and age.</p>
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample130" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample130"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample132" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample132"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;bike.model&apos;);
   .filter({
@@ -2109,7 +2162,7 @@ that was built by &quot;Specialized&quot;:</p>
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample133" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample133"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample135" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample135"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
 </code></pre></div></div></div>
@@ -2141,7 +2194,7 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample136" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample136"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample138" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample138"><pre><code class="lang-json">{
     &quot;invalid.property&quot;: &quot;value&quot;
 }
 </code></pre></div></div></div>
