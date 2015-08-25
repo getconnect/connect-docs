@@ -153,7 +153,8 @@ gulp.task('build:scripts', function() {
 		'./node_modules/bootstrap/dist/js/bootstrap.js',
 		'./node_modules/jquery/dist/jquery.js',
 		'./node_modules/svg-injector/svg-injector.js',
-		'./bower_components/highlightjs/highlight.pack.js'
+		'./bower_components/highlightjs/highlight.pack.js',
+		source.scripts + 'analytics.js'
 	];
 
 	return gulp.src(scripts)
