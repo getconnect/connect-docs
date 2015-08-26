@@ -217,7 +217,11 @@ var languages = [
 			'common/querying/unsupported.md',
 			'common/exporting-events.md',
 			'common/delete-collection.md',
-			common
+			'common/projects-keys.md',
+			'common/security/index.md',
+			'common/security/filtered-keys.md',
+			'java/security/generating-filtered-key.md',
+			modeling
 		] 
 	},
 	{ 
@@ -238,7 +242,11 @@ var languages = [
 			'common/querying/unsupported.md',
 			'common/exporting-events.md',
 			'common/delete-collection.md',
-			common
+			'common/projects-keys.md',
+			'common/security/index.md',
+			'common/security/filtered-keys.md',
+			'android/security/generating-filtered-key.md',
+			modeling
 		] 
 	}
 ];
