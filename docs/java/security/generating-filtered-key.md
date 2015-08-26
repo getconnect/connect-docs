@@ -7,7 +7,7 @@ To generate a filtered key, you must supply the master key, key settings and [fi
 The structure of the filters should match the structure of [JSON filters in the HTTP API](http.html#filters).
 For example:
 
-```java
+```java-vanilla
 HashMap<String, Object> filters = new HashMap<String, Object>();
 filters.put("type", "cycling");
 
@@ -18,6 +18,20 @@ keyDefinition.put("canPush", false);
 
 String masterKey = "YOUR_MASTER_KEY";
 String filteredKey = JavaConnectClient.generateFilteredKey(keyDefinition, masterKey);
+System.out.println(filteredKey);
+```
+
+```java-android
+HashMap<String, Object> filters = new HashMap<String, Object>();
+filters.put("type", "cycling");
+
+HashMap<String, Object> keyDefinition = new HashMap<String, Object>();
+keyDefinition.put("filters", filters);
+keyDefinition.put("canQuery", true);
+keyDefinition.put("canPush", false);
+
+String masterKey = "YOUR_MASTER_KEY";
+String filteredKey = AndroidConnectClient.generateFilteredKey(keyDefinition, masterKey);
 System.out.println(filteredKey);
 ```
 

@@ -245,7 +245,7 @@ var languages = [
 			'common/projects-keys.md',
 			'common/security/index.md',
 			'common/security/filtered-keys.md',
-			'android/security/generating-filtered-key.md',
+			'java/security/generating-filtered-key.md',
 			modeling
 		] 
 	}
