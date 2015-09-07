@@ -2,4 +2,4 @@
 
 Currently, this SDK does not support bulk importing events.
 
-However, you can use the [HTTP API](http.html#bulk-importing-events) to run bulk imports if you need.
+However, you can use the [HTTP API](http#bulk-importing-events) to run bulk imports if you need.

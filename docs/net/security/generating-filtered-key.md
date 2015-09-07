@@ -39,4 +39,4 @@ string filteredKey = Connect.FilteredKeyQuery()
 </table>
 
 You would use the resulting key when [creating a client](#initializing-the-client) or to provide to client
-applications (e.g. in a browser using the [JavaScript SDK](js.html)).
+applications (e.g. in a browser using the [JavaScript SDK](js)).

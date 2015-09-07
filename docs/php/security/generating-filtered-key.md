@@ -3,8 +3,8 @@
 Filtered keys are generated and encrypted with the `Project Master Key`.  You do not have to register the
 filtered key with the Connect service.
 
-To generate a filtered key, you must supply the master key, key settings and [filters](http.html#filters).
-The structure of the filters should match the structure of [JSON filters in the HTTP API](http.html#filters).
+To generate a filtered key, you must supply the master key, key settings and [filters](http#filters).
+The structure of the filters should match the structure of [JSON filters in the HTTP API](http#filters).
 For example:
 
 ```php
@@ -30,7 +30,7 @@ print $filteredKey;
 	<tr>
 		<td>`filters`</td>
 		<td>`object`</td>
-		<td>The filters to apply all queries executed when using the key.  These filters should be generated with the same structure as [filters](http.html#filters) from the HTTP API.</td>
+		<td>The filters to apply all queries executed when using the key.  These filters should be generated with the same structure as [filters](http#filters) from the HTTP API.</td>
 	</tr>
 	<tr>
 		<td>`canQuery`</td>
@@ -44,4 +44,4 @@ print $filteredKey;
 	</tr>
 </table>
 
-You would use the resulting key to provide to client applications (e.g. in a browser using the [JavaScript SDK](js.html)).
+You would use the resulting key to provide to client applications (e.g. in a browser using the [JavaScript SDK](js)).
