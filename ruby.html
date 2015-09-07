@@ -45,28 +45,28 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ruby<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
-                  <a href="js.html">JavaScript</a>
+                  <a href="js">JavaScript</a>
                 </li>
                 <li>
-                  <a href="http.html">HTTP API</a>
+                  <a href="http">HTTP API</a>
                 </li>
                 <li>
-                  <a href="ios.html">iOS</a>
+                  <a href="ios">iOS</a>
                 </li>
                 <li>
-                  <a href="ruby.html">Ruby</a>
+                  <a href="ruby">Ruby</a>
                 </li>
                 <li>
-                  <a href="php.html">PHP</a>
+                  <a href="php">PHP</a>
                 </li>
                 <li>
-                  <a href="net.html">.NET</a>
+                  <a href="net">.NET</a>
                 </li>
                 <li>
-                  <a href="java.html">Java</a>
+                  <a href="java">Java</a>
                 </li>
                 <li>
-                  <a href="android.html">Android</a>
+                  <a href="android">Android</a>
                 </li>
             </ul>
           </li>
@@ -369,7 +369,7 @@ end
 </code></pre></div></div></div>
 <h2 id="bulk-importing-events">Bulk importing events</h2>
 <p>Currently, this SDK does not support bulk importing events.</p>
-<p>However, you can use the <a href="http.html#bulk-importing-events">HTTP API</a> to run bulk imports if you need.</p>
+<p>However, you can use the <a href="http#bulk-importing-events">HTTP API</a> to run bulk imports if you need.</p>
 <h2 id="restrictions-on-pushing">Restrictions on pushing</h2>
 <p>There are a number of restrictions on the properties you can use in your events and the
 limitations on querying which influences how you should structure your events.</p>
@@ -418,20 +418,20 @@ will be returned in local time.</p>
 <h1 id="querying-events">Querying events</h1>
 <p>Currently, this SDK does not support querying events.  However, you have the following options to query:</p>
 <ul>
-<li><a href="http.html#querying-events"><strong>HTTP API</strong></a> - send queries and receives results directly via JSON</li>
-<li><a href="js.html#querying-events"><strong>JavaScript SDK</strong></a> - query events and build visualizations client-side in the browser</li>
-<li><a href="net.html#querying-events"><strong>.NET SDK</strong></a> - query events using the fluent .NET query syntax</li>
+<li><a href="http#querying-events"><strong>HTTP API</strong></a> - send queries and receives results directly via JSON</li>
+<li><a href="js#querying-events"><strong>JavaScript SDK</strong></a> - query events and build visualizations client-side in the browser</li>
+<li><a href="net#querying-events"><strong>.NET SDK</strong></a> - query events using the fluent .NET query syntax</li>
 </ul>
 <p>We&apos;re really looking forward to supporting querying in all SDKs soon!</p>
 <h1 id="exporting-events">Exporting events</h1>
 <p>Currently, this SDK does not support exporting events.</p>
-<p>However, you can use <a href="http.html#exporting-events">HTTP API</a> to perform exports as required.</p>
+<p>However, you can use <a href="http#exporting-events">HTTP API</a> to perform exports as required.</p>
 <h1 id="deleting-collections">Deleting collections</h1>
 <p>Currently, this SDK does not support deleting collections.</p>
 <p>However, you can use the one of the following methods to delete collections if required:</p>
 <ul>
 <li><a href="https://app.getconnect.io/">Via the admin console</a></li>
-<li><a href="http.html#deleting-collections">With the HTTP API</a></li>
+<li><a href="http#deleting-collections">With the HTTP API</a></li>
 </ul>
 <h1 id="projects-and-keys">Projects and keys</h1>
 <p>Connect allows you to manage multiple projects under a single account so that you can easily segregate
@@ -527,8 +527,8 @@ filters to restrict the pushing of events.</p>
 <h3 id="generating-a-filtered-key">Generating a filtered key</h3>
 <p>Filtered keys are generated and encrypted with the <code>Project Master Key</code>.  You do not have to register the
 filtered key with the Connect service.</p>
-<p>To generate a filtered key, you must supply the master key, key settings and <a href="http.html#filters">filters</a>.
-The structure of the filters should match the structure of <a href="http.html#filters">JSON filters in the HTTP API</a>.
+<p>To generate a filtered key, you must supply the master key, key settings and <a href="http#filters">filters</a>.
+The structure of the filters should match the structure of <a href="http#filters">JSON filters in the HTTP API</a>.
 For example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-ruby">require &apos;json&apos;
 require &apos;connect_client&apos;
@@ -556,7 +556,7 @@ puts filtered_key
     <tr>
         <td><code>filters</code></td>
         <td><code>object</code></td>
-        <td>The filters to apply all queries executed when using the key.  These filters should be generated with the same structure as <a href="http.html#filters">filters</a> from the HTTP API.</td>
+        <td>The filters to apply all queries executed when using the key.  These filters should be generated with the same structure as <a href="http#filters">filters</a> from the HTTP API.</td>
     </tr>
     <tr>
         <td><code>canQuery</code></td>
@@ -570,7 +570,7 @@ puts filtered_key
     </tr>
 </table>
 
-<p>You would use the resulting key to provide to client applications (e.g. in a browser using the <a href="js.html">JavaScript SDK</a>).</p>
+<p>You would use the resulting key to provide to client applications (e.g. in a browser using the <a href="js">JavaScript SDK</a>).</p>
 <h1 id="modeling-your-events">Modeling your events</h1>
 <p>When using Connect to analyze and visualize your data, it is important to understand how best to model your events.
 The way you structure your events will directly affect your ability to answer questions with your data.  It is therefore
