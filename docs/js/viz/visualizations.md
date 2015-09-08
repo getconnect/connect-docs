@@ -404,36 +404,26 @@ For example:
 
 <p data-height="300" data-theme-id="17963" data-slug-hash="MwdRoO" data-default-tab="result" data-user="getconnect" class='codepen'>See the Pen <a href='http://codepen.io/getconnect/pen/MwdRoO/'>Connect Custom viz</a> by Connect (<a href='http://codepen.io/getconnect'>@getconnect</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
 
-A custom viz must supply an implementation for the following contract:
+A custom viz should supply an implementation for the following contract:
 
-`renderDom(targetElement, resultsElement)`  
+`init(container, options)` *(optional)*
 
 This function is only called during initialization and should implement any initial DOM rendering before the query results
 have been received.  Any changes to the DOM during this method will appear even while the loading animation is displayed over
 the top.
 
-The `targetElement` parameter is the container that was passed to the viz as the target.  Under normal circumstances, you
-would not make significant changes to this element.  There are a few useful CSS classes you can add to this container to
-change the styling behavior of the viz:
-
-* `grow-results` - grow the viz's height to fill the entire available height.
-* `center-results` - center the viz's results vertically.
-
-`displayResults(queryResults, isQueryUpdate)`
+`render(container, results, options, wasQueryUpdated)`
 
 This function is called whenever a new result set is available.  The bulk of the viz rendering logic should be in this
-function.  `queryResults` contains the standard result set returned from a query (including [metadata](#metadata)).
-`isQueryUpdate` will indicate whether or not this is a mere refresh or whether the entire result set has changed
-(e.g. due to a completely different query).
+function.  `results` contains the standard result set returned from a query (including [metadata](#metadata)).
+`wasQueryUpdated` will indicate whether or not this is a mere refresh or whether the entire result set has changed
+(e.g. due to a completely different query). This function is not optional, if it is not provided the custom viz will not be registered.
 
-`isResultSetSupported(queryResults)` *(optional)*
+`redraw()` *(optional)*
 
-Not all visualizations can handle all types of result sets.  For example, the [text viz](#text-viz), cannot handle query results
-with [groups](#group-by) or [time intervals](#time-intervals).  In these cases, the viz will gracefully display a
-"query not supported" error.
-
-You can include your own logic as to whether your custom viz can support the specified `queryResults`.  By default,
-if no function is provided, all types of query results are assumed to be supported.
+This function is called when the `redraw` function is manually called on a viz.  This should be defined if the
+viz must manually respond to changes in the size of the viz container.  The `redraw` function is commonly
+used if a viz has been initially rendered when its container is not visible.
 
 `destroy()` *(optional)*
 
@@ -441,26 +431,65 @@ This function is called when the viz is being [destroyed](#destroying-visualizat
 automatically; however, you should define this function if any extra "clean up" is required (e.g. removing listeners,
 freeing objects, etc.)
 
-`recalculateSize()` *(optional)*
+`defaultOptions()` *(optional)*
 
-This function is called when the `recalculateSize` function is manually called on a viz.  This should be defined if the
-viz must manually respond to changes in the size of the viz container.  The `recalculateSize` function is commonly
-used if a viz has been initially rendered when its container is not visible.
+This function is called when the viz is being first created, before `init` is called. If your vizualization needs some default options you should return them here as an object. The options that are passed to both `init` and `render` will be a union of any default options returned here and the options provided when the custom vizualization is instantiated. User provided options will take precedence over default options.
 
-Once you have implemented the contract, you register the custom viz using `Connect.registerViz`, for example:
+`isSupported(metadata, selects)` *(optional)*
+
+Not all visualizations can handle all types of results.  For example, the [text viz](#text-viz), cannot handle query results
+with [groups](#group-by) or [time intervals](#time-intervals).  In these cases, the viz will gracefully display a
+"query not supported" error.
+
+You can include your own logic as to whether your custom viz can support the specified `metadata` and `selects` by returning a boolean for this function.  
+The `metadata` argument will be the metadata returned by a query (which is defined here. [metadata](#metadata)) The `selects` argument will be an array of the aliases given to the aggregations selected in the query.
+By default, if no function is provided, all types of query results are assumed to be supported.
+
+`cssClasses(options)` *(optional)*
+
+This function is called when the viz is being first created, before `init` is called. The provided function should return an array of strings that will then be added to the target element of the visualization as classes. This is usefull for dynamically setting class names based on the options provided. There are also a few useful predefined CSS classes you can add to change the styling behavior of the viz:
+
+* `grow-results` - grow the viz's height to fill the entire available height.
+* `center-results` - center the viz's results vertically.
+
+Once you have implemented the contract, you register the custom viz using `Connect.registerViz`, for example you could provide an object that contains the appropriate functions:
 
 ```js
-Connect.registerViz('myViz', function(options) {
-    return {
-        options: options,
-        renderDom: function(targetElement, resultsElement) {
-            targetElement.classList.add('grow-results');
-            this.resultsElement = resultsElement;
-            //...
-        },
-        displayResults: function(results, isQueryUpdate) {
-            //...
-        }
+Connect.registerViz('myViz', {
+    init: function(container, options) {
+        
+    },
+    render: function(container, results, options, hasQueryUpdated) {
+        
     }
 });
+
+// The custom viz can then be used in the same manner as the built in ones.
+
+Connect.myViz('#custom-viz', query, {
+    title: 'My Custom Viz'
+});
+
 ```
+
+Or alternatively if you can provide the `Connect.registerViz` with a factory function. As an example if you using ES6 and classes you might do the following:
+
+```js
+
+class MyViz {
+
+    init(container, options) {
+
+    }
+
+    render(container, results, options, hasQueryUpdated) {
+        
+    }
+    
+}
+
+Connect.registerViz('myViz', () => new MyViz);
+
+```
+
+
