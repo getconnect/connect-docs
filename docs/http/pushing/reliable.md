@@ -1,6 +1,8 @@
 ## Reliability of events
 
-When posting an event to Connect, we guarantee the storage of the event if a successful (200) response is returned. This means you can safely flag the event as recorded.
+When posting an event to Connect, we guarantee the storage of the event if a successful (200) response is returned. This means you can safely flag the event as recorded. 
+
+**Note:** Events are processed in the background so it is possibe that there will be a slight delay between a successful push response and the event being included in query results.
 
 To guarantee event delivery, it is recommended to queue the events for sending to Connect and only remove them from the queue once a successful response has been received.
 
