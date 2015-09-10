@@ -26,16 +26,6 @@ A server error occurred with the Connect API.
 }
 ```
 
-**409 Conflict**
-
-An event with the same `id` property has already been inserted into this collection.
-
-```json
-{
-    "errorMessage": "An event with the same 'id' has already been inserted."
-}
-```
-
 **400 Bad Request**
 
 The event data supplied is not valid.
