@@ -81,7 +81,7 @@ var chart = connect.chart(query, '#chart', {
             left: 10
         },
         yAxis: {
-            valueFormatter: Connect.Viz.format('$,.2f'),
+            format: '$,.2f',
             startAtZero: true,
             min: null,
             max: null
@@ -91,18 +91,18 @@ var chart = connect.chart(query, '#chart', {
 });
 ```
 
-| Property               | Type                  | Description                                                                                                                                                |
-| -----------------------|---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`                 | `string`              | Type of chart to display (one of either `bar`, `line`, `area`, `spline`, `area-spline`, `step`, `area-step`)                                               |
-| `colors`               | `string[]`            | An array of colors to use as a palette for the chart.  See [Chart colors](#chart-colors) for more info.                                                    |
-| `colorModifier`        | `function`            | A function used to modify the color for a particular aggregation/group by/interval combination. See [Chart colors](#chart-colors) for more info.           |
-| `showLegend`           | `boolean`             | Specify whether or not to show the legend.  By default `true`, but `false` with a single aggregation and no group by/interval.                             |
-| `padding`              | `object`              | The padding around the gauge (left, right, top and bottom).  By default, `{ left: 0, right: 0, bottom: 0, top: 0 }`                                        |
-| `yAxis.valueFormatter` | `function`            | A function taking a single value argument that returns a formatted string. See [Formatters](#formatters) for more info.                                    |
+| Property               | Type                  | Description                                                                                                                                                      |
+| -----------------------|---------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `type`                 | `string`              | Type of chart to display (one of either `bar`, `line`, `area`, `spline`, `area-spline`, `step`, `area-step`)                                                     |
+| `colors`               | `string[]`            | An array of colors to use as a palette for the chart.  See [Chart colors](#chart-colors) for more info.                                                          |
+| `colorModifier`        | `function`            | A function used to modify the color for a particular aggregation/group by/interval combination. See [Chart colors](#chart-colors) for more info.                 |
+| `showLegend`           | `boolean`             | Specify whether or not to show the legend.  By default `true`, but `false` with a single aggregation and no group by/interval.                                   |
+| `padding`              | `object`              | The padding around the gauge (left, right, top and bottom).  By default, `{ left: 0, right: 0, bottom: 0, top: 0 }`                                              |
+| `yAxis.format`         | `string|function`     | Either a format string, or alternatively a function accepting a single value argument that returns a formatted string. See [Formatters](#formatters) for more info. |
 | `yAxis.startAtZero`    | `boolean`             | Specifically for `area`, `area-spline`, `area-step` and `bar`, this specifies whether or not the Y-axis min value will default to zero, or automatically calculate based on the data.  By default, this is `true`. |
-| `yAxis.min`            | `number`              | An explicit minimum value for the Y-axis (this overrides `startAtZero` in all instances).                                                                  |
-| `yAxis.max`            | `number`              | An explicit maximum value for the Y-axis.                                                                                                                  |
-| `stack`                | `boolean`             | For all chart types except `bar`, whether or not to stack multiple series.                                                                                 |
+| `yAxis.min`            | `number`              | An explicit minimum value for the Y-axis (this overrides `startAtZero` in all instances).                                                                        |
+| `yAxis.max`            | `number`              | An explicit maximum value for the Y-axis.                                                                                                                        |
+| `stack`                | `boolean`             | For all chart types except `bar`, whether or not to stack multiple series.                                                                                       |
 
 ### Chart colors
 
@@ -195,53 +195,19 @@ var gauge = connect.gauge(query, '#gauge', {
             left: 10
         },
         label: {
-            format: Connect.Viz.format('$,.2f')
+            format: '$,.2f'
         }
     }
 });
 ```
 
-| Property       | Type                  | Description                                                                                                                |
-| ---------------|---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `min`          | `string` or `number`  | Specifies the minimum value of the chart.  This can either be a string name of a field in a resultset, or a static number. |
-| `max`          | `string` or `number`  | Specifies the maximum value of the chart.  This can either be a string name of a field in a resultset, or a static number. |
-| `color`        | `string`              | The color of the data arc of the gauge.                                                                                    |
-| `padding`      | `object`              | The padding around the gauge (left, right, top and bottom).                                                                |
-| `label.format` | `function`            | A function taking a single value argument that returns a formatted string. See [Formatters](#formatters) for more info.    |
-
-## Formatters
-
-Many of the viz types allow you to pass functions that format a number to its string representation.  This allows you to use your preferred
-number formatting library or custom implementation to represent numbers to your user.
-
-Connect also wraps the [d3 formatter](https://github.com/mbostock/d3/wiki/Formatting) which allows you to use any of these d3 formats out of the
-box without referencing any other libraries.  To use this, simply pass the desired format string to the `Connect.Viz.format` function and it will
-return a function that can be used as a formatter.  For example:
-
-```js
-var fieldOptions = {
-    totalSales: {
-        //...
-        valueFormatter: Connect.Viz.format("$,.2f")
-    }
-};
-```
-
-If you wish to have complete control over the formatting, you can use your own implementation.  For example, to format currency values using
-[Numeral.js](http://numeraljs.com/):
-
-```js
-var currencyFormatter = function (value){
-    return numeral(value).format('$0.0a');
-};
-
-var fieldOptions = {
-    totalSales: {
-        //...
-        valueFormatter: currencyFormatter
-    }
-};
-```
+| Property       | Type                  | Description                                                                                                                                                          |
+| ---------------|---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `min`          | `string` or `number`  | Specifies the minimum value of the chart.  This can either be a string name of a field in a resultset, or a static number.                                           |
+| `max`          | `string` or `number`  | Specifies the maximum value of the chart.  This can either be a string name of a field in a resultset, or a static number.                                           |
+| `color`        | `string`              | The color of the data arc of the gauge.                                                                                                                              |
+| `padding`      | `object`              | The padding around the gauge (left, right, top and bottom).                                                                                                          |
+| `label.format` | `string|function`     | Either a format string, or alternatively a function accepting a single value argument that returns a formatted string. See [Formatters](#formatters) for more info.     |
 
 ## Field options
 
@@ -263,11 +229,11 @@ var chart = connect.chart(query, '#chart', {
     fields: {
         totalSales: {
             label: 'Total Sales ($)',
-            valueFormatter: Connect.Viz.format("$,.2f")
+            format: '$,.2f'
         },
         product: {
             label: 'Products',
-            valueFormatter: function(value){
+            format: function(value){
                 return value === 'Some product name' ? 'Ours' : value;
             }
         }
@@ -275,25 +241,72 @@ var chart = connect.chart(query, '#chart', {
 };
 ```
 
-| Property         | Type                  | Description                                                                                                                         |
-| -----------------|---------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `label`          | `string`              | A "friendly" label for the select or grouped field.  This may be displayed in a legend, tooltip, etc. depending on the viz type. |
-| `valueFormatter` | `function`            | A function taking a single value argument that returns a formatted string. See [Formatters](#formatters) for more info.             |
+| Property          | Type                  | Description                                                                                                                                                       |
+| ------------------|---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`           | `string`              | A "friendly" label for the select or grouped field.  This may be displayed in a legend, tooltip, etc. depending on the viz type.                                  |
+| `format`          | `string|function`     | Either a format string, or alternatively a function accepting a single value argument that returns a formatted string. See [Formatters](#formatters) for more info.  |
 
+## Formatters
+
+Many of the viz types allow you to pass either a format string or a format function that converts a number to its string representation. 
+When you pass a format string the d3 format function is used. You can find the [d3 formatting specifictaions here. ](https://github.com/mbostock/d3/wiki/Formatting)
+An example of providing a format string:
+```js
+var fieldOptions = {
+    totalSales: {
+        //...
+        format: '$,.2f'
+    }
+};
+```
+
+If you wish to have complete control over the formatting, you can provide your own format function.  The function must accept a value as an argument and return the formatted string.
+This gives you the ability to use other third-party libraries for formatting. For example, you could format currency values using
+[Numeral.js](http://numeraljs.com/):
+
+```js
+var currencyFormatter = function (value){
+    return numeral(value).format('$0.0a');
+};
+
+var fieldOptions = {
+    totalSales: {
+        //...
+        format: currencyFormatter
+    }
+};
+```
 
 ## Interval options
 
 All visualizations allow specifying interval options when executing a query with [time intervals](#time-intervals).  This controls the formatting
 of title labels (i.e. in the [table viz](#table-viz)) and labels for the interval values themselves.
 
-| Property         | Type                  | Description                                                                                                                         |
-| -----------------|---------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `label`          | `string`              | A "friendly" label or title for the interval.  This only applies to the [table viz](#table-viz) (for the column heading).     |
-| `formats`        | `object`              | An object keyed by [time interval](#time-intervals) with [moment.js format strings](http://momentjs.com/docs/#/displaying/format/). |
-| `valueFormatter` | `function`            | A function taking the start and end date of a particular interval which should return a string of the formatted label.              |
+| Property         | Type                       | Description                                                                                                                           |
+| -----------------|--------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`          | `string`                   | A "friendly" label or title for the interval.  This only applies to the [table viz](#table-viz) (for the column heading).             |
+| `format`         | `string|object|function`   | Either a [moment.js format string](http://momentjs.com/docs/#/displaying/format/), an object keyed by [time interval](#time-intervals) with [moment.js format strings](http://momentjs.com/docs/#/displaying/format/) or a function taking the start and optionally the end date of an interval and returning a formatted string.                |
 
-If you wish to use the out of the box [moment.js format strings](http://momentjs.com/docs/#/displaying/format/) provided in the SDK, you can simply
-specify the `formats` property.  For example:
+The simplest way to format the date for an Interval is to set the `format` property with a [moment.js format string. ](http://momentjs.com/docs/#/displaying/format/) For example:
+
+```js
+var query = connect.query('purchases')
+    .select({
+        totalSales: { sum: 'price' }
+    })
+    .groupBy('product')
+    .interval('monthly');
+
+var table = connect.table(query, '#table', {
+    title: 'Product Sales by Month',
+    intervals: {
+        label: 'Month',
+        format: 'MMM YYY'
+    }
+}
+```
+
+Your options may be used with different queries that have different intervals. If you wish to override the format for specific intervals you can supply the `format` property with an object that contains [moment.js format strings](http://momentjs.com/docs/#/displaying/format/) keyed by [time interval. ](#time-intervals) For example:
 
 ```js
 var query = connect.query('purchases')
@@ -308,13 +321,16 @@ var table = connect.table(query, '#table', {
     intervals: {
         label: 'Month',
         formats: {
-            monthly: 'MMM YY'
+            monthly: 'MMM YYYY',
+            yearly: 'YY'
         }
     }
 }
 ```
 
-If you wish to specify a custom formatter, provide a function for `valueFormatter`.  For example:
+Alternatively, if you would like full control over formatting, you can provide the `format` property with a function that accepts a start date and optionally an end date as arguments and returns a formatted string. 
+Both the start date and optional end date arguments will be native JavaScript date objects.
+For example:
 
 ```js
 var query = connect.query('purchases')
@@ -328,7 +344,7 @@ var table = connect.table(query, '#table', {
     title: 'Product Sales by Month',
     intervals: {
         label: 'Month',
-        valueFormatter: function(startValue, endValue) {
+        formats: function(startValue) {
             return startValue.toString();
         }
     }
