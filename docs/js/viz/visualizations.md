@@ -70,9 +70,6 @@ var chart = connect.chart(query, '#chart', {
     chart: {
         type: 'bar',  
         colors: ['#3498db', '#34495e', '#e74c3c'],
-        colorModifier: function(originalColor, chartDataContext) {
-            return originalColor;
-        },
         showLegend: true,
         padding:{
             top: 5,
@@ -94,8 +91,7 @@ var chart = connect.chart(query, '#chart', {
 | Property               | Type                  | Description                                                                                                                                                |
 | -----------------------|---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `type`                 | `string`              | Type of chart to display (one of either `bar`, `line`, `area`, `spline`, `area-spline`, `step`, `area-step`)                                               |
-| `colors`               | `string[]`            | An array of colors to use as a palette for the chart.  See [Chart colors](#chart-colors) for more info.                                                    |
-| `colorModifier`        | `function`            | A function used to modify the color for a particular aggregation/group by/interval combination. See [Chart colors](#chart-colors) for more info.           |
+| `colors`               | `string[]|function`   | An array of colors to use as a palette for the chart. Or a function to provide more granular control. See [Chart colors](#chart-colors) for more info.     |
 | `showLegend`           | `boolean`             | Specify whether or not to show the legend.  By default `true`, but `false` with a single aggregation and no group by/interval.                             |
 | `padding`              | `object`              | The padding around the gauge (left, right, top and bottom).  By default, `{ left: 0, right: 0, bottom: 0, top: 0 }`                                        |
 | `yAxis.valueFormatter` | `function`            | A function taking a single value argument that returns a formatted string. See [Formatters](#formatters) for more info.                                    |
@@ -109,67 +105,68 @@ var chart = connect.chart(query, '#chart', {
 There are multiple ways in which you can customize chart colors.  If no colors are specified in [chart options](#chart-options), the
 [default palette](https://github.com/getconnect/connect-js/blob/master/lib/viz/palette.ts) is used.
 
-You can override the palette by setting the `colors` property on the [chart options](#chart-options).  This will simply pick a new color,
-in order, from the palette as needed by the specific chart, for example:
+You can override the palette by setting the `colors` property on the [chart options](#chart-options) with an array of colors. For example:
 
 ```js
 connect.chart(query, '#sales-area', {
     title: 'Electric Car Sales 2018 (Units)',
     chart: {
-        type: 'area',    
-        colors: ['#ff00000', 'blue', 'rgb(0, 255, 0)'],
-        showLegend: false
+        type: 'bar',    
+        colors: ['#ff00000', 'blue', 'rgb(0, 255, 0)']
     }
 });
 ```
 
-Furthermore, you can provide a custom function to override the palette to completely control the coloring on the chart.  For example, you may
+Furthermore, you can provide a custom function to the `colors` property allowing complete control over the coloring on the chart. For example, you may
 want specific groups in your data to be the same color across multiple charts to allow users to correlate data by color:
 
 ```js
-var paletteCache = {};
-var cachingColorModifier = function(originalColor, chartDataContext) {
-    var groupByValue = chartDataContext.groupByValues[0];
-    
-    if (!groupByValue)
+var manufacturerColors = function(context) {
+    if (!context.groupBys)
         return;
-    
-    if (!paletteCache[groupByValue])
-        paletteCache[groupByValue] = originalColor;
-    
-    return paletteCache[groupByValue];
+
+    switch (context.groupBys['manufacturer']) {
+        case 'Tesla':
+            return 'rgb(155, 89, 182)';
+        case 'Toyota':
+            return 'rgb(26, 188, 156)';
+        case 'GM':
+            return 'rgb(231, 76, 60)';
+        case 'Nissan':
+            return 'rgb(243, 156, 18)';
+        case 'Ford':
+            return 'rgb(52, 152, 219)';
+    }
 };
 
-connect.chart(query, '#sales-area', {
+connect.chart(query, '#sales-bar', {
     title: 'Electric Car Sales 2018 (Units)',
     chart: {
-        type: 'area',    
-        colorModifier: cachingColorModifier,
-        showLegend: false
+        type: 'bar',
+        colors: manufacturerColors
     }
 });
 
-connect.chart(query2, '#sales-area', {
+connect.chart(intervalQuery, '#sales-area', {
     title: 'Electric Car Sales 2018 (Units)',
     chart: {
-        type: 'area',    
-        colorModifier: cachingColorModifier,
-        showLegend: false
+        type: 'area-spline',
+        colors: manufacturerColors
     }
 });
+
 ```
 
-The `colorModifier` function takes two arguments - the original (next) color from the palette, and the data context for the chart.
+The function that you provide to the `colors` property accepts a single `context` argument and should return a color as a string.
+It will be called for each seperate component of the chart, each time the `context` parameter will contain the unique combination of `select` and `groupBys` that a color is required for.
+The `context` object has the following structure:
 
-The `chartDataContext` describes the current data point being rendered including the selected aggregation, the group by values (if applicable), the
-interval (if applicable) and the actual value of the data point.
+| Property        | Type                            | Description                                                                                                               |
+| ----------------|---------------------------------| --------------------------------------------------------------------------------------------------------------------------|
+| `select`        | `string`                        | The alias given to the aggregation you [selected in the query](#aggregations).                                            |
+| `groupBys`      | `object`                        | An object containing the requested groupBy value keyed by the groupBy name [specified in the query](#group-by).           |
 
-| Property        | Type                  | Description                                                                                |
-| ----------------|---------------------- | -------------------------------------------------------------------------------------------|
-| `select`        | `string`              | The alias given to the aggregation you selected in the query.                              |
-| `groupByValues` | `string[]`            | An array of group by values, in order of the [group by specified in the query](#group-by). |
-| `intervalValue` | `Date`                | The starting date of the interval for the data point.                                      |
-| `value`         | `number`              | The value of the aggregation selected in the query.                                        |
+Note. When a legend is visible on a chart and a groupBy is defined on the query. The `colors` function will be called to define a color for each legend item, as the legend item is only related to the `select` the `groupBys` property will be `null` in that specific `context`.
 
 ## Gauge visualization
 
