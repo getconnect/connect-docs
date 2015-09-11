@@ -66,26 +66,30 @@ makes use of the `destroy()` method to clean up (documented [here](#destroying-v
 All charts allow you to specify various options to customize their appearance and behavior:
 
 ```js
-var chart = connect.chart(query, '#chart', {
-    chart: {
-        type: 'bar',  
-        colors: ['#3498db', '#34495e', '#e74c3c'],
-        showLegend: true,
-        padding:{
-            top: 5,
-            right: 10,
-            bottom: 5,
-            left: 10
-        },
-        yAxis: {
-            format: '$,.2f',
-            startAtZero: true,
-            min: null,
-            max: null
-        },
-        stack: true
-    }
-});
+var chart = Connect.visualize(query)
+    .as('chart')
+    .inside('#chart')
+    .with({
+        chart: {
+            type: 'bar',  
+            colors: ['#3498db', '#34495e', '#e74c3c'],
+            showLegend: true,
+            padding:{
+                top: 5,
+                right: 10,
+                bottom: 5,
+                left: 10
+            },
+            yAxis: {
+                format: '$,.2f',
+                startAtZero: true,
+                min: null,
+                max: null
+            },
+            stack: true
+        }
+    })
+    .draw();
 ```
 
 | Property               | Type                  | Description                                                                                                                                                |
@@ -108,13 +112,17 @@ There are multiple ways in which you can customize chart colors.  If no colors a
 You can override the palette by setting the `colors` property on the [chart options](#chart-options) with an array of colors. For example:
 
 ```js
-connect.chart(query, '#sales-area', {
-    title: 'Electric Car Sales 2018 (Units)',
-    chart: {
-        type: 'bar',    
-        colors: ['#ff00000', 'blue', 'rgb(0, 255, 0)']
-    }
-});
+Connect.visualize(query)
+    .as('chart')
+    .inside('#sales-area')
+    .with({
+        title: 'Electric Car Sales 2018 (Units)',
+        chart: {
+            type: 'bar',    
+            colors: ['#ff00000', 'blue', 'rgb(0, 255, 0)']
+        }
+    })
+    .draw();
 ```
 
 Furthermore, you can provide a custom function to the `colors` property allowing complete control over the coloring on the chart. For example, you may
@@ -139,26 +147,34 @@ var manufacturerColors = function(context) {
     }
 };
 
-connect.chart(query, '#sales-bar', {
-    title: 'Electric Car Sales 2018 (Units)',
-    chart: {
-        type: 'bar',
-        colors: manufacturerColors
-    }
-});
+Connect.visualize(query)
+    .as('chart')
+    .inside('#sales-bar')
+    .with({
+        title: 'Electric Car Sales 2018 (Units)',
+        chart: {
+            type: 'bar',
+            colors: manufacturerColors
+        }
+    })
+    .draw();
 
-connect.chart(intervalQuery, '#sales-area', {
-    title: 'Electric Car Sales 2018 (Units)',
-    chart: {
-        type: 'area-spline',
-        colors: manufacturerColors
-    }
-});
+Connect.visualize(intervalQuery)
+    .as('chart')
+    .inside('#sales-area')
+    .with({
+        title: 'Electric Car Sales 2018 (Units)',
+        chart: {
+            type: 'area-spline',
+            colors: manufacturerColors
+        }
+    })
+    .draw();
 
 ```
 
 The function that you provide to the `colors` property accepts a single `context` argument and should return a color as a string.
-It will be called for each seperate component of the chart, each time the `context` parameter will contain the unique combination of `select` and `groupBys` that a color is required for.
+It will be called for each separate component of the chart, each time the `context` parameter will contain the unique combination of `select` and `groupBys` that a color is required for.
 The `context` object has the following structure:
 
 | Property        | Type                            | Description                                                                                                               |
@@ -180,22 +196,26 @@ Gauge visualizations can be generated for basic queries.  You cannot create a ga
 As well as the setting of [field options](#field-options) (which all visualizations support), you must specify gauge options to configure the viz:
 
 ```js
-var gauge = connect.gauge(query, '#gauge', {
-    gauge: {
-        min: 0,
-        max: 'total'
-        color: '#2980b9',
-        padding:{
-            top: 5,
-            right: 10,
-            bottom: 5,
-            left: 10
-        },
-        label: {
-            format: '$,.2f'
+var gauge = Connect.visualize(query)
+    .as('guage')
+    .inside('#gauge')
+    .with({
+        gauge: {
+            min: 0,
+            max: 'total'
+            color: '#2980b9',
+            padding:{
+                top: 5,
+                right: 10,
+                bottom: 5,
+                left: 10
+            },
+            label: {
+                format: '$,.2f'
+            }
         }
-    }
-});
+    })
+    .draw();
 ```
 
 | Property       | Type                  | Description                                                                                                                |
@@ -215,27 +235,31 @@ Field options are keyed by select or grouped field, for example:
 ```js
 var query = connect.query('purchases')
     .select({
-        totalSales: { sum: 'price' }
+        totalSales: { sum: 'purchasePrice' }
     })
     .groupBy('product');
 
-var chart = connect.chart(query, '#chart', {
-    chart: {
-        type: 'bar'
-    },
-    fields: {
-        totalSales: {
-            label: 'Total Sales ($)',
-            format: '$,.2f'
+var chart = Connect.visualize(query)
+    .as('chart')
+    .inside('#chart')
+    .with({
+        chart: {
+            type: 'bar'
         },
-        product: {
-            label: 'Products',
-            format: function(value){
-                return value === 'Some product name' ? 'Ours' : value;
+        fields: {
+            totalSales: {
+                label: 'Total Sales ($)',
+                format: '$,.2f'
+            },
+            product: {
+                label: 'Products',
+                format: function(value){
+                    return value === 'Some product name' ? 'Ours' : value;
+                }
             }
         }
-    }
-};
+    })
+    .draw();
 ```
 
 | Property         | Type                  | Description                                                                                                                         |
@@ -289,18 +313,22 @@ The simplest way to format the date for an Interval is to set the `format` prope
 ```js
 var query = connect.query('purchases')
     .select({
-        totalSales: { sum: 'price' }
+        totalSales: { sum: 'purchasePrice' }
     })
     .groupBy('product')
     .interval('monthly');
 
-var table = connect.table(query, '#table', {
-    title: 'Product Sales by Month',
-    intervals: {
-        label: 'Month',
-        format: 'MMM YYY'
-    }
-}
+var table = Connect.visualize(query)
+    .as('table')
+    .inside('#table')
+    .with({
+        title: 'Product Sales by Month',
+        intervals: {
+            label: 'Month',
+            format: 'MMM YYY'
+        }
+    })
+    .draw();
 ```
 
 Your options may be used with different queries that have different intervals. If you wish to override the format for specific intervals you can supply the `format` property with an object that contains [moment.js format strings](http://momentjs.com/docs/#/displaying/format/) keyed by [time interval. ](#time-intervals) For example:
@@ -308,21 +336,25 @@ Your options may be used with different queries that have different intervals. I
 ```js
 var query = connect.query('purchases')
     .select({
-        totalSales: { sum: 'price' }
+        totalSales: { sum: 'purchasePrice' }
     })
     .groupBy('product')
     .interval('monthly');
 
-var table = connect.table(query, '#table', {
-    title: 'Product Sales by Month',
-    intervals: {
-        label: 'Month',
-        formats: {
-            monthly: 'MMM YYYY',
-            yearly: 'YY'
+var table = Connect.visualize(query)
+    .as('table')
+    .inside('#table')
+    .with({
+        title: 'Product Sales by Month',
+        intervals: {
+            label: 'Month',
+            formats: {
+                monthly: 'MMM YYYY',
+                yearly: 'YY'
+            }
         }
-    }
-}
+    })
+    .draw();
 ```
 
 Alternatively, if you would like full control over formatting, you can provide the `format` property with a function that accepts a start date and optionally an end date as arguments and returns a formatted string. 
@@ -332,21 +364,24 @@ For example:
 ```js
 var query = connect.query('purchases')
     .select({
-        totalSales: { sum: 'price' }
+        totalSales: { sum: 'purchasePrice' }
     })
     .groupBy('product')
     .interval('monthly');
 
-var table = connect.table(query, '#table', {
-    title: 'Product Sales by Month',
-    intervals: {
-        label: 'Month',
-        formats: function(startValue) {
-            return startValue.toString();
+var table = Connect.visualize(query)
+    .as('table')
+    .inside('#table')
+    .with({
+        title: 'Product Sales by Month',
+        intervals: {
+            label: 'Month',
+            formats: function(startValue) {
+                return startValue.toString();
+            }
         }
-    }
-}
-```
+    })
+    .draw();
 ```
 
 ## Visualization lifecycle
@@ -360,7 +395,10 @@ If you wish to refresh the data in a viz (i.e. execute the query again for fresh
 on the created viz.  For example:
 
 ```js
-var chart = connect.chart(query, '#chart', {...});
+var chart = Connect.visualize(query)
+    .as('chart')
+    .inside('#chart')
+    .draw();
 //...
 chart.refresh();
 ```
@@ -377,7 +415,10 @@ You can also update visualizations with a new **query** or **function returning 
 viz.  This is useful in scenarios, for example, where an end user changes a filter.  For example:
 
 ```js
-var chart = connect.chart(query, '#chart', {...});
+var chart = Connect.visualize(query)
+    .as('chart')
+    .inside('#chart')
+    .draw();
 //...
 chart.update(newQuery);
 ```
@@ -395,9 +436,10 @@ Simply removing the viz from the DOM is **not sufficient** and may cause memory 
 To destroy a viz, simply call the `destroy()` function on the created viz.  For example:
 
 ```js
-var chart = connect.chart(query, '#chart', {
-    //...
-});
+var chart = Connect.visualize(query)
+    .as('chart')
+    .inside('#chart')
+    .draw();
 
 chart.destroy();
 ```
@@ -480,9 +522,10 @@ Connect.registerViz('myViz', {
 
 // The custom viz can then be used in the same manner as the built in ones.
 
-Connect.myViz('#custom-viz', query, {
-    title: 'My Custom Viz'
-});
+Connect.visualize(query)
+    .as('myViz')
+    .inside('#custom-viz')
+    .draw();
 
 ```
 
@@ -503,6 +546,13 @@ class MyViz {
 }
 
 Connect.registerViz('myViz', () => new MyViz);
+
+// The custom viz can then be used in the same manner as the built in ones.
+
+Connect.visualize(query)
+    .as('myViz')
+    .inside('#custom-viz')
+    .draw();
 
 ```
 
