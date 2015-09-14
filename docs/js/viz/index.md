@@ -102,9 +102,9 @@ The viz type can also be the name of any registered [custom visualizations.](#cu
 
 You specify the container by calling the `inside(container)` method on the visualization builder.
 
-The container can either be a **string** or **HTMLElement** where you want to render the viz.
+The container can either be a reference to a **HTMLElement** or the id of the HTML element as a **string**.
 
-Your container **must** have an explicit height for the visualization to display correctly.
+Your HTML element you provide as a container **must** have an explicit height for the visualization to display correctly.
 
 ### Options
 

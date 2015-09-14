@@ -40,7 +40,7 @@ See [chart options](#chart-options) for information on how to customize these ch
 
 <p data-height="300" data-theme-id="17963" data-slug-hash="PqvORv" data-default-tab="results" data-user="getconnect" class='codepen'>See the Pen <a href='http://codepen.io/getconnect/pen/PqvORv/'>Connect Bar Chart viz</a> by Connect (<a href='http://codepen.io/getconnect'>@getconnect</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
 
-You can generate a bar chart for queries by specifying `type: 'bar'` on the options for `chart()`.
+You can generate a bar chart for queries by specifying `type: 'bar'` on the options for a chart visualization.
 
 Bar charts are great for showing discrete data, such as with single or multiple [grouped](#group-by) queries.  While you can display [time interval](#time-intervals)
 queries with a bar chart, it is highly recommended to use [line charts](#line-charts) instead.
@@ -49,7 +49,7 @@ queries with a bar chart, it is highly recommended to use [line charts](#line-ch
 
 <p data-height="300" data-theme-id="17963" data-slug-hash="doBXdm" data-default-tab="result" data-user="getconnect" class='codepen'>See the Pen <a href='http://codepen.io/getconnect/pen/doBXdm/'>Connect Line Charts</a> by Connect (<a href='http://codepen.io/getconnect'>@getconnect</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
 
-You can generate a line chart for [grouped](#group-by) or [time interval](#time-intervals) queries by specifying one of the following `type` values on the options for `chart()`:
+You can generate a line chart for [grouped](#group-by) or [time interval](#time-intervals) queries by specifying one of the following `type` values on the options for a chart visualization:
 
 * `line`
 * `spline`
@@ -95,10 +95,10 @@ var chart = Connect.visualize(query)
 | Property               | Type                  | Description                                                                                                                                                |
 | -----------------------|---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `type`                 | `string`              | Type of chart to display (one of either `bar`, `line`, `area`, `spline`, `area-spline`, `step`, `area-step`)                                               |
-| `colors`               | `string[]|function`   | An array of colors to use as a palette for the chart. Or a function to provide more granular control. See [Chart colors](#chart-colors) for more info.     |
+| `colors`               | `string[]` or `function`   | An array of colors to use as a palette for the chart. Or a function to provide more granular control. See [Chart colors](#chart-colors) for more info.     |
 | `showLegend`           | `boolean`             | Specify whether or not to show the legend.  By default `true`, but `false` with a single aggregation and no group by/interval.                             |
 | `padding`              | `object`              | The padding around the gauge (left, right, top and bottom).  By default, `{ left: 0, right: 0, bottom: 0, top: 0 }`                                        |
-| `yAxis.format`         | `string|function`     | Either a format string, or alternatively a function accepting a single value argument that returns a formatted string. See [Formatters](#formatters) for more info. |
+| `yAxis.format`         | `string` or `function`     | Either a format string, or alternatively a function accepting a single value argument that returns a formatted string. See [Formatters](#formatters) for more info. |
 | `yAxis.startAtZero`    | `boolean`             | Specifically for `area`, `area-spline`, `area-step` and `bar`, this specifies whether or not the Y-axis min value will default to zero, or automatically calculate based on the data.  By default, this is `true`. |
 | `yAxis.min`            | `number`              | An explicit minimum value for the Y-axis (this overrides `startAtZero` in all instances).                                                                  |
 | `yAxis.max`            | `number`              | An explicit maximum value for the Y-axis.                                                                                                                  |
@@ -218,13 +218,13 @@ var gauge = Connect.visualize(query)
     .draw();
 ```
 
-| Property       | Type                  | Description                                                                                                                |
-| ---------------|---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `min`          | `string` or `number`  | Specifies the minimum value of the chart.  This can either be a string name of a field in a resultset, or a static number. |
-| `max`          | `string` or `number`  | Specifies the maximum value of the chart.  This can either be a string name of a field in a resultset, or a static number. |
-| `color`        | `string`              | The color of the data arc of the gauge.                                                                                    |
-| `padding`      | `object`              | The padding around the gauge (left, right, top and bottom).                                                                |
-| `label.format` | `string|function`     | Either a format string, or alternatively a function accepting a single value argument that returns a formatted string. See [Formatters](#formatters) for more info.     |
+| Property       | Type                     | Description                                                                                                                |
+| ---------------|------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `min`          | `string` or `number`     | Specifies the minimum value of the chart.  This can either be a string name of a field in a resultset, or a static number. |
+| `max`          | `string` or `number`     | Specifies the maximum value of the chart.  This can either be a string name of a field in a resultset, or a static number. |
+| `color`        | `string`                 | The color of the data arc of the gauge.                                                                                    |
+| `padding`      | `object`                 | The padding around the gauge (left, right, top and bottom).                                                                |
+| `label.format` | `string` or `function`   | Either a format string, or alternatively a function accepting a single value argument that returns a formatted string. See [Formatters](#formatters) for more info.     |
 
 ## Field options
 
@@ -262,10 +262,10 @@ var chart = Connect.visualize(query)
     .draw();
 ```
 
-| Property         | Type                  | Description                                                                                                                         |
-| -----------------|---------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `label`          | `string`              | A "friendly" label for the select or grouped field.  This may be displayed in a legend, tooltip, etc. depending on the viz type. |
-| `format`          | `string|function`     | Either a format string, or alternatively a function accepting a single value argument that returns a formatted string. See [Formatters](#formatters) for more info.  |
+| Property         | Type                   | Description                                                                                                                         |
+| -----------------|----------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `label`          | `string`               | A "friendly" label for the select or grouped field.  This may be displayed in a legend, tooltip, etc. depending on the viz type. |
+| `format`         | `string` or `function` | Either a format string, or alternatively a function accepting a single value argument that returns a formatted string. See [Formatters](#formatters) for more info.  |
 
 ## Formatters
 
@@ -303,10 +303,10 @@ var fieldOptions = {
 All visualizations allow specifying interval options when executing a query with [time intervals](#time-intervals).  This controls the formatting
 of title labels (i.e. in the [table viz](#table-viz)) and labels for the interval values themselves.
 
-| Property         | Type                       | Description                                                                                                                           |
-| -----------------|--------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`          | `string`                   | A "friendly" label or title for the interval.  This only applies to the [table viz](#table-viz) (for the column heading).             |
-| `format`         | `string|object|function`   | Either a [moment.js format string](http://momentjs.com/docs/#/displaying/format/), an object keyed by [time interval](#time-intervals) with [moment.js format strings](http://momentjs.com/docs/#/displaying/format/) or a function taking the start and optionally the end date of an interval and returning a formatted string.                |
+| Property         | Type                               | Description                                                                                                                           |
+| -----------------|----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`          | `string`                           | A "friendly" label or title for the interval.  This only applies to the [table viz](#table-viz) (for the column heading).             |
+| `format`         | `string`, `object` or `function`   | Either a [moment.js format string](http://momentjs.com/docs/#/displaying/format/), an object keyed by [time interval](#time-intervals) with [moment.js format strings](http://momentjs.com/docs/#/displaying/format/) or a function taking the start and optionally the end date of an interval and returning a formatted string.                |
 
 The simplest way to format the date for an Interval is to set the `format` property with a [moment.js format string. ](http://momentjs.com/docs/#/displaying/format/) For example:
 
@@ -348,7 +348,7 @@ var table = Connect.visualize(query)
         title: 'Product Sales by Month',
         intervals: {
             label: 'Month',
-            formats: {
+            format: {
                 monthly: 'MMM YYYY',
                 yearly: 'YY'
             }
@@ -376,7 +376,7 @@ var table = Connect.visualize(query)
         title: 'Product Sales by Month',
         intervals: {
             label: 'Month',
-            formats: function(startValue) {
+            format: function (startValue) {
                 return startValue.toString();
             }
         }
