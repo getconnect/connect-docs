@@ -33,8 +33,7 @@ A possible response to the above example could be:
         },
         {
             "success": false,
-            "duplicate": true,
-            "message": "An event with the same id has already been inserted."
+            "message": "An error occured inserting the event please try again."
         }
     ]
 }
