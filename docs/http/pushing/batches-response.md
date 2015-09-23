@@ -1,4 +1,8 @@
-A possible response to the above example could be:
+### Batch responses
+
+**200 OK**
+
+An example response for the above request could be:
 
 ```json
 {
@@ -8,7 +12,7 @@ A possible response to the above example could be:
         },
         {
             "success": false,
-            "message": "An error occured inserting the event please try again."
+            "message": "An error occurred inserting the event please try again."
         }
     ],
     "refunds": [
@@ -16,5 +20,15 @@ A possible response to the above example could be:
             "success": true
         }
     ]
+}
+```
+
+**500 Internal Server Error**
+
+A server error occurred with the Connect API.
+
+```json
+{
+    "errorMessage": "An error occurred while processing your request"
 }
 ```
