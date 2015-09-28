@@ -218,9 +218,10 @@ var languages = [
 			'common/exporting-events.md',
 			'common/delete-collection.md',
 			'common/projects-keys.md',
-			'common/security/index.md',
-			'common/security/filtered-keys.md',
-			'java/security/generating-filtered-key.md',
+			// 'common/security/index.md',
+			// 'common/security/filtered-keys.md',
+			// 'java/security/generating-filtered-key.md',
+			security,
 			modeling
 		] 
 	},
@@ -243,9 +244,7 @@ var languages = [
 			'common/exporting-events.md',
 			'common/delete-collection.md',
 			'common/projects-keys.md',
-			'common/security/index.md',
-			'common/security/filtered-keys.md',
-			'java/security/generating-filtered-key.md',
+			security,
 			modeling
 		] 
 	}

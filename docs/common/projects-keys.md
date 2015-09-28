@@ -68,10 +68,10 @@ use Connect\Connect;
 Connect::initialize('YOUR_PROJECT_ID', 'YOUR_API_KEY');
 ```
 ```java-vanilla
-ConnectClient client = new JavaConnectClient("YOUR_PROJECT_ID", "YOUR_API_KEY");
+JavaConnectClient client = new JavaConnectClient("YOUR_PROJECT_ID", "YOUR_API_KEY");
 ```
 ```java-android
-ConnectClient client = new AndroidConnectClient("YOUR_PROJECT_ID", "YOUR_API_KEY");
+AndroidConnectClient client = new AndroidConnectClient(getBaseContext(), "YOUR_PROJECT_ID", "YOUR_API_KEY");
 ```
 ```csharp
 Connect.Initialize(new BasicConfiguration("YOUR_API_KEY", "YOUR_PROJECT_ID"));

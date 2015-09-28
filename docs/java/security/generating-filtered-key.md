@@ -21,20 +21,6 @@ String filteredKey = JavaConnectClient.generateFilteredKey(keyDefinition, master
 System.out.println(filteredKey);
 ```
 
-```java-android
-HashMap<String, Object> filters = new HashMap<String, Object>();
-filters.put("type", "cycling");
-
-HashMap<String, Object> keyDefinition = new HashMap<String, Object>();
-keyDefinition.put("filters", filters);
-keyDefinition.put("canQuery", true);
-keyDefinition.put("canPush", false);
-
-String masterKey = "YOUR_MASTER_KEY";
-String filteredKey = AndroidConnectClient.generateFilteredKey(keyDefinition, masterKey);
-System.out.println(filteredKey);
-```
-
 <table>
 	<tr>
 		<th>Property</th>

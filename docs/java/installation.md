@@ -11,7 +11,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile 'io.getconnect:connect-client-java:1.0'
+    compile 'io.getconnect:connect-client-java:1.+'
 }
 ```
 ```groovy-android
@@ -19,7 +19,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile 'io.getconnect:connect-client-android:1.0@aar'
+    compile 'io.getconnect:connect-client-android:1.+'
 }
 ```
 
@@ -31,14 +31,13 @@ Add the following dependency to your pom.xml:
 <dependency>
   <groupId>io.getconnect</groupId>
   <artifactId>connect-client-java</artifactId>
-  <version>1.0</version>
+  <version>1.3</version>
 </dependency>
 ```
 ```xml-android
 <dependency>
   <groupId>io.getconnect</groupId>
   <artifactId>connect-client-android</artifactId>
-  <type>aar</type>
-  <version>1.0</version>
+  <version>1.3</version>
 </dependency>
 ```
