@@ -300,12 +300,9 @@ event.put(&quot;totalCost&quot;, 14.75);
 
 // Push the event asynchronously to Connect
 client.pushAsync(&quot;productsSold&quot;, event, new ConnectCallback() {
-    @Override
     public void onSuccess() {
         // Called if the event was successfully pushed
     }
-
-    @Override
     public void onFailure(ConnectException e) {
         e.printStackTrace();
     }
@@ -338,12 +335,9 @@ client.add(&quot;productsSold&quot;, event);
 <p>Periodically or on a specific trigger, you must call <code>pushPending()</code> or <code>pushPendingAsync()</code> which will push the queued events in a batch to Connect:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample11"><pre><code class="lang-java">// Push the queued events to Connect
 client.pushPendingAsync(new ConnectBatchCallback() {
-    @Override
     public void onSuccess(Map&lt;String, Iterable&lt;EventPushResponse&gt;&gt; details) {
         // Details will contain the success status of each event
     }
-
-    @Override
     public void onFailure(ConnectException e) {
         e.printStackTrace();
     }
@@ -368,12 +362,9 @@ HashMap&lt;String, Map&lt;String, Object&gt;[]&gt; batch = new HashMap&lt;String
 batch.put(&quot;productsSold&quot;, new Map[]{event1, event2});
 
 client.pushBatchAsync(batch, new ConnectBatchCallback() {
-    @Override
     public void onSuccess(Map&lt;String, Iterable&lt;EventPushResponse&gt;&gt; details) {
         // details will contain the success status of each event
     }
-
-    @Override
     public void onFailure(ConnectException e) {
         e.printStackTrace();
     }
@@ -414,10 +405,7 @@ event.put(&quot;id&quot;, &quot;1849506679&quot;);
 
 // Push the event to Connect
 client.pushAsync(&quot;productsSold&quot;, event, new ConnectCallback() {
-    @Override
     public void onSuccess() {}
-
-    @Override
     public void onFailure(ConnectException e) {
         e.printStackTrace();
     }
@@ -445,8 +433,15 @@ event.put(&quot;totalCost&quot;, 14.75);
 // Set the event&apos;s timestamp
 event.put(&quot;timestamp&quot;, new Date());
 
-// Push the event synchronously to Connect
-client.push(&quot;productsSold&quot;, event);
+// Push the event asynchronously to Connect
+client.pushAsync(&quot;productsSold&quot;, event, new ConnectCallback() {
+    public void onSuccess() {
+        // Called if the event was successfully pushed
+    }
+    public void onFailure(ConnectException e) {
+        e.printStackTrace();
+    }
+});
 </code></pre></div></div></div>
 
 
