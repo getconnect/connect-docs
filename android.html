@@ -392,9 +392,22 @@ limitations on querying which influences how you should structure your events.</
 <h2 id="reliability-of-events">Reliability of events</h2>
 <p>You can ensure delivery of events reliably by <a href="#queuing-events">queuing the events</a> and <a href="#configuring-event-stores">configuring event stores</a>.
 You should then handle the response from <code>pushPending()</code> or <code>pushPendingAsync()</code> to verify that all the events were successfully pushed.</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample13" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample13"><pre><code class="lang-java">client.pushPendingAsync(new ConnectBatchCallback() {
+    public void onSuccess(Map&lt;String, Iterable&lt;EventPushResponse&gt;&gt; details) {
+        for (String collection : details.keySet()) {
+            for (EventPushResponse eventResponse : details.get(collection)) {
+                // eventResponse will contain the details about the success of the event.
+            }
+        }
+    }
+    public void onFailure(ConnectException e) {
+        e.printStackTrace();
+    }
+});
+</code></pre></div></div></div>
 <p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is
 delivered multiple times). For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample13" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample13"><pre><code class="lang-java">// Construct the event
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample14" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample14"><pre><code class="lang-java">// Construct the event
 HashMap&lt;String, Object&gt; event = new HashMap&lt;String, Object&gt;();
 event.put(&quot;product&quot;, &quot;banana&quot;);
 event.put(&quot;quantity&quot;, 5);
@@ -424,7 +437,7 @@ in an event is supported for querying.</p>
 the timestamp of the event.</p>
 <p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
 of event times when events are queued.  For example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample14" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample14"><pre><code class="lang-java">// Construct the event
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample15"><pre><code class="lang-java">// Construct the event
 HashMap&lt;String, Object&gt; event = new HashMap&lt;String, Object&gt;();
 event.put(&quot;product&quot;, &quot;banana&quot;);
 event.put(&quot;quantity&quot;, 5);
@@ -493,7 +506,7 @@ pushing, querying and deleting collections.<br><strong>Keep this key safe</stron
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample27" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample27"><pre><code class="lang-java">AndroidConnectClient client = new AndroidConnectClient(getBaseContext(), &quot;YOUR_PROJECT_ID&quot;, &quot;YOUR_API_KEY&quot;);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample28" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample28"><pre><code class="lang-java">AndroidConnectClient client = new AndroidConnectClient(getBaseContext(), &quot;YOUR_PROJECT_ID&quot;, &quot;YOUR_API_KEY&quot;);
 </code></pre></div></div></div>
 
 
@@ -564,7 +577,7 @@ filtered key with the Connect service.</p>
 server-side service.</p>
 <ol>
 <li><p>Create a JSON object describing the access allowed by the key, including any <a href="#filters">filters</a>, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample29" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample29"><pre><code class="lang-json">{
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample30" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample30"><pre><code class="lang-json">{
     &quot;filters&quot;: {
         &quot;customerId&quot;: 1234
     },
@@ -604,7 +617,7 @@ and the <code>Project Master Key</code> as the encryption key.</p>
 </li>
 <li><p>Convert the IV and cipher text to hex strings and combine them (IV first, followed by the cipher text), separating them with a hyphen (-). The resulting
 key should look something like this:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample30" role="tab" data-toggle="tab" data-lang="">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample30"><pre><code class="nohighlight">5D07A77D87D5B20FA5508303F748A43B-DDFA284A9341068A704A846E83ACF49069D960632C4F74A44B5EE330073F79A8324ADC91023F88F63AAE4507F3D119B5C7F31A2D7D9616408E9665EC6C1DEBE3
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample31" role="tab" data-toggle="tab" data-lang="">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample31"><pre><code class="nohighlight">5D07A77D87D5B20FA5508303F748A43B-DDFA284A9341068A704A846E83ACF49069D960632C4F74A44B5EE330073F79A8324ADC91023F88F63AAE4507F3D119B5C7F31A2D7D9616408E9665EC6C1DEBE3
 </code></pre></div></div></div></li>
 </ol>
 <p>You can now use this API key to either <a href="#pushing-events">push events</a> or <a href="#querying-events">execute queries</a> depending on the <code>canPush</code>
@@ -620,7 +633,7 @@ to contain rich details about what the &quot;world&quot; looked like at that poi
 <p>Put simply, events = action + time + state.</p>
 <p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
 analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample36" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample36"><pre><code class="lang-java">HashMap&lt;String, Object&gt; myEvent = new HashMap&lt;String, Object&gt;();
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample37" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample37"><pre><code class="lang-java">HashMap&lt;String, Object&gt; myEvent = new HashMap&lt;String, Object&gt;();
 myEvent.put(&quot;type&quot;, &quot;cycling&quot;);
 myEvent.put(&quot;timestamp&quot;, new Date());
 myEvent.put(&quot;duration&quot;, 67);
@@ -678,7 +691,7 @@ had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</cod
 <p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
 <h3 id="events-are-denormalized">Events are denormalized</h3>
 <p>Consider our example event again, notice the age property of the user:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample43" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample43"><pre><code class="lang-java">HashMap&lt;String, Object&gt; myEvent = new HashMap&lt;String, Object&gt;();
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample44" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample44"><pre><code class="lang-java">HashMap&lt;String, Object&gt; myEvent = new HashMap&lt;String, Object&gt;();
 myEvent.put(&quot;type&quot;, &quot;cycling&quot;);
 ...
 
@@ -702,7 +715,7 @@ over time, rather than merely current state.  This helps us answer questions abo
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample46" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample46"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;user.age&apos;);
 
@@ -727,7 +740,7 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample53" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample53"><pre><code class="lang-java">HashMap&lt;String, Object&gt; myEvent = new HashMap&lt;String, Object&gt;();
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample54" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample54"><pre><code class="lang-java">HashMap&lt;String, Object&gt; myEvent = new HashMap&lt;String, Object&gt;();
 myEvent.put(&quot;type&quot;, &quot;cycling&quot;);
 ...
 
@@ -760,7 +773,7 @@ myEvent.put(&quot;weather&quot;, weather);
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample55" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample55"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample56" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample56"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;bike.model&apos;);
   .filter({
@@ -772,7 +785,7 @@ that was built by &quot;Specialized&quot;:</p>
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample58" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample58"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample59" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample59"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
 </code></pre></div></div></div>
@@ -804,7 +817,7 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample62" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample62"><pre><code class="lang-java">event.put(&quot;invalid.property&quot;, &quot;value&quot;);
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample63" role="tab" data-toggle="tab" data-lang="java">Java</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample63"><pre><code class="lang-java">event.put(&quot;invalid.property&quot;, &quot;value&quot;);
 </code></pre></div></div></div>
 
 
