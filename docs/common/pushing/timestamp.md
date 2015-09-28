@@ -23,10 +23,17 @@ event.put("quantity", 5);
 event.put("totalCost", 14.75);
 
 // Set the event's timestamp
-event.put(`timestamp`, new Date());
+event.put("timestamp", new Date());
 
-// Push the event synchronously to Connect
-client.push("productsSold", event);
+// Push the event asynchronously to Connect
+client.pushAsync("productsSold", event, new ConnectCallback() {
+    public void onSuccess() {
+        // Called if the event was successfully pushed
+    }
+    public void onFailure(ConnectException e) {
+        e.printStackTrace();
+    }
+});
 ```
 ```csharp
 var result = await Connect.Push("mycollection", new {

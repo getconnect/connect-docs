@@ -7,5 +7,5 @@ By default, `JavaConnectClient` uses `MemoryEventStore` to store events temporar
 `JavaConnectClient` can be easily configured to store events in a `FileEventStore` on the filesystem by specifying an event store directory:
 
 ```java
-ConnectClient client = new JavaConnectClient("PROJECT_ID", "PUSH_API_KEY", "/path/to/event/store");
+JavaConnectClient client = new JavaConnectClient("PROJECT_ID", "PUSH_API_KEY", "/path/to/event/store");
 ```
