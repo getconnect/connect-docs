@@ -21,6 +21,11 @@ String filteredKey = JavaConnectClient.generateFilteredKey(keyDefinition, master
 System.out.println(filteredKey);
 ```
 
+> **Java cryptography extensions unlimited strength policy files**
+>
+> Because of built in key size limits you will need to install the appropriate Java cryptography extensions unlimited strength policy files to use the filtered key method.
+> If the unlimited strength policy files are not installed you receive an Exception describing an invalid key size.
+
 <table>
 	<tr>
 		<th>Property</th>
@@ -45,3 +50,5 @@ System.out.println(filteredKey);
 </table>
 
 You would use the resulting key to provide to client applications (e.g. in a browser using the [JavaScript SDK](js)).
+
+
