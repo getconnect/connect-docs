@@ -71,6 +71,17 @@ let event = [
 ]
 ```
 
+```python
+event = {
+  'id': '12345678',
+  'timestamp': datetime.utcnow(),
+  'type': 'cycling',
+  'distance': 21255
+}
+
+connect.push_event('activity', event)
+```
+
 > **Timezones**
 >
 > Timestamps are always recorded in UTC.  If you supply a timestamp in a timezone other than UTC, it will

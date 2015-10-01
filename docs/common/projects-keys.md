@@ -76,3 +76,9 @@ AndroidConnectClient client = new AndroidConnectClient(getBaseContext(), "YOUR_P
 ```csharp
 Connect.Initialize(new BasicConfiguration("YOUR_API_KEY", "YOUR_PROJECT_ID"));
 ```
+```python
+from connect.client import ConnectClient
+
+connect = ConnectClient(project_id='YOUR_PROJECT_ID', 
+                        api_key='YOUR_API_KEY')
+```

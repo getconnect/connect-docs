@@ -246,6 +246,28 @@ var languages = [
 			security,
 			modeling
 		] 
+	},
+	{ 
+		env: 'python', 
+		title: 'Python', 
+		allowedLanguages: ['python'],
+		structure: [
+			'common/intro.md',
+			'python/installation.md',
+			'python/pushing/index.md',
+			'common/pushing/import-unsupported.md',
+			'common/pushing/restrictions.md',
+			'python/pushing/reliable.md',
+			'common/pushing/timestamp.md',
+			'common/querying/unsupported.md',
+			'common/exporting-events.md',
+			'common/delete-collection.md',
+			'common/projects-keys.md',
+			'common/security/index.md',
+			'common/security/filtered-keys.md',
+			'python/security/generating-filtered-key.md',
+			modeling
+		] 
 	}
 ];
 
