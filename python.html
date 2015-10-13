@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>iOS :: Connect Docs</title>
+    <title>Python :: Connect Docs</title>
     <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
     <script src="//use.typekit.net/jyl8gjp.js?t=1438654489102"></script>
     <script>try{Typekit.load();}catch(e){}</script>
@@ -42,7 +42,7 @@
       <nav data-spy="affix" id="nav-wrapper" class="hidden-xs" data-offset-top="60" data-offset-bottom="400">
         <ul class="nav switcher">
           <li class="dropdown active">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">iOS<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Python<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
                   <a href="js">JavaScript</a>
@@ -101,7 +101,11 @@
                         
                       </li>    
                       <li>
-                        <a href="#queuing-events">Queuing events</a>
+                        <a href="#responses">Responses</a>
+                        
+                      </li>    
+                      <li>
+                        <a href="#exception-handling">Exception handling</a>
                         
                       </li>    
                       <li>
@@ -239,131 +243,101 @@
 <p>The following guide will help you to get started using Connect.  Once you have your <a href="#projects-and-keys">project ID and API key</a> and
 you have decided how to <a href="#modeling-your-events">model your events</a>, you can start <a href="#pushing-events">pushing events</a> and <a href="#querying-events">executing queries</a>.</p>
 <h1 id="installing-the-sdk">Installing the SDK</h1>
-<p>The quickest and easiest way to install the SDK is via CocoaPods: <a href="http://cocoapods.org/?q=ConnectClient"><img src="http://img.shields.io/cocoapods/v/ConnectClient.svg" alt="Version"></a></p>
-<p>To do this, simply add the following line to your podfile and run <code>pod update</code>:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample1" role="tab" data-toggle="tab" data-lang="ruby">Ruby</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample1"><pre><code class="lang-ruby">pod &apos;ConnectClient&apos;
-</code></pre></div></div></div>
-<h1 id="initializing-the-client">Initializing the client</h1>
+<p>The python SDK works on Python versions:</p>
+<ul>
+<li>2.7</li>
+<li>3.2 - 3.5</li>
+</ul>
+<p>It can be installed via pip <a href="http://badge.fury.io/py/connect-client"><img src="https://badge.fury.io/py/connect-client.svg" alt="PyPI version"></a></p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample1" role="tab" data-toggle="tab" data-lang="">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample1"><pre><code class="nohighlight">pip install connect-client
+</code></pre></div></div></div><h1 id="initializing-the-client">Initializing the client</h1>
 <p>Before you can start <a href="#pushing-events">pushing events</a>, you must initialize the
-Connect client with your <a href="#projects-and-keys">project ID and API key</a>.</p>
-<p>You can either initialize a shared client (when you don&apos;t want to manage client instances):</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
+Connect client with your <a href="#projects-and-keys">project ID and API key</a>:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample2" role="tab" data-toggle="tab" data-lang="python">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample2"><pre><code class="lang-python">from connect.client import ConnectClient
 
-[TPConnectClient sharedClientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
-                                    apiKey:@&quot;YOUR_API_KEY&quot;];
-</code></pre></div><div class="tab-pane" id="code-sample3"><pre><code class="lang-swift">TPConnectClient.sharedClientWithProjectId(&quot;YOUR_PROJECT_ID&quot;, apiKey: &quot;YOUR_API_KEY&quot;)
+connect = ConnectClient(project_id=&apos;your-project-id&apos;, 
+                        api_key=&apos;your-push-api-key&apos;)
 </code></pre></div></div></div>
-
-<p>Or you can create a specific instance of a client (e.g. to push to/query multiple projects):</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
-
-TPConnectClient *client = [TPConnectClient clientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
-                                                        apiKey:@&quot;YOUR_API_KEY&quot;];
-</code></pre></div><div class="tab-pane" id="code-sample5"><pre><code class="lang-swift">let client = TPConnectClient.clientWithProjectId(&quot;YOUR_PROJECT_ID&quot;, apiKey: &quot;YOUR_API_KEY&quot;)
-</code></pre></div></div></div>
-
 <h1 id="pushing-events">Pushing events</h1>
-<p>The SDK supports pushing events directly into collections.</p>
+<p>Once you have created the client, you can start pushing events. The SDK uses <a href="https://docs.python.org/3/library/concurrent.futures.html">futures</a> to support pushing events asynchronously.</p>
 <h2 id="single-event">Single event</h2>
-<p>To push a single event to a collection, you can specify the collection name and the event to push:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample7" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-objc">NSDictionary *event = @{
-                        @&quot;product&quot;: @&quot;Something&quot;,
-                        @&quot;cost&quot;: @(2.01)
-                        };
-
-[[TPConnectClient sharedClient] pushEvent:event
-                             toCollection:@&quot;mycollection&quot;
-                        completionHandler:^(BOOL success, NSError *error) {
-
-                        }];
-</code></pre></div><div class="tab-pane" id="code-sample7"><pre><code class="lang-swift">let event = [
-    &quot;product&quot;: &quot;Something&quot;,
-    &quot;cost&quot;: 2.01
-]
-
-TPConnectClient.sharedClient()?.pushEvent(event, toCollection: &quot;mycollection&quot;) {
-    (success, error) in
-
+<p>To push a single event asynchronously, call the <code>push_event</code> method on <code>ConnectClient</code> and pass a collection name and a dict object.</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample3" role="tab" data-toggle="tab" data-lang="python">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample3"><pre><code class="lang-python">event = {
+  &apos;type&apos;: &apos;cycling&apos;,
+  &apos;distance&apos;: 21255,
+  &apos;caloriesBurned&apos;: 455,
+  &apos;duration&apos;: 67
 }
-</code></pre></div></div></div>
 
+# asynchronous push to Connect returns a future
+single_future = connect.push_event(&apos;activity&apos;, event)
+</code></pre></div></div></div>
 <h2 id="batches-of-events">Batches of events</h2>
-<p>To push multiple events to one or more collections, you can create a dictionary of collection names to arrays of events:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample8" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample9" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample8"><pre><code class="lang-objc">NSArray *purchases = @[
-                       @{
-                           @&quot;name&quot;: @&quot;Phone&quot;,
-                           @&quot;price&quot;: @465.55
-                           },
-                       @{
-                           @&quot;name&quot;: @&quot;Case&quot;,
-                           @&quot;price&quot;: @5.55
-                           }
-                       ];
-
-NSDictionary *eftpos = @{
-                            @&quot;type&quot;: @&quot;visa&quot;,
-                            @&quot;total&quot;: @571.10
-                        };
-
-NSDictionary *batch = @{
-                            @&quot;purchases&quot;: purchases,
-                            @&quot;eftpos&quot;: @[eftpos]
-                        };
-
-[[TPConnectClient sharedClient] pushEventBatch:batch
-                             completionHandler:^(NSDictionary * results, NSError * error) {
-
-                             }];
-</code></pre></div><div class="tab-pane" id="code-sample9"><pre><code class="lang-swift">let batch = [
-    &quot;purchases&quot;: [
-        [
-            &quot;name&quot;: &quot;phone&quot;,
-            &quot;price&quot;: 465.55
-        ],
-        [
-            &quot;name&quot;: &quot;case&quot;,
-            &quot;price&quot;: 5.55
-        ]
-    ],
-    &quot;eftpos&quot;: [[
-        &quot;type&quot;: &quot;visa&quot;,
-        &quot;total&quot;: 571.10
-    ]]
-]
-
-TPConnectClient.sharedClient()?.pushEventBatch(batch) {
-    (results, error) in
-
+<p>To push multiple events asynchronously, call the <code>push_events</code> method on <code>ConnectClient</code> and pass a dict object keyed by collection name with a list of dict objects as values:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample4" role="tab" data-toggle="tab" data-lang="python">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample4"><pre><code class="lang-python"># Event batch: dict keyed by collection name 
+# values are a list of dict objects, one for each event
+events = {
+    &apos;activity&apos;: [{
+        &apos;type&apos;: &apos;cycling&apos;,
+        &apos;distance&apos;: 21255,
+        &apos;caloriesBurned&apos;: 455,
+        &apos;duration&apos;: 67
+    }, {
+        &apos;type&apos;: &apos;swimming&apos;,
+        &apos;distance&apos;: 21255,
+        &apos;caloriesBurned&apos;: 455,
+        &apos;duration&apos;: 67
+    }]
 }
+
+# asynchronous push to Connect returns a future
+batch_future = connect.push_events(events)
 </code></pre></div></div></div>
-
-<h2 id="queuing-events">Queuing events</h2>
-<p>Events can be stored/cached locally and pushed to Connect later.  This provides a level of reliability to mitigate
-the risk of network outages or device crashes.</p>
-<p>This can be achieved in the SDK by &quot;adding&quot; events into collections:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample10" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample11" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample10"><pre><code class="lang-objc">NSError *error;
-
-[[TPConnectClient sharedClient] addEvent:event
-                            toCollection:@&quot;mycollection&quot;
-                               withError:&amp;error];
-</code></pre></div><div class="tab-pane" id="code-sample11"><pre><code class="lang-swift">var error: NSError?
-
-TPConnectClient.sharedClient()?.addEvent(event, toCollection: &quot;mycollection&quot;, withError: &amp;error)
-</code></pre></div></div></div>
-
-<p>Periodically or on a specific trigger, you must push the pending events in a batch to Connect:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample12" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample13" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample12"><pre><code class="lang-objc">[[TPConnectClient sharedClient] pushAllPendingEventsWithCompletionHandler:^(NSDictionary * results, NSError * error) {
-
-}];
-</code></pre></div><div class="tab-pane" id="code-sample13"><pre><code class="lang-swift">TPConnectClient.sharedClient()?.pushAllPendingEventsWithCompletionHandler {
-    (results, error) in
-
+<h2 id="responses">Responses</h2>
+<p>Future objects returned from pushing single and batch events will return <code>PushResponse</code> and <code>PushBatchResponse</code> objects respectively. </p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample5" role="tab" data-toggle="tab" data-lang="python">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample5"><pre><code class="lang-python"># single event push returns a PushResponse object
+r = single_future.result()
+print r.success             # True
+print r.error_message       # None
+print r.http_status_code    # 200
+print r.event 
+&quot;&quot;&quot;
+r.event returns the event as a dict, as it was sent to Connect:
+{
+    &apos;type&apos;: &apos;cycling&apos;,
+    &apos;distance&apos;: 21255,
+    &apos;caloriesBurned&apos;: 455,
+    &apos;duration&apos;: 67,
+    &apos;id&apos;: &apos;b1c345e0-767b-4f88-9ac3-a4fb566ff0f1&apos;,
+    &apos;timestamp&apos;: &apos;2015-09-30T06:02:04.602000&apos;
 }
-</code></pre></div></div></div>
+ &quot;&quot;&quot;
 
-<p>The <code>results</code> is an <code>NSDictionary</code> keyed by collection name.  The value of the <code>NSDictionary</code> is an <code>NSArray</code> of
-<a href="http://cocoadocs.org/docsets/ConnectClient/0.2.0/Classes/TPEventAPIResponse.html">TPEventAPIResponse</a>
-indicating the response to an individual event.</p>
+# batch event push returns a PushBatchResponse object 
+r = batch_future.result()
+print r.success             # True
+print r.error_message       # None
+print r.http_status_code    # 200
+print r.results
+&quot;&quot;&quot;
+r.results returns a dict keyed by collection name
+with a list of of PushResponse objects as values.
+Refer to the single event response example above 
+for details on the PushResponse object.
+
+{
+    &apos;activity&apos;: [
+        &lt;PushResponse object&gt;,
+        &lt;PushResponse object&gt;
+    ]
+}
+&quot;&quot;&quot;
+</code></pre></div></div></div>
+<h2 id="exception-handling">Exception handling</h2>
+<p>When pushing events, exceptions could be returned in the future, so you should either ignore or handle those exceptions gracefully. Currently, the following exception could be thrown when pushing events:</p>
+<ul>
+<li><code>InvalidEventError</code> - the event being pushed is invalid (e.g. invalid event properties)</li>
+</ul>
 <h2 id="bulk-importing-events">Bulk importing events</h2>
 <p>Currently, this SDK does not support bulk importing events.</p>
 <p>However, you can use the <a href="http#bulk-importing-events">HTTP API</a> to run bulk imports if you need.</p>
@@ -372,22 +346,19 @@ indicating the response to an individual event.</p>
 limitations on querying which influences how you should structure your events.</p>
 <p>Refer to <a href="#restrictions">restrictions</a> in the <a href="#modeling-your-events">modeling your events</a> section.</p>
 <h2 id="reliability-of-events">Reliability of events</h2>
-<p>You can ensure delivery of events reliably by <a href="#queuing-events">queuing the events</a>.
-You should then handle the response from <code>pushAllPendingEvents</code> to verify that all the events were successfully pushed.</p>
-<p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is
-delivered multiple times). For example:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample14" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample15" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample14"><pre><code class="lang-objc">NSDictionary *event = @{
-                        @&quot;id&quot;: &quot;12345678&quot;,
-                        @&quot;product&quot;: @&quot;Something&quot;,
-                        @&quot;cost&quot;: @(2.01)
-                        };
-</code></pre></div><div class="tab-pane" id="code-sample15"><pre><code class="lang-swift">let event = [
-    &quot;id&quot;: &quot;12345678&quot;,
-    &quot;product&quot;: &quot;Something&quot;,
-    &quot;cost&quot;: 2.01
-]
-</code></pre></div></div></div>
+<p>Currently, it is not possible to persist/queue events for delivery in the Python SDK. If the push fails, it is not persisted in a queue of any sort.</p>
+<p>We recommend that you consider using a queuing mechanism to ensure reliability of the events if your application relies on the delivery of all events.</p>
+<p>Events also allow a custom ID to be sent in the event document which will prevent duplicates (i.e. guarantees idempotence even if the event is delivered multiple times). For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample6" role="tab" data-toggle="tab" data-lang="python">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample6"><pre><code class="lang-python">event = {
+  &apos;id&apos;: &apos;12345678&apos;,
+  &apos;type&apos;: &apos;cycling&apos;,
+  &apos;distance&apos;: 21255,
+  &apos;caloriesBurned&apos;: 455,
+  &apos;duration&apos;: 67
+}
 
+connect.push_event(&apos;activity&apos;, event)
+</code></pre></div></div></div>
 <h2 id="timestamps">Timestamps</h2>
 <p>All events have a single <code>timestamp</code> property which records when the event being pushed occurred.  Events cannot
 have more than one date/time property.  If you feel you need more than one date/time property, you probably need
@@ -401,16 +372,14 @@ in an event is supported for querying.</p>
 the timestamp of the event.</p>
 <p>The timestamp, however, can be overridden to, for example, accommodate historical events or maintain accuracy
 of event times when events are queued.  For example:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample20" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample21" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample20"><pre><code class="lang-objc">NSDictionary *event = @{
-                        @`timestamp`: [NSDate date],
-                        @&quot;product&quot;: @&quot;Something&quot;,
-                        @&quot;cost&quot;: @(2.01)
-                        };
-</code></pre></div><div class="tab-pane" id="code-sample21"><pre><code class="lang-swift">let event = [
-    `timestamp`: NSDate(),
-    &quot;product&quot;: &quot;Something&quot;,
-    &quot;cost&quot;: 2.01
-]
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample13" role="tab" data-toggle="tab" data-lang="python">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample13"><pre><code class="lang-python">event = {
+  &apos;id&apos;: &apos;12345678&apos;,
+  &apos;timestamp&apos;: datetime.utcnow(),
+  &apos;type&apos;: &apos;cycling&apos;,
+  &apos;distance&apos;: 21255
+}
+
+connect.push_event(&apos;activity&apos;, event)
 </code></pre></div></div></div>
 
 
@@ -463,11 +432,10 @@ pushing, querying and deleting collections.<br><strong>Keep this key safe</stron
 </li>
 </ul>
 <p>You must use your project ID and desired key to begin using Connect:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample25" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample24"><pre><code class="lang-objc">#import &quot;Connect.h&quot;
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample23" role="tab" data-toggle="tab" data-lang="python">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample23"><pre><code class="lang-python">from connect.client import ConnectClient
 
-[TPConnectClient sharedClientWithProjectId:@&quot;YOUR_PROJECT_ID&quot;
-                                    apiKey:@&quot;YOUR_API_KEY&quot;];
-</code></pre></div><div class="tab-pane" id="code-sample25"><pre><code class="lang-swift">TPConnectClient.sharedClientWithProjectId(&quot;YOUR_PROJECT_ID&quot;, apiKey: &quot;YOUR_API_KEY&quot;)
+connect = ConnectClient(project_id=&apos;YOUR_PROJECT_ID&apos;, 
+                        api_key=&apos;YOUR_API_KEY&apos;)
 </code></pre></div></div></div>
 
 
@@ -534,57 +502,48 @@ filters to restrict the pushing of events.</p>
 <p>Filtered keys can only push or query (as you specify), <em>never</em> administrative functions or deleting data.  </p>
 <h3 id="generating-a-filtered-key">Generating a filtered key</h3>
 <p>Filtered keys are generated and encrypted with the <code>Project Master Key</code>.  You do not have to register the
-filtered key with the Connect service.</p>
-<p>It is important that you <strong>never</strong> generate filtered keys client-side and always ensure the are generated by a secure,
-server-side service.</p>
-<ol>
-<li><p>Create a JSON object describing the access allowed by the key, including any <a href="#filters">filters</a>, for example:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample33" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample33"><pre><code class="lang-json">{
-    &quot;filters&quot;: {
-        &quot;customerId&quot;: 1234
-    },
-    &quot;canQuery&quot;: true,
-    &quot;canPush&quot;: false
+filtered key with Connect.</p>
+<p>To generate a filtered key, you must supply the master key, key settings and <a href="http#filters">filters</a>.
+The structure of the filters should match the structure of <a href="http#filters">JSON filters in the HTTP API</a>.
+For example:</p>
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample24" role="tab" data-toggle="tab" data-lang="python">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample24"><pre><code class="lang-python">from connect import security
+
+key_definition = {
+     &apos;filters&apos; : {
+         &apos;type&apos;: &apos;cycling&apos;
+         },
+    &apos;canQuery&apos;: True,
+    &apos;canPush&apos;: True
 }
+master_key = &apos;your-master-key&apos;
+
+print security.encrypt_filtered_key(key_definition, 
+                                    master_key)
 </code></pre></div></div></div>
- <table>
-     <tr>
-         <th>Property</th>
-         <th>Type</th>
-         <th>Description</th>
-     </tr>
-     <tr>
-         <td><code>filters</code></td>
-         <td><code>object</code></td>
-         <td>The filters to apply all queries executed when using the key.  This uses the same specification for <a href="#filters">defining filters</a> when querying normally.</td>
-     </tr>
-     <tr>
-         <td><code>canQuery</code></td>
-         <td><code>boolean</code></td>
-         <td>Whether or not the key can be used to execute queries.  If <code>false</code>, the <code>filters</code> property is ignored (as it does not applying to pushing).</td>
-     </tr>
-     <tr>
-         <td><code>canPush</code></td>
-         <td><code>boolean</code></td>
-         <td>Whether or not the key can be used to push events.</td>
-     </tr>
- </table>
-</li>
-<li><p>Serialize the JSON object to a string.</p>
-</li>
-<li><p>Generate a random 128-bit initialization vector (IV).</p>
-</li>
-<li><p>Encrypt the JSON string using AES256-CBC with PKCS7 padding (128-bit block size) using the 128-bit random IV we generated in the previous step
-and the <code>Project Master Key</code> as the encryption key.</p>
-</li>
-<li><p>Convert the IV and cipher text to hex strings and combine them (IV first, followed by the cipher text), separating them with a hyphen (-). The resulting
-key should look something like this:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample34" role="tab" data-toggle="tab" data-lang="">Not Found</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample34"><pre><code class="nohighlight">5D07A77D87D5B20FA5508303F748A43B-DDFA284A9341068A704A846E83ACF49069D960632C4F74A44B5EE330073F79A8324ADC91023F88F63AAE4507F3D119B5C7F31A2D7D9616408E9665EC6C1DEBE3
-</code></pre></div></div></div></li>
-</ol>
-<p>You can now use this API key to either <a href="#pushing-events">push events</a> or <a href="#querying-events">execute queries</a> depending on the <code>canPush</code>
-and <code>canQuery</code> properties, respectively.</p>
-<p>Finally, if a filtered key is compromised or being used maliciously, you can always reset it by <a href="#resetting-the-master-key">resetting the master key</a>.</p>
+<table>
+    <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>filters</code></td>
+        <td><code>object</code></td>
+        <td>The filters to apply all queries executed when using the key.  These filters should be generated with the same structure as <a href="http#filters">filters</a> from the HTTP API.</td>
+    </tr>
+    <tr>
+        <td><code>canQuery</code></td>
+        <td><code>boolean</code></td>
+        <td>Whether or not the key can be used to execute queries.  If <code>false</code>, the <code>filters</code> property is ignored (as it does not applying to pushing).</td>
+    </tr>
+    <tr>
+        <td><code>canPush</code></td>
+        <td><code>boolean</code></td>
+        <td>Whether or not the key can be used to push events.</td>
+    </tr>
+</table>
+
+<p>You would use the resulting key to provide to client applications (e.g. in a browser using the <a href="js">JavaScript SDK</a>).</p>
 <h1 id="modeling-your-events">Modeling your events</h1>
 <p>When using Connect to analyze and visualize your data, it is important to understand how best to model your events.
 The way you structure your events will directly affect your ability to answer questions with your data.  It is therefore
@@ -595,34 +554,20 @@ to contain rich details about what the &quot;world&quot; looked like at that poi
 <p>Put simply, events = action + time + state.</p>
 <p>For example, imagine you are writing an exercise activity tracker app.  We want to give users of your app the ability to
 analyze their performance over time.  This is an event produced by our hypothetical activity tracker app:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample38" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample39" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample38"><pre><code class="lang-objc">NSDictionary *myEvent = @{
-                            @&quot;type&quot;: @&quot;cycling&quot;,
-                            @&quot;timestamp&quot;: [NSDate date],
-                            @&quot;duration&quot;: @67,
-                            @&quot;distance&quot;: @21255,
-                            @&quot;caloriesBurned&quot;: @455,
-                            @&quot;maxHeartRate&quot;: @182,
-                            @&quot;user&quot;: @{
-                                @&quot;id&quot;: @698396,
-                                @&quot;firstName&quot;: @&quot;Bruce&quot;,
-                                @&quot;lastName&quot;: @&quot;Jones&quot;,
-                                @&quot;age&quot;: @35
-                            }
-                        };
-</code></pre></div><div class="tab-pane" id="code-sample39"><pre><code class="lang-swift">let myEvent = [
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample25" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample25"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
-    &quot;timestamp&quot;: NSDate(),
+    &quot;timestamp&quot;: &quot;2015-06-23T16:31:56.587Z&quot;,
     &quot;duration&quot;: 67,
     &quot;distance&quot;: 21255,
     &quot;caloriesBurned&quot;: 455,
     &quot;maxHeartRate&quot;: 182,
-    &quot;user&quot;: [
-        &quot;id&quot;: 698396,
+    &quot;user&quot;: {
+        &quot;id&quot;: &quot;638396&quot;,
         &quot;firstName&quot;: &quot;Bruce&quot;,
         &quot;lastName&quot;: &quot;Jones&quot;,
         &quot;age&quot;: 35
-    ]
-]
+    }
+}
 </code></pre></div></div></div>
 
 
@@ -666,26 +611,16 @@ had distinct <code>cycling</code>, <code>running</code> and  <code>kayaking</cod
 <p>It is also important to consider how to group events into collections to enable future queries to be answered.</p>
 <h3 id="events-are-denormalized">Events are denormalized</h3>
 <p>Consider our example event again, notice the age property of the user:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample45" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample46" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample45"><pre><code class="lang-objc">NSDictionary *myEvent = @{
-                            @&quot;type&quot;: @&quot;cycling&quot;,
-                            ...
-                            @&quot;user&quot;: @{
-                                @&quot;id&quot;: @698396,
-                                @&quot;firstName&quot;: @&quot;Bruce&quot;,
-                                @&quot;lastName&quot;: @&quot;Jones&quot;,
-                                @&quot;age&quot;: @35
-                            }
-                        };
-</code></pre></div><div class="tab-pane" id="code-sample46"><pre><code class="lang-swift">let myEvent = [
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample32" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample32"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     ...
-    &quot;user&quot;: [
-        &quot;id&quot;: 698396,
+    &quot;user&quot;: {
+        &quot;id&quot;: &quot;638396&quot;,
         &quot;firstName&quot;: &quot;Bruce&quot;,
         &quot;lastName&quot;: &quot;Jones&quot;,
         &quot;age&quot;: 35
-    ]
-]
+    }
+}
 </code></pre></div></div></div>
 
 
@@ -699,7 +634,7 @@ over time, rather than merely current state.  This helps us answer questions abo
 &quot;world&quot; looked like at that point of time.</p>
 <p>For example imagine we wanted to chart the average distance cycled per ride, grouped by the age of the rider at the time of the ride.
 We could simply execute the following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample49" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample49"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample39" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample39"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;user.age&apos;);
 
@@ -724,46 +659,26 @@ the &quot;world&quot; at that point in time. </p>
 etc.).  The user property specifies rich information about the actor who performed the event.  In this case it&apos;s the person who completed the
 activity, complete with their name and age.</p>
 <p>In reality, though, we may decide to include a few other nested entities in our event, for example:</p>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample55" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample56" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample55"><pre><code class="lang-objc">NSDictionary *myEvent = @{
-                            @&quot;type&quot;: @&quot;cycling&quot;,
-                            ...
-                            @&quot;user&quot;: @{
-                                @&quot;id&quot;: @698396,
-                                @&quot;firstName&quot;: @&quot;Bruce&quot;,
-                                ...
-                            },
-                            @&quot;bike&quot;: @{
-                                @&quot;id&quot;: @231806,
-                                @&quot;brand&quot;: @&quot;Specialized&quot;,
-                                @&quot;model&quot;: @&quot;S-Works Venge&quot;
-                            },
-                            @&quot;weather&quot;: @{
-                                @&quot;condition&quot;: @&quot;Raining&quot;,
-                                @&quot;temperature&quot;: @21,
-                                @&quot;humidity&quot;: @99,
-                                @&quot;wind&quot;: @17
-                            }
-                        };
-</code></pre></div><div class="tab-pane" id="code-sample56"><pre><code class="lang-swift">let myEvent = [
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample42" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample42"><pre><code class="lang-json">{
     &quot;type&quot;: &quot;cycling&quot;,
     ...
-    &quot;user&quot;: [
-        &quot;id&quot;: 698396,
+    &quot;user&quot;: {
+        &quot;id&quot;: &quot;638396&quot;,
         &quot;firstName&quot;: &quot;Bruce&quot;,
         ...
-    ],
-    &quot;bike&quot;: [
-        &quot;id&quot;: 231806,
+    },
+    &quot;bike&quot;: {
+        &quot;id&quot;: &quot;231806&quot;,
         &quot;brand&quot;: &quot;Specialized&quot;,
         &quot;model&quot;: &quot;S-Works Venge&quot;
-    ],
-    &quot;weather&quot;: [
+    },
+    &quot;weather&quot;: {
         &quot;condition&quot;: &quot;Raining&quot;,
         &quot;temperature&quot;: 21,
         &quot;humidity&quot;: 99,
         &quot;wind&quot;: 17
-    ]
-]
+    }
+}
 </code></pre></div></div></div>
 
 
@@ -774,7 +689,7 @@ activity, complete with their name and age.</p>
 <p>Note our event now includes details about the bike used and the weather conditions at the time of the activity.  By adding this extra bike state information
 to our event, we have opened up extra possibilities for interrogating our data. For example, we can now query the average distance cycled by each model of bike
 that was built by &quot;Specialized&quot;:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample59" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample59"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample49" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample49"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy(&apos;bike.model&apos;);
   .filter({
@@ -786,7 +701,7 @@ that was built by &quot;Specialized&quot;:</p>
 <p>The weather also provides us with exciting insights - what did the world look like at this point in time?  What was the weather like?  Storing this data
 allows us to answer yet more questions.  We can test our hypothesis that &quot;older people are less scared of riding in the rain&quot; by simply charting the
 following query:</p>
-<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample62" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample62"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample52" role="tab" data-toggle="tab" data-lang="js">JavaScript</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample52"><pre><code class="lang-js">var query = connect.query(&apos;activity&apos;)
   .select({ averageDistance: { avg: &apos;distance&apos; } })
   .groupBy([&apos;user.age&apos;, &apos;weather.condition&apos;]);
 </code></pre></div></div></div>
@@ -818,12 +733,9 @@ probably <a href="#structuring-your-events">need to reconsider the structure of 
 properties.  The following is an example of an invalid event property due to a dot in the name:</p>
 </li>
 </ul>
-<div class="code-samples"><ul class="nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Objective-C<span class="caret"></span></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample70" role="tab" data-toggle="tab" data-lang="objc">Objective-C</a></li><li><a href="#code-sample71" role="tab" data-toggle="tab" data-lang="swift">Swift</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample70"><pre><code class="lang-objc">NSDictionary *event = @{
-                        @&quot;invalid.property&quot;: @&quot;value&quot;
-                        };
-</code></pre></div><div class="tab-pane" id="code-sample71"><pre><code class="lang-swift">let event = [
+<div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample55" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample55"><pre><code class="lang-json">{
     &quot;invalid.property&quot;: &quot;value&quot;
-]
+}
 </code></pre></div></div></div>
 
 
