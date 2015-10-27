@@ -31,5 +31,7 @@ connect.query("purchases")
     });
 ```
 
-> You can't specify a timezone when using absolute timeframes as the timezone information comes from the ISO-8601
-> dates specified.  An error will occur if you try to do this.
+
+> You can only specify a timezone and an absolute timeframe when you have also specified a [time interval](#time-intervals).
+> If a timezone is specified on an absolute timeframe query that does not have a time interval an error
+> will occur.
