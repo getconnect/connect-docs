@@ -823,8 +823,9 @@ day of the week you&apos;d like to start your weeks.</p>
     .Execute()
 </code></pre></div></div></div>
 <blockquote>
-<p>You can&apos;t specify a timezone when using absolute timeframes as the timezone information comes from the ISO-8601
-dates specified.  An error will occur if you try to do this.</p>
+<p>You can only specify a timezone and an absolute timeframe when you have also specified a <a href="#time-intervals">time interval</a>.
+If a timezone is specified on an absolute timeframe query that does not have a time interval an error
+will occur.</p>
 </blockquote>
 <h2 id="group-by">Group by</h2>
 <p>You can group the query results by one or more properties from your events.</p>
@@ -990,9 +991,9 @@ foreach (var intervalResult in queryResponse.Results) {
 <p>By default, Connect uses <strong>UTC</strong> as the timezone for queries with relative timeframes or time intervals.
 You can override this to be the timezone of your choice by specifying the <strong>timezone</strong> in your query.</p>
 <blockquote>
-<p>You can only specify a timezone when you have specified a <a href="#time-intervals">time interval</a> or a
-<a href="#relative-timeframes">relative timeframe</a>.  If you try to specify a timezone without one of these
-set, an error will be returned.</p>
+<p>You can only specify a timezone when you have specified a <a href="#time-intervals">time interval</a> and/or a
+<a href="#relative-timeframes">relative timeframe</a>.  If you try to specify a timezone 
+without one of these set, an error will be returned.</p>
 </blockquote>
 <p>You can specify a numeric (decimal) value for an hours offset of UTC, for example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample77" role="tab" data-toggle="tab" data-lang="csharp">.NET</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample77"><pre><code class="lang-csharp">var queryResponse = await Connect.Query(&quot;purchases&quot;)

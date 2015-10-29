@@ -963,8 +963,9 @@ the desired start and end times in ISO-8601 format.</p>
 <p>This will match all events with a <code>timestamp</code> greater than or equal to 2015-02-01 00:00:00 and less than
 2015-02-25 00:00:00 UTC.</p>
 <blockquote>
-<p>You can&apos;t specify a timezone when using absolute timeframes as the timezone information comes from the ISO-8601
-dates specified.  An error will occur if you try to do this.</p>
+<p>You can only specify a timezone and an absolute timeframe when you have also specified a <a href="#time-intervals">time interval</a>.
+If a timezone is specified on an absolute timeframe query that does not have a time interval an error
+will occur.</p>
 </blockquote>
 <h2 id="group-by">Group by</h2>
 <p>You can group the query results by one or more properties from your events.</p>
@@ -1185,9 +1186,9 @@ a distinction.</p>
 <p>By default, Connect uses <strong>UTC</strong> as the timezone for queries with relative timeframes or time intervals.
 You can override this to be the timezone of your choice by specifying the <strong>timezone</strong> in your query.</p>
 <blockquote>
-<p>You can only specify a timezone when you have specified a <a href="#time-intervals">time interval</a> or a
-<a href="#relative-timeframes">relative timeframe</a>.  If you try to specify a timezone without one of these
-set, an error will be returned.</p>
+<p>You can only specify a timezone when you have specified a <a href="#time-intervals">time interval</a> and/or a
+<a href="#relative-timeframes">relative timeframe</a>.  If you try to specify a timezone 
+without one of these set, an error will be returned.</p>
 </blockquote>
 <p>You can specify a numeric (decimal) value for an hours offset of UTC, for example:</p>
 <div class="code-samples"><ul class="nav hide"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"></a><ul class="dropdown-menu"><li class="active"><a href="#code-sample69" role="tab" data-toggle="tab" data-lang="json">JSON</a></li></ul></li></ul><div class="tab-content"><div class="tab-pane active" id="code-sample69"><pre><code class="lang-json">{
