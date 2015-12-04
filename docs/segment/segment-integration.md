@@ -4,7 +4,7 @@ Once the Segment library is integrated with your app, toggle Connect on in your 
 
 Connect integrates directly with Segment, so no extra SDKs are required for your app.
 
-Connect supports the `track`, `page`, and `screen`.
+Connect supports the `track`, `page`, and `screen` call types.
 
 Please note:
 * The `messageId` will be used as the `id` for the Connect event.
