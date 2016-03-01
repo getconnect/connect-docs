@@ -1,6 +1,6 @@
 # Deleting collections
 
-> **DELETE** https://api.getconnect.io/events/:collection
+> **DELETE** https://api.getconnect.io/collections/:collection
 >
 > | Parameter                      | Description                                          |
 > | ------------------------------ | ---------------------------------------------------- |
