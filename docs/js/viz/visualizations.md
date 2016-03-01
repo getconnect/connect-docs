@@ -9,7 +9,7 @@ All visualizations support the setting of [field options](#field-options) and [i
 <p data-height="320" data-theme-id="17963" data-slug-hash="XbwjVx" data-default-tab="results" data-user="getconnect" class='codepen'>See the Pen <a href='http://codepen.io/getconnect/pen/XbwjVx/'>Connect Table viz</a> by Connect (<a href='http://codepen.io/getconnect'>@getconnect</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
 
 The table viz will display your results in a tabular fashion.  This is best used with [grouped](#group-by) or [time interval](#time-intervals) queries,
-which get displayed as multiple rows. 
+which get displayed as multiple rows.
 
 You can also apply the following CSS classes to your viz's container to change the styling and/or behavior of the table:
 
@@ -197,7 +197,7 @@ As well as the setting of [field options](#field-options) (which all visualizati
 
 ```js
 var gauge = Connect.visualize(query)
-    .as('guage')
+    .as('gauge')
     .inside('#gauge')
     .with({
         gauge: {
@@ -269,8 +269,8 @@ var chart = Connect.visualize(query)
 
 ## Formatters
 
-Many of the viz types allow you to pass either a format string or a format function that converts a number to its string representation. 
-When you pass a format string the d3 format function is used. You can find the [d3 formatting specifictaions here. ](https://github.com/mbostock/d3/wiki/Formatting)
+Many of the viz types allow you to pass either a format string or a format function that converts a number to its string representation.
+When you pass a format string the d3 format function is used. You can find the [d3 formatting specifications here. ](https://github.com/mbostock/d3/wiki/Formatting)
 An example of providing a format string:
 ```js
 var fieldOptions = {
@@ -357,7 +357,7 @@ var table = Connect.visualize(query)
     .draw();
 ```
 
-Alternatively, if you would like full control over formatting, you can provide the `format` property with a function that accepts a start date and optionally an end date as arguments and returns a formatted string. 
+Alternatively, if you would like full control over formatting, you can provide the `format` property with a function that accepts a start date and optionally an end date as arguments and returns a formatted string.
 Both the start date and optional end date arguments will be native JavaScript date objects.
 For example:
 
@@ -489,7 +489,7 @@ freeing objects, etc.)
 
 `defaultOptions()` *(optional)*
 
-This function is called when the viz is being first created, before `init` is called. If your vizualization needs some default options you should return them here as an object. The options that are passed to both `init` and `render` will be a union of any default options returned here and the options provided when the custom vizualization is instantiated. User provided options will take precedence over default options.
+This function is called when the viz is being first created, before `init` is called. If your visualization needs some default options you should return them here as an object. The options that are passed to both `init` and `render` will be a union of any default options returned here and the options provided when the custom visualization is instantiated. User provided options will take precedence over default options.
 
 `isSupported(metadata, selects)` *(optional)*
 
@@ -513,10 +513,10 @@ Once you have implemented the contract, you register the custom viz using `Conne
 ```js
 Connect.registerViz('myViz', {
     init: function(container, options) {
-        
+
     },
     render: function(container, results, options, hasQueryUpdated) {
-        
+
     }
 });
 
@@ -540,9 +540,9 @@ class MyViz {
     }
 
     render(container, results, options, hasQueryUpdated) {
-        
+
     }
-    
+
 }
 
 Connect.registerViz('myViz', () => new MyViz);
@@ -555,5 +555,3 @@ Connect.visualize(query)
     .draw();
 
 ```
-
-
